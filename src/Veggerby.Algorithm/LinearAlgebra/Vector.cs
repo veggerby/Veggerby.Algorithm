@@ -67,7 +67,7 @@ namespace Veggerby.Algorithm.LinearAlgebra
         {
             if (v1.Size != v2.Size)
             {
-                throw new ArgumentException(nameof(v2), "Cannot add vectors with different dimensions");
+                throw new ArgumentException(nameof(v2), "Cannot subtract vectors with different dimensions");
             }
 
             return new Vector(v1.ToArray().Zip(v2.ToArray(), (x, y) => x - y));
