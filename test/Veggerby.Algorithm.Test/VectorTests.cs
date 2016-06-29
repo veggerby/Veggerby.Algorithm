@@ -293,7 +293,7 @@ namespace Veggerby.Algorithm.Test
             }
         }
 
-        public class ToString
+        public class _ToString
         {
             [Fact]
             public void Should_return_to_string()
@@ -305,6 +305,54 @@ namespace Veggerby.Algorithm.Test
                 // act
                 var actual = v.ToString();
                 
+                // assert
+                Assert.Equal(expected, actual);
+            }
+        }
+
+        public class _Equals // same tests as == operator
+        {
+            [Fact]
+            public void Should_equal_self()
+            {
+                // arrange
+                var v = new Vector(1, 2, 3);
+                
+                // act
+                var actual = v.Equals(v);
+                
+                // assert
+                Assert.True(actual);
+            }
+
+            [Fact]
+            public void Should_not_equal_other_type()
+            {
+                // arrange
+                var v = new Vector(1, 2, 3);
+                
+                // act
+                var actual = v.Equals("test");
+                
+                // assert
+                Assert.False(actual);
+            }
+
+            [Theory]
+            [InlineData(new double[] { 1, 2, 3, 4 }, new double[] { 1, 2, 3, 4 }, true)]
+            [InlineData(new double[] { 4, 3, 2, 1 }, new double[] { 1, 2, 3, 4 }, false)]
+            [InlineData(new double[] { 4, 3, 2 }, new double[] { 1, 2, 3, 4 }, false)]
+            [InlineData(new double[] { 1, 2, 3 }, new double[] { 5, 6, 7 }, false)]
+            [InlineData(new double[] { 1, 2, 3 }, new double[] { 1, 2, 3, 4 }, false)]
+            public void Should_return_expected_equal_other_vector(double[] vv1, double[] vv2, bool expected)
+            {
+                // arrange
+                var v1 = new Vector(vv1);
+                var v2 = new Vector(vv2);
+            
+                // act
+                var actual = v1.Equals(v2);
+
                 // assert
                 Assert.Equal(expected, actual);
             }
