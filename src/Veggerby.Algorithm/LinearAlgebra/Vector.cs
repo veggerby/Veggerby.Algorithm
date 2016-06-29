@@ -9,6 +9,11 @@ namespace Veggerby.Algorithm.LinearAlgebra
     {        
         public Vector(int d)
         {
+            if (d <= 0) 
+            {
+                throw new ArgumentOutOfRangeException(nameof(d));
+            }
+
             _values = new double[d];
         }
 

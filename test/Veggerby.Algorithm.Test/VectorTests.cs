@@ -26,6 +26,17 @@ namespace Veggerby.Algorithm.Test
                 Assert.Equal(new double[5], actual.ToArray());
             }
 
+            [Theory]
+            [InlineData(0)]
+            [InlineData(-1)]
+            public void Should_throw_with_negative_or_zero_dimension(int d)
+            {
+                // arrange
+                
+                // act + assert
+                Assert.Throws<ArgumentOutOfRangeException>(() => new Vector(d));
+            }
+
             [Fact]
             public void Should_initialize_params_array()
             {
