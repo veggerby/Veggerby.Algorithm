@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Veggerby.Algorithm
+﻿namespace Veggerby.Algorithm
 {
     public class GreatestCommonDivisor
     {
