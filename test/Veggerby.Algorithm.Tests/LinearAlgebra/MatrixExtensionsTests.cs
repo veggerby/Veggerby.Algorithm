@@ -5,7 +5,7 @@ using System.Linq;
 using Veggerby.Algorithm.LinearAlgebra;
 using Xunit;
 
-namespace Veggerby.Algorithm.Test
+namespace Veggerby.Algorithm.Tests.LinearAlgebra
 {
     public class MatrixExtensionsTests
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using Veggerby.Algorithm;
 using Xunit;
 
-namespace Veggerby.Algorithm.Test
+namespace Veggerby.Algorithm.Tests
 {
     public class GreatestCommonDivisorTests
     {

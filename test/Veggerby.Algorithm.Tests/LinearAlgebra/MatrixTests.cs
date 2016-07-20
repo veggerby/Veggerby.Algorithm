@@ -9,7 +9,7 @@ using Xunit;
 #pragma warning disable CS1718
 
 
-namespace Veggerby.Algorithm.Test
+namespace Veggerby.Algorithm.Tests.LinearAlgebra
 {
     public class MatrixTests
     {
