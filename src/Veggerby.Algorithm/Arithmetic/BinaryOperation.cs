@@ -36,7 +36,7 @@ namespace Veggerby.Algorithm.Arithmetic
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((Constant)obj);
+            return Equals((BinaryOperation)obj);
         }
 
         public override int GetHashCode()

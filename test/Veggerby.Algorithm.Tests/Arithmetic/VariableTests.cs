@@ -54,5 +54,62 @@ namespace Veggerby.Algorithm.Tests.Arithmetic
                 actual.ShouldBe("x");
             }
         }
+
+        public class _Equals
+        {
+            [Fact]
+            public void Should_equal_self()
+            {
+                // arrange
+                var v = new Variable("x");
+                
+                // act
+                var actual = v.Equals(v);
+
+                // assert
+                actual.ShouldBeTrue();
+            }
+            
+            [Fact]
+            public void Should_not_equal_null()
+            {
+                // arrange
+                var v = new Variable("x");
+                
+                // act
+                var actual = v.Equals(null);
+
+                // assert
+                actual.ShouldBeFalse();
+            }
+
+            [Fact]
+            public void Should_equal_same_operands()
+            {
+                // arrange
+                var v1 = new Variable("x");
+                var v2 = new Variable("x");
+                
+                // act
+                var actual = v1.Equals(v2);
+
+                // assert
+                actual.ShouldBeTrue();
+            }
+
+            [Fact]
+            public void Should_not_equal_different_operands()
+            {
+                // arrange
+                var v1 = new Variable("x");
+                var v2 = new Variable("y");
+                
+                // act
+                var actual = v1.Equals(v2);
+
+                // assert
+                actual.ShouldBeFalse();
+            }
+        }
     }
 }
