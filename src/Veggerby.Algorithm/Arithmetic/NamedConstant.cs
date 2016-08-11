@@ -1,5 +1,3 @@
-using System.Globalization;
-
 namespace Veggerby.Algorithm.Arithmetic
 {
     public class NamedConstant : Constant
