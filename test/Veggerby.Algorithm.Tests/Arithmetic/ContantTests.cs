@@ -1,3 +1,4 @@
+using System;
 using Shouldly;
 using Veggerby.Algorithm.Arithmetic;
 using Xunit;
@@ -18,6 +19,29 @@ namespace Veggerby.Algorithm.Tests.Arithmetic
                 
                 // assert
                 actual.Value.ShouldBe(1);
+            }
+        }
+
+        public class StaticValues
+        {
+            [Fact]
+            public void Should_have_pi_static()
+            {
+                // arrange
+                // act
+                // assert
+                Constant.Pi.Symbol.ShouldBe("π");
+                Constant.Pi.Value.ShouldBe(Math.PI);
+            }
+
+            [Fact]
+            public void Should_have_e_static()
+            {
+                // arrange
+                // act
+                // assert
+                Constant.e.Symbol.ShouldBe("e");
+                Constant.e.Value.ShouldBe(Math.E);
             }
         }
 

@@ -5,8 +5,8 @@ namespace Veggerby.Algorithm.Arithmetic
 {
     public class Constant : Operand
     {
-        public static Constant Pi = new NamedConstant("π", Math.PI);
-        public static Constant e = new NamedConstant("e", Math.E);
+        public static NamedConstant Pi = new NamedConstant("π", Math.PI);
+        public static NamedConstant e = new NamedConstant("e", Math.E);
 
         public double Value { get; }
 
