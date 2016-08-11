@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Shouldly;
 using Veggerby.Algorithm.LinearAlgebra;
 using Xunit;
 
@@ -27,7 +28,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = Matrix.Identity(3);
                 
                 // assert
-                Assert.Equal(expected, actual);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -38,7 +39,10 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 // arrange
                 
                 // act + assert
-                Assert.Throws<ArgumentOutOfRangeException>(() => Matrix.Identity(d));
+                var actual = Should.Throw<ArgumentOutOfRangeException>(() => Matrix.Identity(d));
+
+                // assert
+                actual.ParamName.ShouldBe("n");
             }
         }
 
@@ -53,22 +57,25 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = new Matrix(2, 3);
                 
                 // assert
-                Assert.Equal(new double[2, 3], actual.ToArray());
+                actual.ToArray().ShouldBe(new double[2, 3]);
             }
 
             [Theory]
-            [InlineData(0, 0)]
-            [InlineData(2, 0)]
-            [InlineData(0, 2)]
-            [InlineData(-1, 1)]
-            [InlineData(1, -1)]
-            [InlineData(-1, 1)]
-            public void Should_throw_with_negative_or_zero_rows_or_column_count(int r, int c)
+            [InlineData(0, 0, "rows")]
+            [InlineData(2, 0, "cols")]
+            [InlineData(0, 2, "rows")]
+            [InlineData(-1, -1, "rows")]
+            [InlineData(1, -1, "cols")]
+            [InlineData(-1, 1, "rows")]
+            public void Should_throw_with_negative_or_zero_rows_or_column_count(int r, int c, string expected)
             {
                 // arrange
                 
                 // act + assert
-                Assert.Throws<ArgumentOutOfRangeException>(() => new Matrix(r, c));
+                var actual = Should.Throw<ArgumentOutOfRangeException>(() => new Matrix(r, c));
+
+                // assert
+                actual.ParamName.ShouldBe(expected);
             }
             
             [Fact]
@@ -80,7 +87,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = new Matrix(new double[,] { { 1, 2, 3 }, { 4, 5, 6 }});
                 
                 // assert
-                Assert.Equal(new double[,] { { 1, 2, 3 }, { 4, 5, 6 }}, actual.ToArray());
+                actual.ToArray().ShouldBe(new double[,] { { 1, 2, 3 }, { 4, 5, 6 }});
             }
             
             [Fact]
@@ -89,7 +96,10 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 // arrange
                 
                 // act + assert
-                Assert.Throws<ArgumentNullException>(() => new Matrix((double[,]) null));
+                var actual = Should.Throw<ArgumentNullException>(() => new Matrix((double[,]) null));
+
+                // assert
+                actual.ParamName.ShouldBe("values");
             }
 
             [Fact]
@@ -99,7 +109,10 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var v = new double[,] { };
                 
                 // act + assert
-                Assert.Throws<ArgumentOutOfRangeException>(() => new Matrix(v));
+                var actual = Should.Throw<ArgumentOutOfRangeException>(() => new Matrix(v));
+
+                // assert
+                actual.ParamName.ShouldBe("values");
             }
 
             [Fact]
@@ -109,7 +122,10 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var v = new double[,] { {}, {}, {} };
                 
                 // act + assert
-                Assert.Throws<ArgumentOutOfRangeException>(() => new Matrix(v));
+                var actual = Should.Throw<ArgumentOutOfRangeException>(() => new Matrix(v));
+                
+                // assert
+                actual.ParamName.ShouldBe("values");
             }
             
             [Fact]
@@ -130,7 +146,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = new Matrix(new [] { v1, v2, v3 });
                 
                 // assert
-                Assert.Equal(expected, actual.ToArray());
+                actual.ToArray().ShouldBe(expected);
             }
 
             [Fact]
@@ -139,7 +155,10 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 // arrange
                 
                 // act + assert
-                Assert.Throws<ArgumentNullException>(() => new Matrix((Vector[]) null));
+                var actual = Should.Throw<ArgumentNullException>(() => new Matrix((Vector[]) null));
+                
+                // assert
+                actual.ParamName.ShouldBe("rows");
             }
 
             [Fact]
@@ -148,7 +167,10 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 // arrange
                 
                 // act + assert
-                Assert.Throws<ArgumentException>(() => new Matrix(Enumerable.Empty<Vector>()));
+                var actual = Should.Throw<ArgumentException>(() => new Matrix(Enumerable.Empty<Vector>()));
+                
+                // assert
+                actual.ParamName.ShouldBe("rows");
             }
 
             [Fact]
@@ -159,7 +181,10 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var v2 = new Vector(4, 5);
                 
                 // act + assert
-                Assert.Throws<ArgumentException>(() => new Matrix(new[] { v1, v2}));
+                var actual = Should.Throw<ArgumentException>(() => new Matrix(new[] { v1, v2 }));
+                
+                // assert
+                actual.ParamName.ShouldBe("rows");
             }
         }
 
@@ -177,7 +202,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.RowCount;
 
                 // assert
-                Assert.Equal(2, actual);
+                actual.ShouldBe(2);
             }
         }
 
@@ -195,7 +220,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.ColCount;
 
                 // assert
-                Assert.Equal(3, actual);
+                actual.ShouldBe(3);
             }
         }
 
@@ -216,7 +241,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.Rows;
 
                 // assert
-                Assert.Equal(new[] { v1, v2 }, actual);
+                actual.ShouldBe(new[] { v1, v2 });
             }
         }
 
@@ -238,7 +263,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.Cols;
 
                 // assert
-                Assert.Equal(new[] { v1, v2, v3 }, actual);
+                actual.ShouldBe(new[] { v1, v2, v3 });
             }
         }
 
@@ -256,26 +281,29 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1[1, 2];
             
                 // assert
-                Assert.Equal(6, actual);
+                actual.ShouldBe(6);
             }
 
             [Theory]
-            [InlineData(2, 0)]
-            [InlineData(0, 3)]
-            [InlineData(-1, 1)]
-            [InlineData(1, -1)]
-            [InlineData(-1, 1)]
-            [InlineData(2, 1)]
-            [InlineData(1, 3)]
-            public void Should_throw_if_index_out_of_range(int r, int c)
-            {
+            [InlineData(2, 0, "r")]
+            [InlineData(0, 3, "c")]
+            [InlineData(-1, 1, "r")]
+            [InlineData(1, -1, "c")]
+            [InlineData(-1, 1, "r")]
+            [InlineData(2, 1, "r")]
+            [InlineData(1, 3, "c")]
+            public void Should_throw_if_index_out_of_range(int r, int c, string expected)
+        {
                 // arrange
                 var m1 = new Matrix(new double[,] { 
                     { 1, 2, 3 }, 
                     { 4, 5, 6 } });
             
                 // act + assert
-                Assert.Throws<ArgumentOutOfRangeException>(() => m1[r, c]);
+                var actual = Should.Throw<ArgumentOutOfRangeException>(() => { var x = m1[r, c]; });
+
+                // assert
+                actual.ParamName.ShouldBe(expected);
             }
         }
 
@@ -296,7 +324,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.GetRow(1);
 
                 // assert
-                Assert.Equal(v2, actual);
+                actual.ShouldBe(v2);
             }
 
             [Theory]
@@ -310,7 +338,10 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                     { 4, 5, 6 } });
             
                 // act + assert
-                Assert.Throws<ArgumentOutOfRangeException>(() => m1.GetRow(i));
+                var actual = Should.Throw<ArgumentOutOfRangeException>(() => m1.GetRow(i));
+
+                // assert
+                actual.ParamName.ShouldBe("r");
             }
         }
 
@@ -332,7 +363,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.GetCol(1);
 
                 // assert
-                Assert.Equal(v2, actual);
+                actual.ShouldBe(v2);
             }
 
             [Theory]
@@ -346,7 +377,10 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                     { 4, 5, 6 } });
             
                 // act + assert
-                Assert.Throws<ArgumentOutOfRangeException>(() => m1.GetCol(i));
+                var actual = Should.Throw<ArgumentOutOfRangeException>(() => m1.GetCol(i));
+
+                // assert
+                actual.ParamName.ShouldBe("c");
             }
         }
 
@@ -365,7 +399,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m.Determinant;
 
                 // assert
-                Assert.Equal(6, actual);
+                actual.ShouldBe(6);
             }
 
             [Fact]
@@ -377,7 +411,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                     { -1, 1, 3 }, });
 
                 // act + assert
-                Assert.Throws<IndexOutOfRangeException>(() => m.Determinant);
+                var actual = Should.Throw<IndexOutOfRangeException>(() => { var x= m.Determinant; });
             }
         }
 
@@ -406,7 +440,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1 + m2;
 
                 // assert
-                Assert.Equal(expected, actual);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -423,7 +457,10 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                     { 1, 0 } });
 
                 // act + assert
-                Assert.Throws<ArgumentException>(() => m1 + m2);
+                var actual = Should.Throw<ArgumentException>(() => { var x = m1 + m2; });
+
+                // assert
+                actual.ParamName.Equals("m2");
             }
         }
 
@@ -452,7 +489,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1 - m2;
 
                 // assert
-                Assert.Equal(expected, actual);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -469,7 +506,11 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                     { 1, 0 } });
 
                 // act + assert
-                Assert.Throws<ArgumentException>(() => m1 - m2);
+                // act + assert
+                var actual = Should.Throw<ArgumentException>(() => { var x = m1 - m2; });
+
+                // assert
+                actual.ParamName.Equals("m2");
             }
         }
         
@@ -491,7 +532,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = 3 * m;
 
                 // assert
-                Assert.Equal(expected, actual);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -518,7 +559,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1 * m2;
 
                 // assert
-                Assert.Equal(expected, actual);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -535,7 +576,10 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                     { 1, 0 } });
 
                 // act + assert
-                Assert.Throws<ArgumentException>(() => m1 * m2);
+                var actual = Should.Throw<ArgumentException>(() => { var x = m1 * m2; });
+
+                // assert
+                actual.ParamName.Equals("m2");
             }
         }
 
@@ -554,7 +598,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = (m == m);
                 
                 // assert
-                Assert.True(actual);
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -575,7 +619,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = (m1 == m2);
 
                 // assert
-                Assert.True(actual);
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -596,7 +640,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = (m1 == m2);
 
                 // assert
-                Assert.False(actual);
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -616,7 +660,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = (m1 == m2);
 
                 // assert
-                Assert.False(actual);
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -637,7 +681,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = (m1 == m2);
 
                 // assert
-                Assert.False(actual);
+                actual.ShouldBeFalse();
             }            
         } 
 
@@ -656,7 +700,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = (m != m);
                 
                 // assert
-                Assert.False(actual);
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -677,7 +721,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = (m1 != m2);
 
                 // assert
-                Assert.False(actual);
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -698,7 +742,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = (m1 != m2);
 
                 // assert
-                Assert.True(actual);
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -718,7 +762,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = (m1 != m2);
 
                 // assert
-                Assert.True(actual);
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -739,7 +783,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = (m1 != m2);
 
                 // assert
-                Assert.True(actual);
+                actual.ShouldBeTrue();
             }            
         }
 
@@ -761,7 +805,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m.ToString();
                 
                 // assert
-                Assert.Equal(expected, actual);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -780,7 +824,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m.Equals(m);
                 
                 // assert
-                Assert.True(actual);
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -801,7 +845,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.Equals(m2);
 
                 // assert
-                Assert.True(actual);
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -822,7 +866,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.Equals(m2);
 
                 // assert
-                Assert.False(actual);
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -842,7 +886,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.Equals(m2);
 
                 // assert
-                Assert.False(actual);
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -863,7 +907,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.Equals(m2);
 
                 // assert
-                Assert.False(actual);
+                actual.ShouldBeFalse();
             }            
         } 
     }

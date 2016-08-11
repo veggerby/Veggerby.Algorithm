@@ -30,7 +30,7 @@ namespace Veggerby.Algorithm.LinearAlgebra
             
             if (!values.Any()) 
             {
-                throw new ArgumentException(nameof(values), "Cannot create empty Vector");
+                throw new ArgumentException("Cannot create empty Vector", nameof(values));
             }
 
             _values = values.ToArray();
@@ -62,7 +62,7 @@ namespace Veggerby.Algorithm.LinearAlgebra
         {
             if (v1.Size != v2.Size)
             {
-                throw new ArgumentException(nameof(v2), "Cannot add vectors with different dimensions");
+                throw new ArgumentException("Cannot add vectors with different dimensions", nameof(v2));
             }
 
             return new Vector(v1.ToArray().Zip(v2.ToArray(), (x, y) => x + y));
@@ -72,7 +72,7 @@ namespace Veggerby.Algorithm.LinearAlgebra
         {
             if (v1.Size != v2.Size)
             {
-                throw new ArgumentException(nameof(v2), "Cannot subtract vectors with different dimensions");
+                throw new ArgumentException("Cannot subtract vectors with different dimensions", nameof(v2));
             }
 
             return new Vector(v1.ToArray().Zip(v2.ToArray(), (x, y) => x - y));

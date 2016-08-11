@@ -1,4 +1,5 @@
 using System.Linq;
+using Shouldly;
 using Veggerby.Algorithm.Graphs;
 using Xunit;
 
@@ -60,7 +61,7 @@ namespace Veggerby.Algorithm.Tests.Graphs
                 var actual = algorithm.GetShortestPath(graph, int.MaxValue);
 
                 // assert
-                Assert.Equal(expected, actual.Select(x => new Edge<int>(x.From, x.To, x.Distance)));
+                actual.Select(x => new Edge<int>(x.From, x.To, x.Distance)).ShouldBe(expected);
             }
         }
     }

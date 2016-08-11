@@ -1,3 +1,4 @@
+using Shouldly;
 using Veggerby.Algorithm.LinearAlgebra;
 using Xunit;
 
@@ -17,7 +18,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.IsSquare();
 
                 // assert
-                Assert.True(actual);
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -30,7 +31,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.IsSquare();
 
                 // assert
-                Assert.False(actual);
+                actual.ShouldBeFalse();
             }
         }
 
@@ -49,7 +50,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.IsDiagonal();
 
                 // assert
-                Assert.True(actual);
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -65,7 +66,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.IsDiagonal();
 
                 // assert
-                Assert.False(actual);
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -78,7 +79,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.IsDiagonal();
 
                 // assert
-                Assert.False(actual);
+                actual.ShouldBeFalse();
             }
         }
 
@@ -97,7 +98,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.IsLowerTriangular();
 
                 // assert
-                Assert.True(actual);
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -113,7 +114,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.IsLowerTriangular();
 
                 // assert
-                Assert.True(actual);
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -129,7 +130,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.IsLowerTriangular();
 
                 // assert
-                Assert.False(actual);
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -142,7 +143,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.IsLowerTriangular();
 
                 // assert
-                Assert.False(actual);
+                actual.ShouldBeFalse();
             }
         }
 
@@ -161,7 +162,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.IsUpperTriangular();
 
                 // assert
-                Assert.True(actual);
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -177,7 +178,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.IsUpperTriangular();
 
                 // assert
-                Assert.True(actual);
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -193,7 +194,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.IsUpperTriangular();
 
                 // assert
-                Assert.False(actual);
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -206,7 +207,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m1.IsUpperTriangular();
 
                 // assert
-                Assert.False(actual);
+                actual.ShouldBeFalse();
             }
         }
 
@@ -229,7 +230,7 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
                 var actual = m.Transpose();
                 
                 // assert
-                Assert.Equal(expected, actual);
+                actual.ShouldBe(expected);
             }
         }
     }

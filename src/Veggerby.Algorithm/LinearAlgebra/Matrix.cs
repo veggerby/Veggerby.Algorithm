@@ -55,14 +55,14 @@ namespace Veggerby.Algorithm.LinearAlgebra
 
             if (!rows.Any())
             {
-                throw new ArgumentException(nameof(rows));
+                throw new ArgumentException("Rows cannot be empty list", nameof(rows));
             }
 
             var size = rows.First().Size;
 
             if (rows.Any(x => x.Size != size)) 
             {
-                throw new ArgumentException(nameof(rows), "All row vectors must habe same dimension");
+                throw new ArgumentException("All row vectors must habe same dimension", nameof(rows));
             }
 
             _values = rows.ToArray();

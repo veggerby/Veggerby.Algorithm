@@ -1,3 +1,4 @@
+using Shouldly;
 using Xunit;
 
 namespace Veggerby.Algorithm.Tests
@@ -20,7 +21,7 @@ namespace Veggerby.Algorithm.Tests
                 var actual = GreatestCommonDivisor.Euclid(a, b);
 
                 // assert
-                Assert.Equal(expected, actual);
+                actual.ShouldBe(expected);
             }        
         }
     }
