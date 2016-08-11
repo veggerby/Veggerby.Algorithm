@@ -25,7 +25,7 @@ namespace Veggerby.Algorithm.Arithmetic
 
         protected bool Equals(BinaryOperation other)
         {
-            return Left.Equals(other.Left) || Right.Equals(other.Right);
+            return Left.Equals(other.Left) && Right.Equals(other.Right);
         }
 
         public override bool Equals(object obj)

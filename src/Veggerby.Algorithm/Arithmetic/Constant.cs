@@ -1,9 +1,13 @@
+using System;
 using System.Globalization;
 
 namespace Veggerby.Algorithm.Arithmetic
 {
     public class Constant : Operand
     {
+        public static Constant Pi = new NamedConstant("π", Math.PI);
+        public static Constant e = new NamedConstant("e", Math.E);
+
         public double Value { get; }
 
         public Constant(double value)

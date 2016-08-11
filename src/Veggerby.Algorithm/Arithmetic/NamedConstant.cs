@@ -1,0 +1,47 @@
+using System.Globalization;
+
+namespace Veggerby.Algorithm.Arithmetic
+{
+    public class NamedConstant : Constant
+    {
+        public string Symbol { get; }
+
+        public NamedConstant(string symbol, double value) : base(value)
+        {
+            Symbol = symbol;
+        }
+
+        public override void Accept(IOperandVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
+
+        public override string ToString()
+        {
+            return Symbol;
+        }
+
+        protected bool Equals(NamedConstant other)
+        {
+            return Symbol.Equals(other.Symbol) && Value.Equals(other.Value);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((NamedConstant)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = Symbol.GetHashCode();
+                hashCode = (hashCode*397) ^ Value.GetHashCode();
+                return hashCode;
+            }
+        }
+    }
+}
