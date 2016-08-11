@@ -8,5 +8,6 @@ namespace Veggerby.Algorithm.Arithmetic
         void Visit(Subtraction operand);
         void Visit(Multiplication operand);
         void Visit(Division operand);
+        void Visit(Power operand);
     }
 }
