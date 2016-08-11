@@ -1,7 +1,7 @@
 namespace Veggerby.Algorithm.Arithmetic
 {
-    public interface IUnaryOperation : IOperand
+    public interface IUnaryOperation
     {
-        IOperand Inner { get; }
+        Operand Inner { get; }
     }
 }

@@ -1,6 +1,6 @@
 namespace Veggerby.Algorithm.Arithmetic
 {
-    public class Variable : IOperand
+    public class Variable : Operand
     {
         public string Identifier { get; }
 
@@ -9,12 +9,12 @@ namespace Veggerby.Algorithm.Arithmetic
             Identifier = identifier;
         }
 
-        public double Evaluate(OperationContext context)
+        public override double Evaluate(OperationContext context)
         {
             return context.Get(Identifier);
         }
 
-        public void Accept(IOperandVisitor visitor)
+        public override void Accept(IOperandVisitor visitor)
         {
             visitor.Visit(this);
         }

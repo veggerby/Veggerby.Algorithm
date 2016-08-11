@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace Veggerby.Algorithm.Arithmetic
 {
-    public class Constant : IOperand
+    public class Constant : Operand
     {
         public double Value { get; }
 
@@ -11,12 +11,12 @@ namespace Veggerby.Algorithm.Arithmetic
             Value = value;
         }
 
-        public double Evaluate(OperationContext context)
+        public override double Evaluate(OperationContext context)
         {
             return Value;
         }
 
-        public void Accept(IOperandVisitor visitor)
+        public override void Accept(IOperandVisitor visitor)
         {
             visitor.Visit(this);
         }

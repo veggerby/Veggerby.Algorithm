@@ -1,39 +1,50 @@
 using System;
+using System.Collections.Generic;
 
 namespace Veggerby.Algorithm.Arithmetic
 {
-    public class DerivativeVisitor : IOperandVisitor
+    public class VariableExtractorVisitor : IOperandVisitor
     {
-        public IOperand Result { get; private set; }
+        private readonly IList<Variable> _variables = new List<Variable>();
+        
+        public IEnumerable<Variable> Variables => _variables;
+
+        private void VisitBinaryOperation(BinaryOperation operation)
+        {
+            operation.Left.Accept(this);
+            operation.Right.Accept(this);
+        }
 
         public void Visit(Subtraction operand)
         {
-            throw new NotImplementedException();
+            VisitBinaryOperation(operand);
         }
 
         public void Visit(Division operand)
         {
-            throw new NotImplementedException();
+            VisitBinaryOperation(operand);
         }
 
         public void Visit(Multiplication operand)
         {
-            throw new NotImplementedException();
+            VisitBinaryOperation(operand);
         }
 
         public void Visit(Addition operand)
         {
-            throw new NotImplementedException();
+            VisitBinaryOperation(operand);
         }
 
         public void Visit(Variable operand)
         {
-            throw new NotImplementedException();
+            if (!_variables.Contains(operand))
+            {
+                _variables.Add(operand);
+            }
         }
 
         public void Visit(Constant operand)
         {
-            throw new NotImplementedException();
         }
     }
 }

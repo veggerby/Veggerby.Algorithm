@@ -2,12 +2,12 @@ using System;
 
 namespace Veggerby.Algorithm.Arithmetic
 {
-    public abstract class BinaryOperation : IBinaryOperation
+    public abstract class BinaryOperation : Operand, IBinaryOperation
     {
-        public IOperand Left { get; }
-        public IOperand Right { get; }
+        public Operand Left { get; }
+        public Operand Right { get; }
 
-        public BinaryOperation(IOperand left, IOperand right)
+        public BinaryOperation(Operand left, Operand right)
         {
             if (left == null)
             {
@@ -22,9 +22,6 @@ namespace Veggerby.Algorithm.Arithmetic
             Left = left;
             Right = right;
         }
-
-        public abstract double Evaluate(OperationContext context);
-        public abstract void Accept(IOperandVisitor visitor);
 
         protected bool Equals(BinaryOperation other)
         {

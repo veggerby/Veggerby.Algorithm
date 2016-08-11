@@ -2,7 +2,7 @@ namespace Veggerby.Algorithm.Arithmetic
 {
     public class Division : BinaryOperation
     {
-        public Division(IOperand left, IOperand right) : base(left, right)
+        public Division(Operand left, Operand right) : base(left, right)
         { 
         }
 

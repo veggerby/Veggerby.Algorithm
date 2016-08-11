@@ -1,8 +1,8 @@
 namespace Veggerby.Algorithm.Arithmetic
 {
-    public interface IOperand
+    public abstract class Operand
     {
-        double Evaluate(OperationContext context);
-        void Accept(IOperandVisitor visitor);
+        public abstract double Evaluate(OperationContext context);
+        public abstract void Accept(IOperandVisitor visitor);
     }
 }

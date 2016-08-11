@@ -1,8 +1,8 @@
 namespace Veggerby.Algorithm.Arithmetic
 {
-    public interface IBinaryOperation : IOperand
+    public interface IBinaryOperation
     {
-        IOperand Left { get; }
-        IOperand Right { get; }
+        Operand Left { get; }
+        Operand Right { get; }
     }
 }

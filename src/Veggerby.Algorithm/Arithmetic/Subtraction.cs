@@ -2,7 +2,7 @@ namespace Veggerby.Algorithm.Arithmetic
 {
     public class Subtraction : BinaryOperation
     {
-        public Subtraction(IOperand left, IOperand right) : base(left, right)
+        public Subtraction(Operand left, Operand right) : base(left, right)
         { 
         }
 
