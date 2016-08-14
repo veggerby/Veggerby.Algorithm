@@ -40,7 +40,7 @@ namespace Veggerby.Algorithm.Arithmetic.Parser
 
         private void Replace(UnstructuredNode node)
         {
-            if (_unaryFunctions.Contains(node.Value))
+            if (_unaryOperations.Contains(node.Value))
             {
                 var operand = ChildNodes.Previous(node);
                 var unaryNode = new UnaryNode(node.Parent, node.Value, operand);

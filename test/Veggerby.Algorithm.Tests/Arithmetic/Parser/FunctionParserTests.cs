@@ -19,7 +19,9 @@ namespace Veggerby.Algorithm.Tests.Arithmetic.Parser
                 var actual = FunctionParser.Parse("x+3");
 
                 // assert
-                actual.ShouldBeOfType<BinaryOperation>();
+                actual.ShouldBeOfType<Addition>();
+                ((Addition)actual).Left.ShouldBe(new Variable("x"));
+                ((Addition)actual).Right.ShouldBe(new Constant(3));
             }
 
             [Fact]
@@ -40,10 +42,10 @@ namespace Veggerby.Algorithm.Tests.Arithmetic.Parser
                 // arrange
 
                 // act
-                var actual = FunctionParser.Parse("(x+3)*sin(3*4+2)");
+                var actual = FunctionParser.Parse("(x+3)*(4-3)");
 
                 // assert
-                actual.ShouldBeOfType<BinaryOperation>();
+                actual.ShouldBeOfType<Multiplication>();
             }
 
             [Fact]

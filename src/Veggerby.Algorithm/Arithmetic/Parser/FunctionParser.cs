@@ -63,13 +63,70 @@ namespace Veggerby.Algorithm.Arithmetic.Parser
                 }
             }
 
-            root.Restructure();   
+            root.Restructure();
+        
+            return Parse(root.ChildNodes.Single());
+        }
 
-            System.Console.WriteLine("[");
-            Print("", root);
-            System.Console.WriteLine("]");
+        private static Operand Parse(Node node)
+        {
+            if (node is Group)
+            {
+                return Parse(((Group)node).ChildNodes.Single());
+            }
             
-            return Constant.Pi;
+            if (node is BinaryNode)
+            {
+                var binary = (BinaryNode)node;
+                var left = Parse(binary.Left);
+                var right = Parse(binary.Right);
+
+                switch(binary.Value)
+                {
+                    case "+":
+                        return new Addition(left, right);
+                    case "-":
+                        return new Subtraction(left, right);
+                    case "*":
+                        return new Multiplication(left, right);
+                    case "/":
+                        return new Division(left, right);
+                    case "^":
+                        return new Power(left, right);
+                    case "min":
+                    case "max":
+                        throw new NotImplementedException();
+                    default:
+                        throw new NotSupportedException("Invalid operation");
+                }
+            }
+
+            if (node is UnaryNode)
+            {
+                var unary = (UnaryNode)node;
+                var inner = Parse(unary.Inner);
+
+                switch (unary.Value)
+                {
+                    case "!":
+                    case "sin":
+                    case "cos":
+                    case "tan":
+                    case "exp":
+                    case "log":
+                    case "ln":
+                        throw new NotImplementedException();
+                    default:
+                        throw new NotSupportedException("Invalid operation");
+                }
+            }
+
+            if (node is UnstructuredNode)
+            {
+                return ParseSimpleNode(node);
+            }
+
+            throw new Exception("Unknown node");
         }
 
         private static Operand ParseSimpleNode(Node node)
@@ -97,47 +154,6 @@ namespace Veggerby.Algorithm.Arithmetic.Parser
             }
 
             return null;
-        }
-
-        private static void Print(string indent, Node node)
-        {
-            if (node is Group)
-            {
-                Print(indent, (Group)node);
-            }
-            else if (node is BinaryNode)
-            {
-                System.Console.WriteLine($"{indent}{node.Value}(");
-                Print(indent + "  ", ((BinaryNode)node).Left);
-                System.Console.WriteLine($"{indent}  ,");
-                Print(indent + "  ", ((BinaryNode)node).Right);
-                System.Console.WriteLine($"{indent})");
-            }
-            else if (node is UnaryNode)
-            {
-                System.Console.WriteLine($"{indent}{node.Value}(");
-                Print(indent + "  ", ((BinaryNode)node).Left);                
-                System.Console.WriteLine($"{indent})");
-            }
-            else
-            {
-                System.Console.WriteLine($"{indent}{node.Value}");
-            }
-        }
-
-        private static void Print(string indent, Group group)
-        {
-            foreach (var node in group.ChildNodes)
-            {
-                if (node is Group)
-                {
-                    Print(indent + "  ", (Group)node);
-                }
-                else 
-                {
-                    Print(indent, node);
-                }
-            }
         }
     }
 }
