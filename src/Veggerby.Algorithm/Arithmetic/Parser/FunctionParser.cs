@@ -117,9 +117,11 @@ namespace Veggerby.Algorithm.Arithmetic.Parser
                     case "tan":
                         return new Tangent(inner);
                     case "exp":
+                        return new Exponential(inner);
                     case "log":
+                        return new LogarithmBase(10, inner);
                     case "ln":
-                        throw new NotImplementedException();
+                        return new Logarithm(inner);
                     default:
                         throw new NotSupportedException("Invalid operation");
                 }

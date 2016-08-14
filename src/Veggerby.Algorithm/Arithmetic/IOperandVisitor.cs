@@ -14,5 +14,8 @@ namespace Veggerby.Algorithm.Arithmetic
         void Visit(Sine operand);
         void Visit(Cosine operand);
         void Visit(Tangent operand);
+        void Visit(Exponential operand);
+        void Visit(Logarithm operand);
+        void Visit(LogarithmBase operand);
     }
 }
