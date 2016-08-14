@@ -10,5 +10,8 @@ namespace Veggerby.Algorithm.Arithmetic
         void Visit(Multiplication operand);
         void Visit(Division operand);
         void Visit(Power operand);
+        void Visit(Factorial operand);
+        void Visit(Sine operand);
+        void Visit(Cosine operand);
     }
 }

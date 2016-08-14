@@ -33,7 +33,7 @@ namespace Veggerby.Algorithm.Tests.Arithmetic.Parser
                 var actual = FunctionParser.Parse("sin(3*4)");
 
                 // assert
-                actual.ShouldBeOfType<BinaryOperation>();
+                actual.ShouldBeOfType<Sine>();
             }
 
             [Fact]

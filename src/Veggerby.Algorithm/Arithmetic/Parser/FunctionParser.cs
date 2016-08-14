@@ -109,8 +109,11 @@ namespace Veggerby.Algorithm.Arithmetic.Parser
                 switch (unary.Value)
                 {
                     case "!":
+                        return new Factorial(inner);
                     case "sin":
+                        return new Sine(inner);
                     case "cos":
+                        return new Cosine(inner);
                     case "tan":
                     case "exp":
                     case "log":
