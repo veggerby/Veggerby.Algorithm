@@ -1,5 +1,3 @@
-using System;
-
 namespace Veggerby.Algorithm.Arithmetic
 {
     public abstract class UnaryOperation : Operand, IUnaryOperation

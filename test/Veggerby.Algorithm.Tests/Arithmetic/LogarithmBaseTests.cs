@@ -1,4 +1,3 @@
-using System;
 using Shouldly;
 using Veggerby.Algorithm.Arithmetic;
 using Xunit;
