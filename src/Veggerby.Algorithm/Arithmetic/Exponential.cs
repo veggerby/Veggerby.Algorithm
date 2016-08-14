@@ -21,7 +21,7 @@ namespace Veggerby.Algorithm.Arithmetic
 
         public override string ToString()
         {
-            return $"e^{Inner}";
+            return $"exp({Inner})";
         }
     }
 }

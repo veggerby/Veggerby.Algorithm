@@ -50,7 +50,7 @@ namespace Veggerby.Algorithm.Tests.Arithmetic
                 var actual = @v.ToString();
 
                 // assert
-                actual.ShouldBe("e^2");
+                actual.ShouldBe("exp(2)");
             }
         }
 

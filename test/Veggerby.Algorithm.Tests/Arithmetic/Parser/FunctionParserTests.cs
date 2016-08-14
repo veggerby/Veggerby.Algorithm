@@ -34,6 +34,7 @@ namespace Veggerby.Algorithm.Tests.Arithmetic.Parser
 
                 // assert
                 actual.ShouldBeOfType<Sine>();
+                ((Sine)actual).Inner.ShouldBeOfType<Multiplication>();
             }
 
             [Fact]
@@ -46,6 +47,23 @@ namespace Veggerby.Algorithm.Tests.Arithmetic.Parser
 
                 // assert
                 actual.ShouldBeOfType<Multiplication>();
+                ((Multiplication)actual).Left.ShouldBeOfType<Addition>();
+                ((Multiplication)actual).Right.ShouldBeOfType<Subtraction>();
+            }
+
+            [Fact]
+            public void Should_parse_very_complex_function()
+            {
+                // arrange
+
+                // act
+                var actual = FunctionParser.Parse("(x+3)*(4-3)-sin(x*cos(tan(exp(3-ln(4/sin(x))))))");
+
+                // assert
+                actual.ShouldBeOfType<Subtraction>();
+                ((Subtraction)actual).Left.ShouldBeOfType<Multiplication>();
+                ((Subtraction)actual).Right.ShouldBeOfType<Sine>();
+
             }
 
             [Fact]

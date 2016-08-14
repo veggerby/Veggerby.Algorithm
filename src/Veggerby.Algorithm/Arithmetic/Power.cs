@@ -18,10 +18,9 @@ namespace Veggerby.Algorithm.Arithmetic
             visitor.Visit(this);
         }
 
-        public override string ToString()
+        protected override string ToString(string left, string right)
         {
-            return $"{Left}^{Right}";
+            return $"{left}^{right}";
         }
-
     }
 }
