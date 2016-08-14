@@ -115,6 +115,7 @@ namespace Veggerby.Algorithm.Arithmetic.Parser
                     case "cos":
                         return new Cosine(inner);
                     case "tan":
+                        return new Tangent(inner);
                     case "exp":
                     case "log":
                     case "ln":

@@ -13,5 +13,6 @@ namespace Veggerby.Algorithm.Arithmetic
         void Visit(Factorial operand);
         void Visit(Sine operand);
         void Visit(Cosine operand);
+        void Visit(Tangent operand);
     }
 }
