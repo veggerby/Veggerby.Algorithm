@@ -20,6 +20,19 @@ namespace Veggerby.Algorithm.Arithmetic
             visitor.Visit(this);
         }
 
+        public override Operand GetDerivative(Variable variable)
+        {
+            var inner = Inner.GetDerivative(variable);
+
+            if (inner == null)
+            {
+                return null;
+            }
+
+            // chain rule
+            return inner * new Cosine(Inner);
+        }
+
         public override string ToString()
         {
             return $"sin({Inner})";

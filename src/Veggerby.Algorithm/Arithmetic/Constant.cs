@@ -25,6 +25,11 @@ namespace Veggerby.Algorithm.Arithmetic
             visitor.Visit(this);
         }
 
+        public override Operand GetDerivative(Variable variable)
+        {
+            return 0;
+        }
+
         public override string ToString()
         {
             return Value.ToString(CultureInfo.InvariantCulture).TrimEnd('0', '.');
@@ -46,6 +51,81 @@ namespace Veggerby.Algorithm.Arithmetic
         public override int GetHashCode()
         {
             return Value.GetHashCode();
+        }
+
+        public static Operand operator +(Constant left, Constant right)
+        {
+            if (left == null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+
+            if (right == null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+
+            return left.Value + right.Value;
+        }
+
+        public static Operand operator -(Constant left, Constant right)
+        {
+            if (left == null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+
+            if (right == null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+
+            return left.Value - right.Value;
+        }
+
+        public static Operand operator *(Constant left, Constant right)
+        {
+            if (left == null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+
+            if (right == null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+
+            return left.Value * right.Value;
+        }
+
+        public static Operand operator /(Constant left, Constant right)
+        {
+            if (left == null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+
+            if (right == null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+
+            return left.Value / right.Value;
+        }
+
+        public static Operand operator ^(Constant left, Constant right)
+        {
+            if (left == null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+
+            if (right == null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+
+            return Math.Pow(left.Value, right.Value);
         }
     }
 }

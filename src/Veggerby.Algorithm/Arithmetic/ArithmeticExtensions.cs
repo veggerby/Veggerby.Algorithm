@@ -31,5 +31,15 @@ namespace Veggerby.Algorithm.Arithmetic
 
             return false;
         }
+
+        public static bool IsConstant(this Operand operand)
+        {
+            return operand is Constant;
+        }
+
+        public static bool IsVariable(this Operand operand)
+        {
+            return operand is Variable;
+        }
     }
 }

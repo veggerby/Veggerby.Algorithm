@@ -16,6 +16,20 @@ namespace Veggerby.Algorithm.Arithmetic
             visitor.Visit(this);
         }
 
+        public override Operand GetDerivative(Variable variable)
+        {
+            var left = Left.GetDerivative(variable);
+            var right = Right.GetDerivative(variable);
+
+            if (left == null || right == null)
+            {
+                return null;
+            }
+
+            // division rule
+            return (left * Right - right * Left) / (Left ^ 2);
+        }
+
         protected override string ToString(string left, string right)
         {
             return $"{left}/{right}";

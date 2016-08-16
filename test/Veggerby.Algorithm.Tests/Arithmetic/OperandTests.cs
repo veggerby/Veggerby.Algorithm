@@ -25,6 +25,20 @@ namespace Veggerby.Algorithm.Tests.Arithmetic
             }
 
             [Fact]
+            public void Should_return_constant_from_addition()
+            {
+                // arrange
+                var left = new Constant(3);
+                var right = new Constant(6);
+
+                // act
+                var actual = left + right;
+                
+                // assert
+                actual.ShouldBe(new Constant(9));
+            }
+
+            [Fact]
             public void Should_return_self_times_2()
             {
                 // arrange
@@ -60,6 +74,20 @@ namespace Veggerby.Algorithm.Tests.Arithmetic
             }
 
             [Fact]
+            public void Should_return_constant_from_subtraction()
+            {
+                // arrange
+                var left = new Constant(3);
+                var right = new Constant(6);
+
+                // act
+                var actual = left - right;
+                
+                // assert
+                actual.ShouldBe(new Constant(-3));
+            }
+
+            [Fact]
             public void Should_return_zero()
             {
                 // arrange
@@ -90,6 +118,20 @@ namespace Veggerby.Algorithm.Tests.Arithmetic
                 actual.ShouldBeOfType<Multiplication>();
                 ((BinaryOperation)actual).Left.ShouldBe(left);
                 ((BinaryOperation)actual).Right.ShouldBe(right);
+            }
+
+            [Fact]
+            public void Should_return_constant_from_multiplication()
+            {
+                // arrange
+                var left = new Constant(3);
+                var right = new Constant(6);
+
+                // act
+                var actual = left * right;
+                
+                // assert
+                actual.ShouldBe(new Constant(18));
             }
 
             [Fact]
@@ -127,6 +169,21 @@ namespace Veggerby.Algorithm.Tests.Arithmetic
                 ((BinaryOperation)actual).Right.ShouldBe(right);
             }
 
+
+            [Fact]
+            public void Should_return_constant_from_division()
+            {
+                // arrange
+                var left = new Constant(6);
+                var right = new Constant(3);
+
+                // act
+                var actual = left / right;
+                
+                // assert
+                actual.ShouldBe(new Constant(2));
+            }
+
             [Fact]
             public void Should_return_zero()
             {
@@ -158,6 +215,20 @@ namespace Veggerby.Algorithm.Tests.Arithmetic
                 actual.ShouldBeOfType<Power>();
                 ((BinaryOperation)actual).Left.ShouldBe(left);
                 ((BinaryOperation)actual).Right.ShouldBe(right);
+            }
+
+            [Fact]
+            public void Should_return_constant_from_power()
+            {
+                // arrange
+                var left = new Constant(2);
+                var right = new Constant(3);
+
+                // act
+                var actual = left ^ right;
+                
+                // assert
+                actual.ShouldBe(new Constant(8));
             }
 
             [Fact]

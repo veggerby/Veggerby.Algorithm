@@ -18,6 +18,17 @@ namespace Veggerby.Algorithm.Arithmetic
             visitor.Visit(this);
         }
 
+        public override Operand GetDerivative(Variable variable)
+        {
+            if (Right.IsConstant())
+            {
+                return Right * Left ^ (Right - 1);
+            }
+
+            // exponential rule
+            return new Exponential(Right * new Logarithm(Left));
+        }
+
         protected override string ToString(string left, string right)
         {
             return $"{left}^{right}";

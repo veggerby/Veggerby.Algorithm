@@ -26,6 +26,12 @@ namespace Veggerby.Algorithm.Arithmetic
             return result;
         }
 
+        public override Operand GetDerivative(Variable variable)
+        {
+            // cannot get the derivative of a discrete function like factorial
+            return null;
+        }
+
         public override void Accept(IOperandVisitor visitor)
         {
             visitor.Visit(this);

@@ -21,6 +21,19 @@ namespace Veggerby.Algorithm.Arithmetic
             visitor.Visit(this);
         }
 
+        public override Operand GetDerivative(Variable variable)
+        {
+            var inner = Inner.GetDerivative(variable);
+
+            if (inner == null)
+            {
+                return null;
+            }
+
+            // chain rule
+            return inner / (new Logarithm(Base) * Inner);
+        }
+
         protected bool Equals(LogarithmBase other)
         {
             return Base.Equals(other.Base) && base.Equals(other);

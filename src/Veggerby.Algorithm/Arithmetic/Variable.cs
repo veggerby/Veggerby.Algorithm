@@ -18,6 +18,11 @@ namespace Veggerby.Algorithm.Arithmetic
         {
             visitor.Visit(this);
         }
+        
+        public override Operand GetDerivative(Variable variable)
+        {
+            return Equals(variable) ? 1 : 0;
+        }
 
         public override string ToString()
         {

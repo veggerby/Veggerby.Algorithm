@@ -15,6 +15,11 @@ namespace Veggerby.Algorithm.Arithmetic
             return Math.Tan(inner);
         }
 
+        public override Operand GetDerivative(Variable variable)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void Accept(IOperandVisitor visitor)
         {
             visitor.Visit(this);
