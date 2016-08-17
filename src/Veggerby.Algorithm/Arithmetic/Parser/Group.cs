@@ -43,6 +43,12 @@ namespace Veggerby.Algorithm.Calculus.Parser
             if (_unaryOperations.Contains(node.Value))
             {
                 var operand = ChildNodes.Previous(node);
+
+                if (operand == null)
+                {
+                    throw new Exception("Missing operand");
+                }
+
                 var unaryNode = new UnaryNode(node.Parent, node.Value, operand);
                 operand.Parent = unaryNode;
                 ChildNodes.Remove(operand);
@@ -51,6 +57,12 @@ namespace Veggerby.Algorithm.Calculus.Parser
             else if (_unaryFunctions.Contains(node.Value))
             {
                 var operand = ChildNodes.Next(node);
+
+                if (operand == null)
+                {
+                    throw new Exception("Missing operand");
+                }
+
                 var unaryNode = new UnaryNode(node.Parent, node.Value, operand);
                 operand.Parent = unaryNode;
                 ChildNodes.Remove(operand);
@@ -59,7 +71,19 @@ namespace Veggerby.Algorithm.Calculus.Parser
             else if (_binaryFunctions.Contains(node.Value))
             {
                 var operand1 = ChildNodes.Next(node);
+
+                if (operand1 == null)
+                {
+                    throw new Exception("Missing first operand");
+                }
+                
                 var operand2 = ChildNodes.Next(operand1);
+
+                if (operand2 == null)
+                {
+                    throw new Exception("Missing second operand");
+                }
+
                 var unaryNode = new BinaryNode(node.Parent, node.Value, operand1, operand2);
                 operand1.Parent = unaryNode;
                 operand2.Parent = unaryNode;
@@ -70,7 +94,19 @@ namespace Veggerby.Algorithm.Calculus.Parser
             else if (_binaryOperations.Contains(node.Value))
             {
                 var left = ChildNodes.Previous(node);
+
+                if (left == null)
+                {
+                    throw new Exception("Missing left operand");
+                }
+
                 var right = ChildNodes.Next(node);
+
+                if (right == null)
+                {
+                    throw new Exception("Missing left operand");
+                }
+
                 var unaryNode = new BinaryNode(node.Parent, node.Value, left, right);
                 left.Parent = unaryNode;
                 right.Parent = unaryNode;

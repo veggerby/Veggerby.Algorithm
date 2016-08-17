@@ -25,6 +25,34 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             }
 
             [Fact]
+            public void Should_parse_negative_constant()
+            {
+                // arrange
+
+                // act
+                var actual = FunctionParser.Parse("x+-3");
+
+                // assert
+                actual.ShouldBeOfType<Addition>();
+                ((Addition)actual).Left.ShouldBe(new Variable("x"));
+                ((Addition)actual).Right.ShouldBe(new Constant(-3));
+            }
+
+            [Fact]
+            public void Should_parse_negative()
+            {
+                // arrange
+
+                // act
+                var actual = FunctionParser.Parse("-x+3");
+
+                // assert
+                actual.ShouldBeOfType<Addition>();
+                ((Addition)actual).Left.ShouldBe(new Subtraction(new Constant(0), new Variable("x")));
+                ((Addition)actual).Right.ShouldBe(new Constant(3));
+            }
+
+            [Fact]
             public void Should_parse_function()
             {
                 // arrange

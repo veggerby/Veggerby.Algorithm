@@ -7,10 +7,15 @@ namespace Veggerby.Algorithm.Calculus.Parser
 {
     public class FunctionParser
     {
-        private static readonly Regex _parserRegEx = new Regex(@"([*()\^\/]|(?<!E)[\+\-])", RegexOptions.Compiled);
+        private static readonly Regex _parserRegEx = new Regex(@"([*()\^\/]|(?<![E+\-*\/^])[\+\-])", RegexOptions.Compiled);
 
         public static Operand Parse(string function) 
         {
+            if (function.StartsWith("-"))
+            {
+                function = $"0{function}";
+            }
+
             var split = _parserRegEx.Split(function);
 
             var root = new Group(null);
