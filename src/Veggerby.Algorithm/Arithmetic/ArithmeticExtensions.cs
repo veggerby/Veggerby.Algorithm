@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 
-namespace Veggerby.Algorithm.Arithmetic
+namespace Veggerby.Algorithm.Calculus
 {
-    public static class ArithmeticExtensions
+    public static class CalculusExtensions
     {
         private static readonly Type[] _priorities = new [] 
         {

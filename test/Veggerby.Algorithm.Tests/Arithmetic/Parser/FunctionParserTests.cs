@@ -1,10 +1,10 @@
 using System;
 using Shouldly;
-using Veggerby.Algorithm.Arithmetic;
-using Veggerby.Algorithm.Arithmetic.Parser;
+using Veggerby.Algorithm.Calculus;
+using Veggerby.Algorithm.Calculus.Parser;
 using Xunit;
 
-namespace Veggerby.Algorithm.Tests.Arithmetic.Parser
+namespace Veggerby.Algorithm.Tests.Calculus.Parser
 {
     public class FunctionParserTests
     {

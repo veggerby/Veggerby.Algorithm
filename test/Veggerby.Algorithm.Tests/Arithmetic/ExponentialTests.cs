@@ -1,9 +1,9 @@
 using System;
 using Shouldly;
-using Veggerby.Algorithm.Arithmetic;
+using Veggerby.Algorithm.Calculus;
 using Xunit;
 
-namespace Veggerby.Algorithm.Tests.Arithmetic
+namespace Veggerby.Algorithm.Tests.Calculus
 {
     public class ExponentialTests
     {

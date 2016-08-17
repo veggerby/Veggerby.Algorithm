@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace Veggerby.Algorithm.Arithmetic
+namespace Veggerby.Algorithm.Calculus
 {
     public class Constant : Operand
     {

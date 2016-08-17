@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Veggerby.Algorithm.Arithmetic.Parser
+namespace Veggerby.Algorithm.Calculus.Parser
 {
     public class FunctionParser
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Veggerby.Algorithm.Arithmetic
+namespace Veggerby.Algorithm.Calculus
 {
     public class OperationContext
     {

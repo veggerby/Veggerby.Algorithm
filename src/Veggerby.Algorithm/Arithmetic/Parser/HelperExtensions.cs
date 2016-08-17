@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Veggerby.Algorithm.Arithmetic.Parser
+namespace Veggerby.Algorithm.Calculus.Parser
 {
     public static class HelperExtensions
     {

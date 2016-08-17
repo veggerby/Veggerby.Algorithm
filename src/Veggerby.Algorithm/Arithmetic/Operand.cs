@@ -1,6 +1,6 @@
 using System;
 
-namespace Veggerby.Algorithm.Arithmetic
+namespace Veggerby.Algorithm.Calculus
 {
     public abstract class Operand
     {

@@ -1,4 +1,4 @@
-namespace Veggerby.Algorithm.Arithmetic.Parser
+namespace Veggerby.Algorithm.Calculus.Parser
 {
     public class UnstructuredNode : Node
     {
