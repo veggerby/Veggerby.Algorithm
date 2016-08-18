@@ -7,7 +7,7 @@ namespace Veggerby.Algorithm.Calculus
         public Operand Left { get; }
         public Operand Right { get; }
 
-        public BinaryOperation(Operand left, Operand right)
+        protected BinaryOperation(Operand left, Operand right)
         {
             if (left == null)
             {

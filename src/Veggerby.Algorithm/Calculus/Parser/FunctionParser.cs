@@ -9,7 +9,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
     {
         private static readonly Regex _number = new Regex(@"^(?<number>[\-+]?[0-9]+(\.[0-9]+)?((e|E)[\-+]?[0-9]+)?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex _operation = new Regex(@"^(?<operation>\+|-|\*|\/|\^)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex _function = new Regex(@"^(?<function>sin|cos|tan|exp|ln|log|!)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex _function = new Regex(@"^(?<function>sin|cos|tan|exp|ln|log|log2|!)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex _variable = new Regex(@"^(?<variable>[a-z][a-z0-9]*)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private enum OperandType
@@ -172,19 +172,21 @@ namespace Veggerby.Algorithm.Calculus.Parser
                 switch (unary.Value)
                 {
                     case "!":
-                        return new Factorial(inner);
+                        return Factorial.Create(inner);
                     case "sin":
-                        return new Sine(inner);
+                        return Sine.Create(inner);
                     case "cos":
-                        return new Cosine(inner);
+                        return Cosine.Create(inner);
                     case "tan":
-                        return new Tangent(inner);
+                        return Tangent.Create(inner);
                     case "exp":
-                        return new Exponential(inner);
+                        return Exponential.Create(inner);
                     case "log":
-                        return new LogarithmBase(10, inner);
+                        return LogarithmBase.Create(10, inner);
+                    case "log2":
+                        return LogarithmBase.Create(2, inner);
                     case "ln":
-                        return new Logarithm(inner);
+                        return Logarithm.Create(inner);
                     default:
                         throw new NotSupportedException("Invalid operation");
                 }
@@ -214,12 +216,12 @@ namespace Veggerby.Algorithm.Calculus.Parser
 
             if (double.TryParse(node.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out value))
             {
-                return new Constant(value);
+                return Constant.Create(value);
             }
 
             if (Regex.IsMatch(node.Value, "^[a-zA-Z][a-zA-Z0-9]*$"))
             {
-                return new Variable(node.Value);
+                return Variable.Create(node.Value);
             }
 
             return null;

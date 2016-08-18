@@ -4,7 +4,7 @@ namespace Veggerby.Algorithm.Calculus
 {
     public class Tangent : UnaryOperation
     {
-        public Tangent(Operand inner) : base(inner)
+        private Tangent(Operand inner) : base(inner)
         {
         }
 
@@ -28,6 +28,11 @@ namespace Veggerby.Algorithm.Calculus
         public override string ToString()
         {
             return $"tan({Inner})";
+        }
+
+        public static Operand Create(Operand inner)
+        {
+            return new Tangent(inner);
         }
     }
 }

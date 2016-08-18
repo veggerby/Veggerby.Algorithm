@@ -50,12 +50,12 @@ namespace Veggerby.Algorithm.Calculus
                 return Multiplication.Create(2, left);
             }
 
-            if (left.Equals(new Constant(0)))
+            if (left.Equals(Constant.Zero))
             {
                 return right;
             }
 
-            if (right.Equals(new Constant(0)))
+            if (right.Equals(Constant.Zero))
             {
                 return left;
             }

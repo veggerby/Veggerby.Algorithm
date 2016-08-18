@@ -5,12 +5,14 @@ namespace Veggerby.Algorithm.Calculus
 {
     public class Constant : Operand
     {
-        public static readonly NamedConstant Pi = new NamedConstant("π", Math.PI);
-        public static readonly NamedConstant e = new NamedConstant("e", Math.E);
+        public static readonly Constant Zero = Constant.Create(0);
+        public static readonly Constant One = Constant.Create(1);
+        public static readonly NamedConstant Pi = NamedConstant.Create("π", Math.PI);
+        public static readonly NamedConstant e = NamedConstant.Create("e", Math.E);
 
         public double Value { get; }
 
-        public Constant(double value)
+        protected Constant(double value)
         {
             Value = value;
         }
@@ -126,6 +128,11 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             return Math.Pow(left.Value, right.Value);
+        }
+
+        public static Constant Create(double value)
+        {
+            return new Constant(value);
         }
     }
 }

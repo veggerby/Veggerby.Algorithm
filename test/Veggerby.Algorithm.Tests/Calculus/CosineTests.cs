@@ -14,10 +14,10 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 // arrange
                 
                 // act
-                var actual = new Cosine(Constant.Pi);
+                var actual = (Cosine)Cosine.Create(Variable.x);
                 
                 // assert
-                actual.Inner.ShouldBe(Constant.Pi);
+                actual.Inner.ShouldBe(Variable.x);
             }
         }
 
@@ -27,7 +27,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_evaluate()
             {
                 // arrange
-                var v = new Cosine(Constant.Pi);
+                var v = Cosine.Create(Constant.Pi);
                 
                 // act
                 var actual = v.Evaluate(new OperationContext());
@@ -43,7 +43,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_return_correct_string()
             {
                 // arrange
-                var v = new Cosine(Constant.Pi);
+                var v = Cosine.Create(Constant.Pi);
                 
                 // act
                 var actual = @v.ToString();
@@ -59,7 +59,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_equal_self()
             {
                 // arrange
-                var v = new Cosine(Constant.Pi);
+                var v = Cosine.Create(Constant.Pi);
                 
                 // act
                 var actual = v.Equals(v);
@@ -72,7 +72,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_not_equal_null()
             {
                 // arrange
-                var v = new Cosine(Constant.Pi);
+                var v = Cosine.Create(Constant.Pi);
                 
                 // act
                 var actual = v.Equals(null);
@@ -85,8 +85,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_equal_same_operands()
             {
                 // arrange
-                var v1 = new Cosine(Constant.Pi);
-                var v2 = new Cosine(Constant.Pi);
+                var v1 = Cosine.Create(Constant.Pi);
+                var v2 = Cosine.Create(Constant.Pi);
                 
                 // act
                 var actual = v1.Equals(v2);
@@ -99,8 +99,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_not_equal_different_operands()
             {
                 // arrange
-                var v1 = new Cosine(Constant.Pi);
-                var v2 = new Cosine(new Variable("x"));
+                var v1 = Cosine.Create(Constant.Pi);
+                var v2 = Cosine.Create(Variable.x);
                 
                 // act
                 var actual = v1.Equals(v2);
@@ -113,8 +113,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_not_equal_different_operation_identical_operands()
             {
                 // arrange
-                var v1 = new Cosine(new Variable("x"));
-                var v2 = new Sine(new Variable("x"));
+                var v1 = Cosine.Create(Variable.x);
+                var v2 = Sine.Create(Variable.x);
                 
                 // act
                 var actual = v1.Equals(v2);

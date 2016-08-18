@@ -55,9 +55,9 @@ namespace Veggerby.Algorithm.Calculus
                 return (Constant)left - (Constant)right;
             }
 
-            if (left.Equals(new Constant(0)))
+            if (left.Equals(Constant.Zero))
             {
-                return new Negative(right);
+                return Negative.Create(right);
             }
 
             return new Subtraction(left, right);

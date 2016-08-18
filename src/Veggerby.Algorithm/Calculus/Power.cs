@@ -31,7 +31,7 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             // exponential rule
-            return new Exponential(Multiplication.Create(Right, new Logarithm(Left)));
+            return Exponential.Create(Multiplication.Create(Right, Logarithm.Create(Left)));
         }
 
         protected override string ToString(string left, string right)
@@ -51,12 +51,12 @@ namespace Veggerby.Algorithm.Calculus
                 throw new ArgumentNullException(nameof(right));
             }
 
-            if (left.Equals(new Constant(1)) || right.Equals(new Constant(0)))
+            if (left.Equals(Constant.One) || right.Equals(Constant.Zero))
             {
                 return 1;
             }
 
-            if (right.Equals(new Constant(1)))
+            if (right.Equals(Constant.One))
             {
                 return left;
             }

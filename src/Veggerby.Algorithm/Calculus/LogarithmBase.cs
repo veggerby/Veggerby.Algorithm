@@ -5,7 +5,7 @@ namespace Veggerby.Algorithm.Calculus
     public class LogarithmBase : UnaryOperation
     {
         public int Base { get; }
-        public LogarithmBase(int @base, Operand inner) : base(inner)
+        private LogarithmBase(int @base, Operand inner) : base(inner)
         {
             Base = @base;
         }
@@ -33,7 +33,7 @@ namespace Veggerby.Algorithm.Calculus
             // chain rule
             return Division.Create(
                 inner, 
-                Multiplication.Create(new Logarithm(Base), Inner));
+                Multiplication.Create(Logarithm.Create(Base), Inner));
         }
 
         protected bool Equals(LogarithmBase other)
@@ -62,6 +62,11 @@ namespace Veggerby.Algorithm.Calculus
         public override string ToString()
         {
             return Base == 10 ? $"log({Inner})" : $"log{Base}({Inner})";
+        }
+
+        public static Operand Create(int @base, Operand inner)
+        {
+            return new LogarithmBase(@base, inner);
         }
     }
 }

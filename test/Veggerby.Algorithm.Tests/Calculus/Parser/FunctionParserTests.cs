@@ -20,8 +20,8 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
 
                 // assert
                 actual.ShouldBeOfType<Addition>();
-                ((Addition)actual).Left.ShouldBe(new Variable("x"));
-                ((Addition)actual).Right.ShouldBe(new Constant(3));
+                ((Addition)actual).Left.ShouldBe(Variable.x);
+                ((Addition)actual).Right.ShouldBe(Constant.Create(3));
             }
 
             [Fact]
@@ -34,8 +34,8 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
 
                 // assert
                 actual.ShouldBeOfType<Addition>();
-                ((Addition)actual).Left.ShouldBe(new Variable("x"));
-                ((Addition)actual).Right.ShouldBe(new Constant(-3));
+                ((Addition)actual).Left.ShouldBe(Variable.x);
+                ((Addition)actual).Right.ShouldBe(Constant.Create(-3));
             }
 
             [Fact]
@@ -47,7 +47,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
                 var actual = FunctionParser.Parse("1e2+3+(0-4-1.2e3)");
 
                 // assert
-                actual.ShouldBe(new Constant(-1101));
+                actual.ShouldBe(Constant.Create(-1101));
             }
 
             [Fact]
@@ -60,8 +60,8 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
 
                 // assert
                 actual.ShouldBeOfType<Addition>();
-                ((Addition)actual).Left.ShouldBe(new Negative(new Variable("x")));
-                ((Addition)actual).Right.ShouldBe(new Constant(3));
+                ((Addition)actual).Left.ShouldBe(Negative.Create(Variable.x));
+                ((Addition)actual).Right.ShouldBe(Constant.Create(3));
             }
 
             [Fact]
@@ -74,7 +74,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
 
                 // assert
                 actual.ShouldBeOfType<Sine>();
-                ((Sine)actual).Inner.ShouldBe(new Constant(12));
+                ((Sine)actual).Inner.ShouldBe(Constant.Create(12));
             }
 
             [Fact]
@@ -88,7 +88,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
                 // assert
                 actual.ShouldBeOfType<Multiplication>();
                 ((Multiplication)actual).Left.ShouldBeOfType<Addition>();
-                ((Multiplication)actual).Right.ShouldBe(new Constant(1));
+                ((Multiplication)actual).Right.ShouldBe(Constant.One);
             }
 
             [Fact]

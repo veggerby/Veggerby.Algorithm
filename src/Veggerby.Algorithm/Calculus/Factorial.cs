@@ -4,7 +4,7 @@ namespace Veggerby.Algorithm.Calculus
 {
     public class Factorial : UnaryOperation
     {
-        public Factorial(Operand inner) : base(inner)
+        private Factorial(Operand inner) : base(inner)
         {
         }
 
@@ -40,6 +40,11 @@ namespace Veggerby.Algorithm.Calculus
         public override string ToString()
         {
             return $"{Inner}!";
+        }
+
+        public static Operand Create(Operand inner)
+        {
+            return new Factorial(inner);
         }
     }
 }

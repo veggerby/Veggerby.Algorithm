@@ -4,7 +4,7 @@ namespace Veggerby.Algorithm.Calculus
     {
         public string Symbol { get; }
 
-        public NamedConstant(string symbol, double value) : base(value)
+        protected NamedConstant(string symbol, double value) : base(value)
         {
             Symbol = symbol;
         }
@@ -40,6 +40,11 @@ namespace Veggerby.Algorithm.Calculus
                 hashCode = (hashCode*397) ^ Value.GetHashCode();
                 return hashCode;
             }
+        }
+
+        public static NamedConstant Create(string symbol, double value)
+        {
+            return new NamedConstant(symbol, value);
         }
     }
 }

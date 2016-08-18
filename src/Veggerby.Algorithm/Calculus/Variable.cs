@@ -2,9 +2,12 @@ namespace Veggerby.Algorithm.Calculus
 {
     public class Variable : Operand
     {
+        public readonly static Variable x = Variable.Create("x");
+        public readonly static Variable y = Variable.Create("y");
+
         public string Identifier { get; }
 
-        public Variable(string identifier)
+        private Variable(string identifier)
         {
             Identifier = identifier;
         }
@@ -45,6 +48,11 @@ namespace Veggerby.Algorithm.Calculus
         public override int GetHashCode()
         {
             return Identifier.GetHashCode();
+        }
+
+        public static Variable Create(string identifier)
+        {
+            return new Variable(identifier);
         }
     }
 }

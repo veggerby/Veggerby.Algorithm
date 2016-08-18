@@ -4,7 +4,7 @@ namespace Veggerby.Algorithm.Calculus
     {
         public Operand Inner { get; }
 
-        public UnaryOperation(Operand inner)
+        protected UnaryOperation(Operand inner)
         {
             Inner = inner;
         }

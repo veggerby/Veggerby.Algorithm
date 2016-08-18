@@ -4,7 +4,7 @@ namespace Veggerby.Algorithm.Calculus
 {
     public class Logarithm : UnaryOperation
     {
-        public Logarithm(Operand inner) : base(inner)
+        private Logarithm(Operand inner) : base(inner)
         {
         }
 
@@ -35,6 +35,11 @@ namespace Veggerby.Algorithm.Calculus
         public override string ToString()
         {
             return $"ln({Inner})";
+        }
+
+        public static Operand Create(Operand inner)
+        {
+            return new Logarithm(inner);
         }
     }
 }

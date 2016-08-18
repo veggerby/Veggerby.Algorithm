@@ -2,7 +2,7 @@ namespace Veggerby.Algorithm.Calculus
 {
     public class Negative : UnaryOperation
     {
-        public Negative(Operand inner) : base(inner)
+        private Negative(Operand inner) : base(inner)
         {
         }
 
@@ -24,6 +24,11 @@ namespace Veggerby.Algorithm.Calculus
         public override string ToString()
         {
             return Inner.CouldUseParenthesis() ? "-({Inner})" : $"-{Inner}";
+        }
+
+        public static Operand Create(Operand inner)
+        {
+            return new Negative(inner);
         }
     }
 }

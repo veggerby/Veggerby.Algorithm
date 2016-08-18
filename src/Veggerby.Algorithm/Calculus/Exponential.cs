@@ -4,7 +4,7 @@ namespace Veggerby.Algorithm.Calculus
 {
     public class Exponential : UnaryOperation
     {
-        public Exponential(Operand inner) : base(inner)
+        private Exponential(Operand inner) : base(inner)
         {
         }
 
@@ -35,6 +35,11 @@ namespace Veggerby.Algorithm.Calculus
         public override string ToString()
         {
             return $"exp({Inner})";
+        }
+
+        public static Operand Create(Operand inner)
+        {
+            return new Exponential(inner);
         }
     }
 }

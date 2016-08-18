@@ -4,7 +4,7 @@ namespace Veggerby.Algorithm.Calculus
 {
     public class Cosine : UnaryOperation
     {
-        public Cosine(Operand inner) : base(inner)
+        private Cosine(Operand inner) : base(inner)
         {
         }
 
@@ -30,12 +30,17 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             // chain rule
-            return Multiplication.Create(new Negative(inner), new Sine(Inner));
+            return Multiplication.Create(Negative.Create(inner), Sine.Create(Inner));
         }
 
         public override string ToString()
         {
             return $"cos({Inner})";
+        }
+
+        public static Operand Create(Operand inner)
+        {
+            return new Cosine(inner);
         }
     }
 }

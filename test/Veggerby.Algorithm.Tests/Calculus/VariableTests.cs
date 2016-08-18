@@ -14,7 +14,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 // arrange
                 
                 // act
-                var actual = new Variable("x");
+                var actual = Variable.Create("x");
                 
                 // assert
                 actual.Identifier.ShouldBe("x");
@@ -27,7 +27,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_evaluate()
             {
                 // arrange
-                var v = new Variable("x");
+                var v = Variable.Create("x");
                 var ctx = new OperationContext();
                 ctx.Add("x", 2);
 
@@ -45,7 +45,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_return_correct_string()
             {
                 // arrange
-                var v = new Variable("x");
+                var v = Variable.Create("x");
                 
                 // act
                 var actual = @v.ToString();
@@ -61,7 +61,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_equal_self()
             {
                 // arrange
-                var v = new Variable("x");
+                var v = Variable.Create("x");
                 
                 // act
                 var actual = v.Equals(v);
@@ -74,7 +74,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_not_equal_null()
             {
                 // arrange
-                var v = new Variable("x");
+                var v = Variable.Create("x");
                 
                 // act
                 var actual = v.Equals(null);
@@ -87,8 +87,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_equal_same_operands()
             {
                 // arrange
-                var v1 = new Variable("x");
-                var v2 = new Variable("x");
+                var v1 = Variable.Create("x");
+                var v2 = Variable.Create("x");
                 
                 // act
                 var actual = v1.Equals(v2);
@@ -101,8 +101,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_not_equal_different_operands()
             {
                 // arrange
-                var v1 = new Variable("x");
-                var v2 = new Variable("y");
+                var v1 = Variable.Create("x");
+                var v2 = Variable.Create("y");
                 
                 // act
                 var actual = v1.Equals(v2);
