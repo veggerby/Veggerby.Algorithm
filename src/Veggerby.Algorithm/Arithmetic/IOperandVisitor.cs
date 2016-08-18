@@ -17,5 +17,6 @@ namespace Veggerby.Algorithm.Calculus
         void Visit(Exponential operand);
         void Visit(Logarithm operand);
         void Visit(LogarithmBase operand);
+        void Visit(Negative operand);
     }
 }

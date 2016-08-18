@@ -30,7 +30,7 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             // chain rule
-            return -1 * inner * new Sine(Inner);
+            return Multiplication.Create(new Negative(inner), new Sine(Inner));
         }
 
         public override string ToString()

@@ -24,11 +24,11 @@ namespace Veggerby.Algorithm.Calculus.Parser
         private static string[] _unaryFunctions = new [] { "sin", "cos", "tan", "exp", "log", "ln" };
         private static string[] _binaryFunctions = new [] { "max", "min" };
 
-        private static string[] _operations = 
+        private static string[] _operations =
             _unaryOperations
             .Concat(_binaryFunctions)
             .Concat(_unaryFunctions)
-            .Concat(_binaryOperations)  
+            .Concat(_binaryOperations)
             .ToArray();
 
         private void Replace(UnstructuredNode old, Node @new)
@@ -76,7 +76,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
                 {
                     throw new Exception("Missing first operand");
                 }
-                
+
                 var operand2 = ChildNodes.Next(operand1);
 
                 if (operand2 == null)
@@ -97,14 +97,21 @@ namespace Veggerby.Algorithm.Calculus.Parser
 
                 if (left == null)
                 {
-                    throw new Exception("Missing left operand");
+                    if (node.Value == "+" || node.Value == "-")
+                    {
+                        left = new UnstructuredNode(node.Parent, "0");
+                    }
+                    else
+                    {
+                        throw new Exception("Missing left operand");
+                    }
                 }
 
                 var right = ChildNodes.Next(node);
 
                 if (right == null)
                 {
-                    throw new Exception("Missing left operand");
+                    throw new Exception("Missing right operand");
                 }
 
                 var unaryNode = new BinaryNode(node.Parent, node.Value, left, right);

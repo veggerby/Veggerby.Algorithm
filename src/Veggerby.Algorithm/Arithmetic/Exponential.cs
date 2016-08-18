@@ -29,7 +29,7 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             // chain rule
-            return inner * new Exponential(Inner);
+            return Multiplication.Create(inner, new Exponential(Inner));
         }
 
         public override string ToString()

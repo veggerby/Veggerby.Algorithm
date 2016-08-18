@@ -1,5 +1,3 @@
-using System;
-
 namespace Veggerby.Algorithm.Calculus
 {
     public abstract class Operand
@@ -10,142 +8,27 @@ namespace Veggerby.Algorithm.Calculus
 
         public static Operand operator +(Operand left, Operand right)
         {
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-
-            if (left.Equals(right))
-            {
-                return 2 * left;
-            }
-
-            if (left.Equals(new Constant(0)))
-            {
-                return right;
-            }
-
-            if (right.Equals(new Constant(0)))
-            {
-                return left;
-            }
-
-            if (left.IsConstant() && right.IsConstant())
-            {
-                return (Constant)left + (Constant)right;
-            }
-
-            return new Addition(left, right);
+            return Addition.Create(left, right);
         }
 
         public static Operand operator -(Operand left, Operand right)
         {
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-
-            if (left.Equals(right))
-            {
-                return 0;
-            }
-
-            if (left.IsConstant() && right.IsConstant())
-            {
-                return (Constant)left - (Constant)right;
-            }
-
-            return new Subtraction(left, right);
+            return Subtraction.Create(left, right);
         }
 
         public static Operand operator *(Operand left, Operand right)
         {
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-
-            if (left.Equals(right))
-            {
-                return left ^ 2;
-            }
-
-            if (left.IsConstant() && right.IsConstant())
-            {
-                return (Constant)left * (Constant)right;
-            }
-
-            return new Multiplication(left, right);
+            return Multiplication.Create(left, right);
         }
 
         public static Operand operator /(Operand left, Operand right)
         {
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-
-            if (left.Equals(right))
-            {
-                return 1;
-            }
-
-            if (left.IsConstant() && right.IsConstant())
-            {
-                return (Constant)left / (Constant)right;
-            }
-
-            return new Division(left, right);
+            return Division.Create(left, right);
         }
 
         public static Operand operator ^(Operand left, Operand right)
         {
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-
-            if (left.Equals(new Constant(1)) || right.Equals(new Constant(0)))
-            {
-                return 1;
-            }
-
-            if (right.Equals(new Constant(1)))
-            {
-                return left;
-            }
-
-            if (left.IsConstant() && right.IsConstant())
-            {
-                return (Constant)left ^ (Constant)right;
-            }
-
-            return new Power(left, right);
+            return Power.Create(left, right);
         }
 
         public static implicit operator Operand(int value)

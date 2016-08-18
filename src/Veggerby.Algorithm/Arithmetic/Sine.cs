@@ -30,7 +30,7 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             // chain rule
-            return inner * new Cosine(Inner);
+            return Multiplication.Create(inner, new Cosine(Inner));
         }
 
         public override string ToString()

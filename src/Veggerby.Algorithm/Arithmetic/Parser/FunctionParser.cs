@@ -7,65 +7,123 @@ namespace Veggerby.Algorithm.Calculus.Parser
 {
     public class FunctionParser
     {
-        private static readonly Regex _parserRegEx = new Regex(@"([*()\^\/]|(?<![E+\-*\/^])[\+\-])", RegexOptions.Compiled);
+        private static readonly Regex _number = new Regex(@"^(?<number>[\-+]?[0-9]+(\.[0-9]+)?((e|E)[\-+]?[0-9]+)?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex _operation = new Regex(@"^(?<operation>\+|-|\*|\/|\^)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex _function = new Regex(@"^(?<function>sin|cos|tan|exp|ln|log|!)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex _variable = new Regex(@"^(?<variable>[a-z][a-z0-9]*)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private enum OperandType
+        {
+            Number,
+            Variable,
+            Operation,
+            Function,
+            ParenthesisOpen,
+            ParenthesisClose,
+            None
+        }
 
         public static Operand Parse(string function) 
         {
-            if (function.StartsWith("-"))
-            {
-                function = $"0{function}";
-            }
-
-            var split = _parserRegEx.Split(function);
-
             var root = new Group(null);
 
             var currentGroup = root;
 
-            var parenthesis = split.Where(x => x == "(" || x == ")").ToList();
+            var remain = function;
 
             var parenthesisValue = 0;
 
-            foreach (var parens in parenthesis)
+            var previousType = OperandType.None;
+
+            while (!string.IsNullOrEmpty(remain))
             {
-                if (parens == "(")
+                bool isMatch = false;
+
+                var m = _number.Match(remain);
+                if (m.Success && (previousType == OperandType.None || previousType == OperandType.Operation || previousType == OperandType.ParenthesisOpen))
                 {
-                    parenthesisValue++;
+                    previousType = OperandType.Number;
+                    isMatch = true;
+
+                    var node = new UnstructuredNode(currentGroup, m.Groups["number"].Value);
+                    currentGroup.Add(node);
+
+                    remain = remain.Substring(m.Length);
                 }
 
-                if (parens == ")")
+                m = _operation.Match(remain);
+                if (m.Success && previousType != OperandType.Operation)
                 {
-                    parenthesisValue--;
+                    previousType = OperandType.Operation;
+                    isMatch = true;
+
+                    var node = new UnstructuredNode(currentGroup, m.Groups["operation"].Value);
+                    currentGroup.Add(node);
+
+                    remain = remain.Substring(m.Length);
                 }
 
-                if (parenthesisValue < 0)
+                m = _function.Match(remain);
+                if (m.Success && previousType != OperandType.Function)
                 {
-                    throw new Exception("Parenthesis not properly nested");
+                    previousType = OperandType.Function;
+                    isMatch = true;
+
+                    var node = new UnstructuredNode(currentGroup, m.Groups["function"].Value);
+                    currentGroup.Add(node);
+
+                    remain = remain.Substring(m.Length);
+                }
+
+                m = _variable.Match(remain);
+                if (m.Success)
+                {
+                    previousType = OperandType.Variable;
+                    isMatch = true;
+
+                    var node = new UnstructuredNode(currentGroup, m.Groups["variable"].Value);
+                    currentGroup.Add(node);
+
+                    remain = remain.Substring(m.Length);
+                }
+
+                if (remain.StartsWith("(") || remain.StartsWith(")"))
+                {
+                    isMatch = true;
+                    var value = remain.Substring(0, 1);
+                    if (value == "(")
+                    {
+                        previousType = OperandType.ParenthesisOpen;
+                        parenthesisValue++;
+
+                        var group = new Group(currentGroup);
+                        currentGroup.Add(group);
+                        currentGroup = group;
+                    }
+                    else if (value == ")")
+                    {
+                        previousType = OperandType.ParenthesisClose;
+                        parenthesisValue--;
+                        currentGroup = (Group)currentGroup.Parent;
+                    }
+
+                    if (parenthesisValue < 0)
+                    {
+                        throw new Exception("Parenthesis not properly nested");
+                    }
+
+                    remain = remain.Substring(1);
+                }
+
+                if (!isMatch)
+                {
+                    throw new Exception($"Could not parse function part \"{remain}\" of \"{function}\"");
                 }
             }
 
             if (parenthesisValue != 0)
             {
                 throw new Exception("Parenthesis not properly closed");
-            }
-
-            foreach (var value in split.Where(x => !string.IsNullOrEmpty(x)))
-            {
-                if (value == "(") 
-                {
-                    var group = new Group(currentGroup);
-                    currentGroup.Add(group);
-                    currentGroup = group;
-                }
-                else if (value == ")")
-                {
-                    currentGroup = (Group)currentGroup.Parent;
-                }
-                else
-                {
-                    var node = new UnstructuredNode(currentGroup, value);
-                    currentGroup.Add(node);
-                }
             }
 
             root.Restructure();
@@ -89,15 +147,15 @@ namespace Veggerby.Algorithm.Calculus.Parser
                 switch(binary.Value)
                 {
                     case "+":
-                        return new Addition(left, right);
+                        return Addition.Create(left, right);
                     case "-":
-                        return new Subtraction(left, right);
+                        return Subtraction.Create(left, right);
                     case "*":
-                        return new Multiplication(left, right);
+                        return Multiplication.Create(left, right);
                     case "/":
-                        return new Division(left, right);
+                        return Division.Create(left, right);
                     case "^":
-                        return new Power(left, right);
+                        return Power.Create(left, right);
                     case "min":
                     case "max":
                         throw new NotImplementedException();

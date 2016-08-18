@@ -31,7 +31,9 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             // chain rule
-            return inner / (new Logarithm(Base) * Inner);
+            return Division.Create(
+                inner, 
+                Multiplication.Create(new Logarithm(Base), Inner));
         }
 
         protected bool Equals(LogarithmBase other)

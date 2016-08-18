@@ -29,7 +29,7 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             // chain rule
-            return inner / Inner;
+            return Division.Create(inner, Inner);
         }
 
         public override string ToString()

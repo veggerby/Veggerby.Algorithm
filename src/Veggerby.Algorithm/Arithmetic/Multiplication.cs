@@ -1,8 +1,10 @@
+using System;
+
 namespace Veggerby.Algorithm.Calculus
 {
     public class Multiplication : BinaryOperation
     {
-        public Multiplication(Operand left, Operand right) : base(left, right)
+        private Multiplication(Operand left, Operand right) : base(left, right)
         { 
         }
 
@@ -33,6 +35,31 @@ namespace Veggerby.Algorithm.Calculus
         protected override string ToString(string left, string right)
         {
             return $"{left}*{right}";
+        }
+
+        public static Operand Create(Operand left, Operand right)
+        {
+            if (left == null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+
+            if (right == null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+
+            if (left.Equals(right))
+            {
+                return Power.Create(left, 2);
+            }
+
+            if (left.IsConstant() && right.IsConstant())
+            {
+                return (Constant)left * (Constant)right;
+            }
+
+            return new Multiplication(left, right);
         }
     }
 }

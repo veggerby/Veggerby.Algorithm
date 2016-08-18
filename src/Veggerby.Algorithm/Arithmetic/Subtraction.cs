@@ -1,8 +1,10 @@
+using System;
+
 namespace Veggerby.Algorithm.Calculus
 {
     public class Subtraction : BinaryOperation
     {
-        public Subtraction(Operand left, Operand right) : base(left, right)
+        private Subtraction(Operand left, Operand right) : base(left, right)
         { 
         }
 
@@ -17,7 +19,7 @@ namespace Veggerby.Algorithm.Calculus
             var right = Right.GetDerivative(variable);
             
             return left != null && right != null 
-                ? left - right
+                ? Subtraction.Create(left, right)
                 : null;
         }
 
@@ -29,6 +31,36 @@ namespace Veggerby.Algorithm.Calculus
         protected override string ToString(string left, string right)
         {
             return $"{left}-{right}";
+        }
+
+        public static Operand Create(Operand left, Operand right)
+        {
+            if (left == null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+
+            if (right == null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+
+            if (left.Equals(right))
+            {
+                return 0;
+            }
+
+            if (left.IsConstant() && right.IsConstant())
+            {
+                return (Constant)left - (Constant)right;
+            }
+
+            if (left.Equals(new Constant(0)))
+            {
+                return new Negative(right);
+            }
+
+            return new Subtraction(left, right);
         }
     }
 }

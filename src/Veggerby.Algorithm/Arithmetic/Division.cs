@@ -1,8 +1,10 @@
+using System;
+
 namespace Veggerby.Algorithm.Calculus
 {
     public class Division : BinaryOperation
     {
-        public Division(Operand left, Operand right) : base(left, right)
+        private Division(Operand left, Operand right) : base(left, right)
         { 
         }
 
@@ -27,12 +29,41 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             // division rule
-            return (left * Right - right * Left) / (Left ^ 2);
+            return Division.Create(
+                Subtraction.Create(
+                    Multiplication.Create(left, Right),
+                    Multiplication.Create(right, Left)), 
+                Power.Create(Left, 2));
         }
 
         protected override string ToString(string left, string right)
         {
             return $"{left}/{right}";
+        }
+
+        public static Operand Create(Operand left, Operand right)
+        {
+            if (left == null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+
+            if (right == null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+
+            if (left.Equals(right))
+            {
+                return 1;
+            }
+
+            if (left.IsConstant() && right.IsConstant())
+            {
+                return (Constant)left / (Constant)right;
+            }
+
+            return new Division(left, right);
         }
     }
 }
