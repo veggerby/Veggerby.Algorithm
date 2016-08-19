@@ -1,5 +1,8 @@
 using Veggerby.Algorithm.Calculus.Parser;
 
+#pragma warning disable CS0660 // warning CS0660: 'Operand' defines operator == or operator != but does not override Object.Equals(object o)
+#pragma warning disable CS0661 // warning CS0661: 'Operand' defines operator == or operator != but does not override Object.GetHashCode()
+
 namespace Veggerby.Algorithm.Calculus
 {
     public abstract class Operand
@@ -59,3 +62,6 @@ namespace Veggerby.Algorithm.Calculus
         }
     }
 }
+
+#pragma warning restore CS0661
+#pragma warning restore CS0660

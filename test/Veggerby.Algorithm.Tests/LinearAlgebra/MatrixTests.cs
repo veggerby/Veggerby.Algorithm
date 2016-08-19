@@ -7,7 +7,6 @@ using Xunit;
 // ignore "warning CS1718: Comparison made to same variable; did you mean to compare something else?"
 #pragma warning disable CS1718
 
-
 namespace Veggerby.Algorithm.Tests.LinearAlgebra
 {
     public class MatrixTests
