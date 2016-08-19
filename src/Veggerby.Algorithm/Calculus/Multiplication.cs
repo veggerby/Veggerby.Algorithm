@@ -2,7 +2,7 @@ using System;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class Multiplication : BinaryOperation
+    public class Multiplication : BinaryOperation, ICommutativeBinaryOperation, IAssociativeBinaryOperation
     {
         private Multiplication(Operand left, Operand right) : base(left, right)
         { 
@@ -24,7 +24,9 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             // product rule
-            return (left * Right + right * Left);
+            return Addition.Create(
+                Multiplication.Create(left, Right),
+                Multiplication.Create(right, Left));
         }
 
         public override void Accept(IOperandVisitor visitor)
@@ -57,6 +59,46 @@ namespace Veggerby.Algorithm.Calculus
             if (left.IsConstant() && right.IsConstant())
             {
                 return (Constant)left * (Constant)right;
+            }
+
+            if (left.Equals(Constant.Zero) || right.Equals(Constant.Zero))
+            {
+                return Constant.Zero;
+            }
+
+            if (left.Equals(Constant.One))
+            {
+                return right;
+            }
+
+            if (right.Equals(Constant.One))
+            {
+                return left;
+            }
+
+            if (left.IsNegative() && right.IsNegative())
+            {
+                return Multiplication.Create(((Negative)left).Inner, ((Negative)right).Inner);
+            }
+
+            if (left.IsNegative())
+            {
+                return Negative.Create(Multiplication.Create(((Negative)left).Inner, right));
+            }
+
+            if (right.IsNegative())
+            {
+                return Negative.Create(Multiplication.Create(left, ((Negative)right).Inner));
+            }
+
+            if (left.Equals(Constant.MinusOne))
+            {
+                return Negative.Create(right);
+            }
+
+            if (right.Equals(Constant.MinusOne))
+            {
+                return Negative.Create(left);
             }
 
             return new Multiplication(left, right);

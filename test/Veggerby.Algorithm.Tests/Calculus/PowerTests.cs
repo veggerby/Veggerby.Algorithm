@@ -146,6 +146,32 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 // assert
                 actual.ShouldBeFalse();
             }
+
+            [Fact]
+            public void Should_equal_complex()
+            {
+                // arrange
+                var func = Power.Create(
+                    Sine.Create(
+                        Division.Create(
+                            Multiplication.Create(
+                                2,
+                                Constant.Pi
+                            ),
+                            Variable.x
+                        )
+                    ),
+                    2
+                );
+
+                Operand expected = "sin((2*π)/x)^2";
+
+                // act
+                var actual = func.Equals(expected);
+
+                // assert
+                actual.ShouldBeTrue();
+            }
         }
     }
 }

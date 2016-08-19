@@ -60,6 +60,16 @@ namespace Veggerby.Algorithm.Calculus
                 return Negative.Create(right);
             }
 
+            if (right.IsNegative())
+            {
+                return Addition.Create(left, ((Negative)right).Inner);
+            }
+
+            if (right.IsConstant() && ((Constant)right).Value < 0)
+            {
+                return Addition.Create(left, -((Constant)right).Value);
+            }
+
             return new Subtraction(left, right);
         }
     }

@@ -33,7 +33,7 @@ namespace Veggerby.Algorithm.Calculus
                 Subtraction.Create(
                     Multiplication.Create(left, Right),
                     Multiplication.Create(right, Left)), 
-                Power.Create(Left, 2));
+                Power.Create(Right, 2));
         }
 
         protected override string ToString(string left, string right)
@@ -61,6 +61,26 @@ namespace Veggerby.Algorithm.Calculus
             if (left.IsConstant() && right.IsConstant())
             {
                 return (Constant)left / (Constant)right;
+            }
+
+            if (right.Equals(Constant.One))
+            {
+                return left;
+            }
+
+            if (left.IsNegative() && right.IsNegative())
+            {
+                return Division.Create(((Negative)left).Inner, ((Negative)right).Inner);
+            }
+
+            if (left.IsNegative())
+            {
+                return Negative.Create(Division.Create(((Negative)left).Inner, right));
+            }
+
+            if (right.IsNegative())
+            {
+                return Negative.Create(Division.Create(left, ((Negative)right).Inner));
             }
 
             return new Division(left, right);

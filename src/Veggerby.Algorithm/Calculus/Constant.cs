@@ -7,6 +7,7 @@ namespace Veggerby.Algorithm.Calculus
     {
         public static readonly Constant Zero = Constant.Create(0);
         public static readonly Constant One = Constant.Create(1);
+        public static readonly Constant MinusOne = Constant.Create(-1);
         public static readonly NamedConstant Pi = NamedConstant.Create("π", Math.PI);
         public static readonly NamedConstant e = NamedConstant.Create("e", Math.E);
 

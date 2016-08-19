@@ -11,10 +11,10 @@ namespace Veggerby.Algorithm.Tests.Calculus
             [Fact]
             public void Should_initialize()
             {
-                var actual = (Multiplication)Multiplication.Create(Constant.One, Variable.x);
+                var actual = (Multiplication)Multiplication.Create(Constant.Create(3), Variable.x);
                 
                 // assert
-                actual.Left.ShouldBe(Constant.One);
+                actual.Left.ShouldBe(Constant.Create(3));
                 actual.Right.ShouldBe(Variable.x);
             }
 
@@ -69,7 +69,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_equal_self()
             {
                 // arrange
-                var v = Multiplication.Create(Constant.One, Variable.x);
+                var v = Multiplication.Create(Constant.Create(3), Variable.x);
                 
                 // act
                 var actual = v.Equals(v);
@@ -82,7 +82,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_not_equal_null()
             {
                 // arrange
-                var v = Multiplication.Create(Constant.One, Variable.x);
+                var v = Multiplication.Create(Constant.Create(3), Variable.x);
                 
                 // act
                 var actual = v.Equals(null);
@@ -95,8 +95,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_equal_same_operands()
             {
                 // arrange
-                var v1 = Multiplication.Create(Constant.One, Variable.x);
-                var v2 = Multiplication.Create(Constant.One, Variable.x);
+                var v1 = Multiplication.Create(Constant.Create(3), Variable.x);
+                var v2 = Multiplication.Create(Constant.Create(3), Variable.x);
                 
                 // act
                 var actual = v1.Equals(v2);
@@ -109,7 +109,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_not_equal_different_operands()
             {
                 // arrange
-                var v1 = Multiplication.Create(Constant.One, Variable.x);
+                var v1 = Multiplication.Create(Constant.Create(3), Variable.x);
                 var v2 = Multiplication.Create(Variable.y, Constant.Create(2));
                 
                 // act
@@ -120,11 +120,25 @@ namespace Veggerby.Algorithm.Tests.Calculus
             }
 
             [Fact]
-            public void Should_not_equal_mirrored_operands()
+            public void Should_equal_mirrored_operands()
             {
                 // arrange
-                var v1 = Multiplication.Create(Constant.One, Variable.x);
-                var v2 = Multiplication.Create(Variable.x, Constant.One);
+                var v1 = Multiplication.Create(Constant.Create(3), Variable.x);
+                var v2 = Multiplication.Create(Variable.x, Constant.Create(3));
+                
+                // act
+                var actual = v1.Equals(v2);
+
+                // assert
+                actual.ShouldBeTrue();
+            }
+
+            [Fact]
+            public void Should_not_equal_different_operation_identical_operands()
+            {
+                // arrange
+                var v1 = Multiplication.Create(Constant.Create(3), Variable.x);
+                var v2 = Subtraction.Create(Constant.Create(3), Variable.x);
                 
                 // act
                 var actual = v1.Equals(v2);
@@ -134,17 +148,28 @@ namespace Veggerby.Algorithm.Tests.Calculus
             }
 
             [Fact]
-            public void Should_not_equal_different_operation_identical_operands()
+            public void Should_equal_commutative()
             {
                 // arrange
-                var v1 = Multiplication.Create(Constant.One, Variable.x);
-                var v2 = Subtraction.Create(Constant.One, Variable.x);
+                var v1 = Multiplication.Create(
+                        Variable.x,
+                        Multiplication.Create(
+                            Constant.Pi,
+                            Sine.Create(Variable.x)
+                        ));
+
+                var v2 = Multiplication.Create(
+                        Sine.Create(Variable.x),
+                        Multiplication.Create(
+                            Variable.x,
+                            Constant.Pi
+                        ));
                 
                 // act
                 var actual = v1.Equals(v2);
 
                 // assert
-                actual.ShouldBeFalse();
+                actual.ShouldBeTrue();
             }
         }
     }

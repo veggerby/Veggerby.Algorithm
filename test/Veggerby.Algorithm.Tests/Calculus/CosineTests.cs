@@ -123,5 +123,22 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 actual.ShouldBeFalse();
             }
         }
+
+        public class GetDerivative
+        {
+            [Fact]
+            public void Should_get_derivative()
+            {
+                // arrange
+                var func = Sine.Create(Variable.x);
+                var expected = Cosine.Create(Variable.x);
+
+                // act
+                var actual = func.GetDerivative(Variable.x);
+
+                // assert
+                actual.ShouldBe(expected);
+            }
+        }
     }
 }

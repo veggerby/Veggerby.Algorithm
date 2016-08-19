@@ -1,3 +1,5 @@
+using Veggerby.Algorithm.Calculus.Parser;
+
 namespace Veggerby.Algorithm.Calculus
 {
     public abstract class Operand
@@ -31,6 +33,16 @@ namespace Veggerby.Algorithm.Calculus
             return Power.Create(left, right);
         }
 
+        public static bool operator ==(Operand left, Operand right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Operand left, Operand right)
+        {
+            return !left.Equals(right);
+        }
+
         public static implicit operator Operand(int value)
         {
             return Constant.Create(value);
@@ -39,6 +51,11 @@ namespace Veggerby.Algorithm.Calculus
         public static implicit operator Operand(double value)
         {
             return Constant.Create(value);
+        }
+
+        public static implicit operator Operand(string value)
+        {
+            return FunctionParser.Parse(value);
         }
     }
 }

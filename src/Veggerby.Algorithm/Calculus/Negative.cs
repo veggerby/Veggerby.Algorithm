@@ -23,11 +23,16 @@ namespace Veggerby.Algorithm.Calculus
 
         public override string ToString()
         {
-            return Inner.CouldUseParenthesis() ? "-({Inner})" : $"-{Inner}";
+            return Inner.CouldUseParenthesis() ? $"-({Inner})" : $"-{Inner}";
         }
 
         public static Operand Create(Operand inner)
         {
+            if (inner.IsConstant())
+            {
+                return Constant.Create(-((Constant)inner).Value);
+            }
+
             return new Negative(inner);
         }
     }

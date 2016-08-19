@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Veggerby.Algorithm.Calculus
 {
@@ -25,6 +26,14 @@ namespace Veggerby.Algorithm.Calculus
 
         protected bool Equals(BinaryOperation other)
         {
+            if (this is ICommutativeBinaryOperation)
+            {
+                var thisSet = ((ICommutativeBinaryOperation)this).FlattenCommutative();
+                var otherSet = ((ICommutativeBinaryOperation)other).FlattenCommutative();
+
+                return thisSet.SetEquals(otherSet);
+            }
+
             return Left.Equals(other.Left) && Right.Equals(other.Right);
         }
 
@@ -38,12 +47,7 @@ namespace Veggerby.Algorithm.Calculus
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                var hashCode = Left.GetHashCode();
-                hashCode = (hashCode*397) ^ Right.GetHashCode();
-                return hashCode;
-            }
+            return ToString().GetHashCode();
         }
 
         protected abstract string ToString(string left, string right);

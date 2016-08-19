@@ -120,7 +120,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             }
 
             [Fact]
-            public void Should_not_equal_mirrored_operands()
+            public void Should_equal_mirrored_operands()
             {
                 // arrange
                 var v1 = Addition.Create(Constant.One, Variable.x);
@@ -130,7 +130,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 var actual = v1.Equals(v2);
 
                 // assert
-                actual.ShouldBeFalse();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -145,6 +145,23 @@ namespace Veggerby.Algorithm.Tests.Calculus
 
                 // assert
                 actual.ShouldBeFalse();
+            }
+        }
+
+        public class GetDerivative
+        {
+            [Fact]
+            public void Should_get_derivative()
+            {
+                // arrange
+                var func = Addition.Create(Power.Create(Variable.x, 2), Variable.x);
+                var expected = Addition.Create(Multiplication.Create(2, Variable.x), 1);
+
+                // act
+                var actual = func.GetDerivative(Variable.x);
+
+                // assert
+                actual.ShouldBe(expected);
             }
         }
     }

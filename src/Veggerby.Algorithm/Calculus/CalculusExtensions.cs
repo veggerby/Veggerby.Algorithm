@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Veggerby.Algorithm.Calculus
@@ -34,12 +35,49 @@ namespace Veggerby.Algorithm.Calculus
 
         public static bool IsConstant(this Operand operand)
         {
-            return operand is Constant;
+            return operand.GetType() == typeof(Constant);
         }
 
         public static bool IsVariable(this Operand operand)
         {
             return operand is Variable;
+        }
+
+        public static bool IsNegative(this Operand operand)
+        {
+            return operand is Negative;
+        }
+
+        public static ISet<Operand> FlattenCommutative(this ICommutativeBinaryOperation operand, ISet<Operand> set = null)
+        {
+            var type = operand.GetType();
+
+            if (set == null)
+            {
+                set = new HashSet<Operand>();
+            }
+
+            if (operand.Left.GetType() == type)
+            {
+                var left = (ICommutativeBinaryOperation)operand.Left;
+                left.FlattenCommutative(set);
+            }
+            else
+            {
+                set.Add(operand.Left);
+            }
+
+            if (operand.Right.GetType() == type)
+            {
+                var right = (ICommutativeBinaryOperation)operand.Right;
+                right.FlattenCommutative(set);
+            }
+            else 
+            {
+                set.Add(operand.Right);
+            }
+
+            return set;
         }
     }
 }

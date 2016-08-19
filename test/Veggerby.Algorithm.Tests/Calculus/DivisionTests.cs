@@ -147,5 +147,43 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 actual.ShouldBeFalse();
             }
         }
+
+        public class GetDerivative
+        {
+            [Fact]
+            public void Should_get_derivative()
+            {
+                // arrange
+                var func = Division.Create(Constant.One, Variable.x);
+                var expected = Division.Create(Constant.MinusOne, Power.Create(Variable.x, 2));
+
+                // act
+                var actual = func.GetDerivative(Variable.x);
+
+                // assert
+                actual.ShouldBe(expected);
+            }
+
+            [Fact]
+            public void Should_get_complex_derivative()
+            {
+                // arrange
+                var func = Division.Create(
+                    Sine.Create(Variable.x), 
+                    Variable.x);
+
+                var expected = Division.Create(
+                    Subtraction.Create(
+                        Multiplication.Create(Variable.x, Cosine.Create(Variable.x)),
+                        Sine.Create(Variable.x)), 
+                    Power.Create(Variable.x, 2));
+
+                // act
+                var actual = func.GetDerivative(Variable.x);
+
+                // assert
+                actual.ShouldBe(expected);
+            }
+        }
     }
 }
