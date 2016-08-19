@@ -101,6 +101,11 @@ namespace Veggerby.Algorithm.Calculus
                 return Negative.Create(left);
             }
 
+            if (!left.IsConstant() && right.IsConstant())
+            {
+                return Multiplication.Create(right, left);
+            }
+
             return new Multiplication(left, right);
         }
     }

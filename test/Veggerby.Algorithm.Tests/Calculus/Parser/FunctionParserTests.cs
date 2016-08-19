@@ -99,11 +99,11 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
 
                 // assert
                 actual.ShouldBeOfType<Multiplication>();
-                ((Multiplication)actual).Left.ShouldBeOfType<Addition>();
-                ((Multiplication)actual).Right.ShouldBe(Constant.Create(2));
+                ((Multiplication)actual).Left.ShouldBe(Constant.Create(2));
+                ((Multiplication)actual).Right.ShouldBeOfType<Addition>();
             }
 
-            /*[Fact]
+            [Fact]
             public void Should_parse_very_complex_function()
             {
                 // arrange
@@ -115,8 +115,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
                 actual.ShouldBeOfType<Subtraction>();
                 ((Subtraction)actual).Left.ShouldBeOfType<Multiplication>();
                 ((Subtraction)actual).Right.ShouldBeOfType<Sine>();
-
-            }*/
+            }
 
             [Fact]
             public void Should_fail_with_unmatching_parenthesis_open()
