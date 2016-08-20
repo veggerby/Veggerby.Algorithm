@@ -79,5 +79,12 @@ namespace Veggerby.Algorithm.Calculus
 
             return set;
         }
+
+        public static string ToMathJaxString(this Operand operand)
+        {
+            var visitor = new MathJaxOperandVisitor();
+            operand.Accept(visitor);
+            return visitor.Result;
+        }
     }
 }
