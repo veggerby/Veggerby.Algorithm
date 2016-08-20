@@ -146,6 +146,17 @@ namespace Veggerby.Algorithm.Calculus.Parser
                     Replace(node);
                 }
             }
+
+            if (!ChildNodes.Any())
+            {
+                throw new Exception($"Empty group: {Parent?.Value ?? "n/a"}");
+            }
+
+            if (ChildNodes.Count() != 1)
+            {
+                var nodes = string.Join(", ", ChildNodes.Select(x => $"{x.Value ?? "n/a"} ({x.GetType().Name})"));
+                throw new Exception($"Failed to completely restructure group: {Parent?.Value ?? "n/a"}, remain ({ChildNodes.Count}) {nodes}");
+            }
         }
     }
 }
