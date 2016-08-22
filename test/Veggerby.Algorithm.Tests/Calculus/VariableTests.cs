@@ -20,23 +20,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 actual.Identifier.ShouldBe("x");
             }
         }
-
-        public class _ToString
-        {
-            [Fact]
-            public void Should_return_correct_string()
-            {
-                // arrange
-                var v = Variable.Create("x");
-                
-                // act
-                var actual = @v.ToString();
-
-                // assert
-                actual.ShouldBe("x");
-            }
-        }
-
+        
         public class _Equals
         {
             [Fact]

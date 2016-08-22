@@ -21,22 +21,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
             }
         }
 
-        public class _ToString
-        {
-            [Fact]
-            public void Should_return_correct_string()
-            {
-                // arrange
-                var v = Cosine.Create(Constant.Pi);
-                
-                // act
-                var actual = @v.ToString();
-
-                // assert
-                actual.ShouldBe("cos(π)");
-            }
-        }
-
         public class _Equals
         {
             [Fact]

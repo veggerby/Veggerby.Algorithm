@@ -31,22 +31,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
             }
         }
 
-        public class _ToString
-        {
-            [Fact]
-            public void Should_return_correct_string()
-            {
-                // arrange
-                var v = Addition.Create(Constant.Create(4), Variable.x);
-                
-                // act
-                var actual = @v.ToString();
-
-                // assert
-                actual.ShouldBe("4+x");
-            }
-        }
-
         public class _Equals
         {
             [Fact]

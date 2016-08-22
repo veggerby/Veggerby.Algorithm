@@ -21,35 +21,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
             }
         }
 
-        public class _ToString
-        {
-            [Fact]
-            public void Should_return_correct_string_non_10_base()
-            {
-                // arrange
-                var v = LogarithmBase.Create(2, Variable.x);
-                
-                // act
-                var actual = @v.ToString();
-
-                // assert
-                actual.ShouldBe("log2(x)");
-            }
-            
-            [Fact]
-            public void Should_return_correct_string_base10()
-            {
-                // arrange
-                var v = LogarithmBase.Create(10, Variable.x);
-                
-                // act
-                var actual = @v.ToString();
-
-                // assert
-                actual.ShouldBe("log(x)");
-            }
-        }
-
         public class _Equals
         {
             [Fact]

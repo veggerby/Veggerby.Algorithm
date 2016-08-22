@@ -63,26 +63,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
             }
         }
 
-        public class _ToString
-        {
-            [Theory]
-            [InlineData(1, "1")]
-            [InlineData(3.2, "3.2")]
-            [InlineData(3.0000001, "3.0000001")]
-            [InlineData(3.000000, "3")]
-            public void Should_return_correct_string(double value, string expected)
-            {
-                // arrange
-                var constant = Constant.Create(value);
-                
-                // act
-                var actual = constant.ToString();
-
-                // assert
-                actual.ShouldBe(expected);
-            }
-        }
-
         public class _Equals
         {
             [Fact]

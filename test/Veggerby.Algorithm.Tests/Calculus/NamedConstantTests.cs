@@ -22,22 +22,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
             }
         }
 
-        public class _ToString
-        {
-            [Fact]
-            public void Should_return_correct_string()
-            {
-                // arrange
-                var constant = NamedConstant.Create("a", 3);
-                
-                // act
-                var actual = constant.ToString();
-
-                // assert
-                actual.ShouldBe("a");
-            }
-        }
-
         public class _Equals
         {
             [Fact]

@@ -21,22 +21,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
             }
         }
 
-        public class _ToString
-        {
-            [Fact]
-            public void Should_return_correct_string()
-            {
-                // arrange
-                var v = Logarithm.Create(2);
-                
-                // act
-                var actual = @v.ToString();
-
-                // assert
-                actual.ShouldBe("ln(2)");
-            }
-        }
-
         public class _Equals
         {
             [Fact]
