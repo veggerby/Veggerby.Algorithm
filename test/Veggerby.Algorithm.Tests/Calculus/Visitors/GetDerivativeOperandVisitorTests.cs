@@ -1,3 +1,4 @@
+using System;
 using Shouldly;
 using Veggerby.Algorithm.Calculus;
 using Veggerby.Algorithm.Calculus.Visitors;
@@ -268,13 +269,11 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Tangent.Create(Variable.x);
                 var visitor = new GetDerivativeOperandVisitor(Variable.x);
-                var expected = Constant.One;
                 
                 // act
-                operation.Accept(visitor);
+                Should.Throw<NotImplementedException>(() => operation.Accept(visitor));
 
                 // assert
-                visitor.Result.ShouldBe(expected);
             }
         }
 

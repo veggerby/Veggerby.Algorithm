@@ -20,6 +20,19 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 actual.Numerator.ShouldBe(1);
                 actual.Denominator.ShouldBe(2);
             }
+
+            [Fact]
+            public void Should_reduce_with_gcd()
+            {
+                // arrange
+                
+                // act
+                var actual = (Fraction)Fraction.Create(81, 36);
+                
+                // assert
+                actual.Numerator.ShouldBe(9);
+                actual.Denominator.ShouldBe(4);
+            }
         }
 
         public class _Equals
