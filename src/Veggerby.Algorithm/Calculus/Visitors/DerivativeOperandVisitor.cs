@@ -2,20 +2,20 @@ using System;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
-    public class GetDerivativeOperandVisitor : IOperandVisitor
+    public class DerivativeOperandVisitor : IOperandVisitor
     {
         private readonly Variable _variable;
 
         public Operand Result { get; private set; }
 
-        public GetDerivativeOperandVisitor(Variable variable)
+        public DerivativeOperandVisitor(Variable variable)
         {
             _variable = variable;
         }
 
         private Operand GetDerivative(Operand operand)
         {
-            var visitor = new GetDerivativeOperandVisitor(_variable);
+            var visitor = new DerivativeOperandVisitor(_variable);
             operand.Accept(visitor);
             return visitor.Result;
         }

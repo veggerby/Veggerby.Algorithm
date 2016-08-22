@@ -107,7 +107,7 @@ namespace Veggerby.Algorithm.Calculus
 
         public static Operand GetDerivative(this Operand operand, Variable variable)
         {
-            var visitor = new GetDerivativeOperandVisitor(variable);
+            var visitor = new DerivativeOperandVisitor(variable);
             operand.Accept(visitor);
             return visitor.Result;
         }
