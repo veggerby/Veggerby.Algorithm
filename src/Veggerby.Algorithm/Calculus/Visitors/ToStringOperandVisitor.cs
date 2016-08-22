@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Text;
 
-namespace Veggerby.Algorithm.Calculus
+namespace Veggerby.Algorithm.Calculus.Visitors
 {
     public class ToStringOperandVisitor : IOperandVisitor
     {

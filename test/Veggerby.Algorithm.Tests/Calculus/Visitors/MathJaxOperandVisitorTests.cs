@@ -1,8 +1,9 @@
 using Shouldly;
 using Veggerby.Algorithm.Calculus;
+using Veggerby.Algorithm.Calculus.Visitors;
 using Xunit;
 
-namespace Veggerby.Algorithm.Tests.Calculus
+namespace Veggerby.Algorithm.Tests.Calculus.Visitors
 {
     public class MathJaxOperandVisitorTests
     {

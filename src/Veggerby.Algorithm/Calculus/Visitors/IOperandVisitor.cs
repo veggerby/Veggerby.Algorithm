@@ -1,4 +1,4 @@
-namespace Veggerby.Algorithm.Calculus
+namespace Veggerby.Algorithm.Calculus.Visitors
 {
     public interface IOperandVisitor
     {

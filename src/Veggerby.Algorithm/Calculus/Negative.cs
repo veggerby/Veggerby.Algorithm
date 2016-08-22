@@ -1,3 +1,5 @@
+using Veggerby.Algorithm.Calculus.Visitors;
+
 namespace Veggerby.Algorithm.Calculus
 {
     public class Negative : UnaryOperation

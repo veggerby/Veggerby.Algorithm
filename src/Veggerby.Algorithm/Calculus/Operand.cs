@@ -1,4 +1,5 @@
 using Veggerby.Algorithm.Calculus.Parser;
+using Veggerby.Algorithm.Calculus.Visitors;
 
 #pragma warning disable CS0660 // warning CS0660: 'Operand' defines operator == or operator != but does not override Object.Equals(object o)
 #pragma warning disable CS0661 // warning CS0661: 'Operand' defines operator == or operator != but does not override Object.GetHashCode()
@@ -7,25 +8,11 @@ namespace Veggerby.Algorithm.Calculus
 {
     public abstract class Operand
     {
-        public double Evaluate(OperationContext context)
-        {
-            var visitor = new EvaluateOperandVisitor(context);
-            this.Accept(visitor);
-            return visitor.Result;
-        }
-
         public abstract void Accept(IOperandVisitor visitor);
 
         public sealed override string ToString()
         {
             var visitor = new ToStringOperandVisitor();
-            this.Accept(visitor);
-            return visitor.Result;
-        }
-
-        public Operand GetDerivative(Variable variable)
-        {
-            var visitor = new GetDerivativeOperandVisitor(variable);
             this.Accept(visitor);
             return visitor.Result;
         }

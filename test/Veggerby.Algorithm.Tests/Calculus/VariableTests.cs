@@ -21,24 +21,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
             }
         }
 
-        public class Evaluate
-        {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var v = Variable.Create("x");
-                var ctx = new OperationContext();
-                ctx.Add("x", 2);
-
-                // act
-                var actual = v.Evaluate(ctx);
-
-                // assert
-                actual.ShouldBe(2);
-            }
-        }
-
         public class _ToString
         {
             [Fact]

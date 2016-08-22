@@ -22,22 +22,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
             }
         }
 
-        public class Evaluate
-        {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var constant = NamedConstant.Create("a", 3);
-                
-                // act
-                var actual = constant.Evaluate(new OperationContext());
-
-                // assert
-                actual.ShouldBe(3);
-            }
-        }
-
         public class _ToString
         {
             [Fact]

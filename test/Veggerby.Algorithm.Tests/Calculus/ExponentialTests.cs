@@ -1,4 +1,3 @@
-using System;
 using Shouldly;
 using Veggerby.Algorithm.Calculus;
 using Xunit;
@@ -19,22 +18,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 
                 // assert
                 actual.Inner.ShouldBe(Variable.x);
-            }
-        }
-
-        public class Evaluate
-        {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var v = Exponential.Create(1);
-                
-                // act
-                var actual = v.Evaluate(new OperationContext());
-
-                // assert
-                actual.ShouldBe(Math.E);
             }
         }
 

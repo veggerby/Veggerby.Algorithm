@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
@@ -86,5 +87,20 @@ namespace Veggerby.Algorithm.Calculus
             operand.Accept(visitor);
             return visitor.Result;
         }
+
+        public static double Evaluate(this Operand operand, OperationContext context)
+        {
+            var visitor = new EvaluateOperandVisitor(context);
+            operand.Accept(visitor);
+            return visitor.Result;
+        }
+
+        public static Operand GetDerivative(this Operand operand, Variable variable)
+        {
+            var visitor = new GetDerivativeOperandVisitor(variable);
+            operand.Accept(visitor);
+            return visitor.Result;
+        }
+
     }
 }

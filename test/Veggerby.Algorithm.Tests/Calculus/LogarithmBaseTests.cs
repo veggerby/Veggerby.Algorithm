@@ -21,22 +21,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
             }
         }
 
-        public class Evaluate
-        {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var v = LogarithmBase.Create(10, 1000);
-                
-                // act
-                var actual = v.Evaluate(new OperationContext());
-
-                // assert
-                actual.ShouldBe(3, 1e-15); // if no tolerance 3d should be equal to 3d :/
-            }
-        }
-
         public class _ToString
         {
             [Fact]

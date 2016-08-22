@@ -1,4 +1,5 @@
 using System;
+using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {

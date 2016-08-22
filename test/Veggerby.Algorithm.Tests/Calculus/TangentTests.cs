@@ -21,22 +21,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
             }
         }
 
-        public class Evaluate
-        {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var v = Tangent.Create(Constant.Pi);
-                
-                // act
-                var actual = v.Evaluate(new OperationContext());
-
-                // assert
-                actual.ShouldBe(0, 1E-15); // -1.22464679914735E-16d
-            }
-        }
-
         public class _ToString
         {
             [Fact]

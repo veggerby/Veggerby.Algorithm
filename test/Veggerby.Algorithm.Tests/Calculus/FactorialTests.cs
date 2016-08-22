@@ -21,22 +21,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
             }
         }
 
-        public class Evaluate
-        {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var v = Factorial.Create(Constant.Create(4));
-                
-                // act
-                var actual = v.Evaluate(new OperationContext());
-
-                // assert
-                actual.ShouldBe(24);
-            }
-        }
-
         public class _ToString
         {
             [Fact]
