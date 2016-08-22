@@ -100,6 +100,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             Result = Math.Pow(Evaluate(operand.Left), Evaluate(operand.Right));
         }
 
+        public void Visit(Root operand)
+        {
+            Result = Math.Pow(Evaluate(operand.Inner), 1d / operand.Exponent);
+        }
+
         public void Visit(Multiplication operand)
         {
             Result = Evaluate(operand.Left) * Evaluate(operand.Right);
@@ -118,6 +123,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         public void Visit(Constant operand)
         {
             Result = operand.Value;
+        }
+
+        public void Visit(Fraction operand)
+        {
+            Result = 1d * operand.Numerator / operand.Denominator;
         }
     }
 }

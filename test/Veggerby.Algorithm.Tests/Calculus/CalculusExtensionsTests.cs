@@ -234,5 +234,25 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 actual.ShouldBe(@"\sin\left(x\right)");
             }
         }
+
+        public class IsInteger
+        {
+            [Theory]
+            [InlineData(0.1, false)]
+            [InlineData(1.000000000, true)]
+            [InlineData(5d, true)]
+            [InlineData(4/2, true)]
+            public void Should_return_expected(double value, bool expected)
+            {
+                // arrange
+                var constant = Constant.Create(value);
+                
+                // act
+                var actual = constant.IsInteger();
+
+                // assert
+                actual.ShouldBe(expected);
+            }
+        }
     }
 }

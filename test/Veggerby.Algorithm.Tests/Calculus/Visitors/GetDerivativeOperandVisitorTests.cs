@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Veggerby.Algorithm.Tests.Calculus.Visitors
 {
-    public class ToStringOperandVisitorTests
+    public class GetDerivativeOperandVisitorTests
     {
         public class Visit_Addition
         {
@@ -14,28 +14,8 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             {
                 // arrange
                 var operation = Addition.Create(Variable.x, Constant.Create(3));
-                var visitor = new ToStringOperandVisitor();
-                
-                // act
-                operation.Accept(visitor);
-
-                // assert
-                visitor.Result.ShouldBe("x+3");
-            }
-        }
-
-        public class Visit_Constant
-        {
-            [Theory]
-            [InlineData(1, "1")]
-            [InlineData(3.2, "3.2")]
-            [InlineData(3.0000001, "3.0000001")]
-            [InlineData(3.000000, "3")]
-            public void Should_return_correct_string(double value, string expected)
-            {
-                // arrange
-                var operation = Constant.Create(value);
-                var visitor = new ToStringOperandVisitor();
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                var expected = Constant.One;
                 
                 // act
                 operation.Accept(visitor);
@@ -45,6 +25,23 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             }
         }
 
+        public class Visit_Constant
+        {
+            [Fact]
+            public void Should_return_correct_string()
+            {
+                // arrange
+                var operation = Constant.Create(3);
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                var expected = Constant.Zero;
+                
+                // act
+                operation.Accept(visitor);
+
+                // assert
+                visitor.Result.ShouldBe(expected);
+            }
+        }
 
         public class Visit_Cosine
         {
@@ -53,16 +50,16 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             {
                 // arrange
                 var operation = Cosine.Create(Variable.x);
-                var visitor = new ToStringOperandVisitor();
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                var expected = Negative.Create(Sine.Create(Variable.x));
                 
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("cos(x)");
+                visitor.Result.ShouldBe(expected);
             }
         }
-
 
         public class Visit_Division
         {
@@ -70,14 +67,15 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             public void Should_evaluate()
             {
                 // arrange
-                var operation = Division.Create(Variable.x, Constant.Create(2));
-                var visitor = new ToStringOperandVisitor();
+                var operation = Division.Create(Constant.One, Variable.x);
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                var expected = Division.Create(-1, Power.Create(Variable.x, 2));
                 
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("x/2");
+                visitor.Result.ShouldBe(expected);
             }
         }
 
@@ -89,13 +87,14 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             {
                 // arrange
                 var operation = Exponential.Create(Variable.x);
-                var visitor = new ToStringOperandVisitor();
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                var expected = Exponential.Create(Variable.x);
                 
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("exp(x)");
+                visitor.Result.ShouldBe(expected);
             }
         }
 
@@ -106,13 +105,14 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             {
                 // arrange
                 var operation = Factorial.Create(Variable.x);
-                var visitor = new ToStringOperandVisitor();
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                Operand expected = null;
                 
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("x!");
+                visitor.Result.ShouldBe(expected);
             }
         }
 
@@ -123,27 +123,14 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             {
                 // arrange
                 var operation = LogarithmBase.Create(10, Variable.x);
-                var visitor = new ToStringOperandVisitor();
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                var expected = Division.Create(Constant.One, Multiplication.Create(Variable.x, Logarithm.Create(10)));
                 
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("log(x)");
-            }
-
-            [Fact]
-            public void Should_evaluate_base2()
-            {
-                // arrange
-                var operation = LogarithmBase.Create(2, Variable.x);
-                var visitor = new ToStringOperandVisitor();
-                
-                // act
-                operation.Accept(visitor);
-
-                // assert
-                visitor.Result.ShouldBe("log2(x)");
+                visitor.Result.ShouldBe(expected);
             }
         }
 
@@ -154,13 +141,14 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             {
                 // arrange
                 var operation = Logarithm.Create(Variable.x);
-                var visitor = new ToStringOperandVisitor();
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                var expected = Division.Create(Constant.One, Variable.x);
                 
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("ln(x)"); 
+                visitor.Result.ShouldBe(expected);
             }
         }
 
@@ -171,13 +159,14 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             {
                 // arrange
                 var operation = Multiplication.Create(Variable.x, Constant.Create(2));
-                var visitor = new ToStringOperandVisitor();
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                var expected = Constant.Create(2);
                 
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("2*x"); 
+                visitor.Result.ShouldBe(expected);
             }
         }
 
@@ -188,13 +177,14 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             {
                 // arrange
                 var operation = NamedConstant.Create("a", 3);
-                var visitor = new ToStringOperandVisitor();
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                var expected = Constant.Zero;
                 
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("a"); 
+                visitor.Result.ShouldBe(expected);
             }
         }
 
@@ -205,44 +195,14 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             {
                 // arrange
                 var operation = Power.Create(Variable.x, Constant.Create(2));
-                var visitor = new ToStringOperandVisitor();
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                var expected = Multiplication.Create(2, Variable.x);
                 
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("x^2"); 
-            }
-        }
-
-        public class Visit_Root
-        {
-            [Fact]
-            public void Should_evaluate_sqrt()
-            {
-                // arrange
-                var operation = Root.Create(2, Variable.x);
-                var visitor = new ToStringOperandVisitor();
-                
-                // act
-                operation.Accept(visitor);
-
-                // assert
-                visitor.Result.ShouldBe("sqrt(x)");
-            }
-
-            [Fact]
-            public void Should_evaluate_third_root()
-            {
-                // arrange
-                var operation = Root.Create(3, Variable.x);
-                var visitor = new ToStringOperandVisitor();
-                
-                // act
-                operation.Accept(visitor);
-
-                // assert
-                visitor.Result.ShouldBe("root(3, x)");
+                visitor.Result.ShouldBe(expected);
             }
         }
 
@@ -253,16 +213,35 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             {
                 // arrange
                 var operation = Sine.Create(Variable.x);
-                var visitor = new ToStringOperandVisitor();
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                var expected = Cosine.Create(Variable.x);
                 
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("sin(x)"); 
+                visitor.Result.ShouldBe(expected);
             }
         }
 
+        public class Visit_Root
+        {
+            [Fact]
+            public void Should_evaluate()
+            {
+                // arrange
+                var operation = Root.Create(2, Variable.x);
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                var expected = Division.Create(Power.Create(Variable.x, Fraction.Create(-1, 2)), 2);
+                
+                // act
+                operation.Accept(visitor);
+
+                // assert
+                visitor.Result.ShouldBe(expected);
+            }
+        }
+        
         public class Visit_Subtraction
         {
             [Fact]
@@ -270,13 +249,14 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             {
                 // arrange
                 var operation = Subtraction.Create(Variable.x, Constant.One);
-                var visitor = new ToStringOperandVisitor();
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                var expected = Constant.One;
                 
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("x-1"); 
+                visitor.Result.ShouldBe(expected);
             }
         }
 
@@ -287,13 +267,14 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             {
                 // arrange
                 var operation = Tangent.Create(Variable.x);
-                var visitor = new ToStringOperandVisitor();
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                var expected = Constant.One;
                 
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("tan(x)");
+                visitor.Result.ShouldBe(expected);
             }
         }
 
@@ -304,13 +285,14 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             {
                 // arrange
                 var operation = Variable.Create("x");
-                var visitor = new ToStringOperandVisitor();
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
+                var expected = Constant.One;
                 
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("x");
+                visitor.Result.ShouldBe(expected);
             }
         }
 
@@ -321,13 +303,13 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             {
                 // arrange
                 var operation = Fraction.Create(1, 4);
-                var visitor = new ToStringOperandVisitor();
+                var visitor = new GetDerivativeOperandVisitor(Variable.x);
                 
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("1/4");
+                visitor.Result.ShouldBe(0);
             }
         }
     }

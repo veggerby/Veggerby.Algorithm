@@ -213,6 +213,23 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             }
         }
 
+        public class Visit_Root
+        {
+            [Fact]
+            public void Should_evaluate()
+            {
+                // arrange
+                var operation = Root.Create(2, Constant.Create(16));
+                var visitor = new EvaluateOperandVisitor(new OperationContext());
+                
+                // act
+                operation.Accept(visitor);
+
+                // assert
+                visitor.Result.ShouldBe(4); 
+            }
+        }
+
         public class Visit_Sine
         {
             [Fact]
@@ -264,7 +281,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             }
         }
 
-        public class Visit_Evaluate
+        public class Visit_Variable
         {
             [Fact]
             public void Should_evaluate()
@@ -283,5 +300,21 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             }
         }
 
+        public class Visit_Fraction
+        {
+            [Fact]
+            public void Should_evaluate()
+            {
+                // arrange
+                var operation = Fraction.Create(1, 4);
+                var visitor = new EvaluateOperandVisitor(new OperationContext());
+                
+                // act
+                operation.Accept(visitor);
+
+                // assert
+                visitor.Result.ShouldBe(0.25);
+            }
+        }
     }
 }

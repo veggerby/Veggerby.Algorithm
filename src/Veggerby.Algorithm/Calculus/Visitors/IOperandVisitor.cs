@@ -10,6 +10,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         void Visit(Multiplication operand);
         void Visit(Division operand);
         void Visit(Power operand);
+        void Visit(Root operand);
         void Visit(Factorial operand);
         void Visit(Sine operand);
         void Visit(Cosine operand);
@@ -18,5 +19,6 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         void Visit(Logarithm operand);
         void Visit(LogarithmBase operand);
         void Visit(Negative operand);
+        void Visit(Fraction operand);
     }
 }

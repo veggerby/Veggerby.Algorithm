@@ -9,7 +9,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
     {
         private static readonly Regex _number = new Regex(@"^(?<number>([\-+]?[0-9]+(\.[0-9]+)?((e|E)[\-+]?[0-9]+)?|pi|π))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex _operation = new Regex(@"^(?<operation>\+|-|\*|\/|\^)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex _function = new Regex(@"^(?<function>sin|cos|tan|exp|ln|log|log2|!)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex _function = new Regex(@"^(?<function>sin|cos|tan|exp|ln|log|log2|sqrt|!)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex _variable = new Regex(@"^(?<variable>[a-z][a-z0-9]*)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private enum OperandType
@@ -187,6 +187,8 @@ namespace Veggerby.Algorithm.Calculus.Parser
                         return LogarithmBase.Create(2, inner);
                     case "ln":
                         return Logarithm.Create(inner);
+                    case "sqrt":
+                        return Root.Create(2, inner);
                     default:
                         throw new NotSupportedException("Invalid operation");
                 }

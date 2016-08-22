@@ -91,6 +91,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             VisitBinary(operand);
         }
 
+         public void Visit(Root operand)
+        {
+            VisitUnary(operand);
+        }
+
         public void Visit(Multiplication operand)
         {
             VisitBinary(operand);
@@ -110,5 +115,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         {
             System.Console.WriteLine($"{_indent}Constant: {operand.Value}");
         }
+
+        public void Visit(Fraction operand)
+        {
+            System.Console.WriteLine($"{_indent}Fraction: {operand.Numerator}/{operand.Denominator}");
+        }
+
     }
 }

@@ -97,6 +97,11 @@ namespace Veggerby.Algorithm.Calculus
             {
                 throw new ArgumentNullException(nameof(right));
             }
+        
+            if (left.IsInteger() && right.IsInteger())
+            {
+                return Fraction.Create((int)left.Value, (int)right.Value);
+            }
 
             return left.Value / right.Value;
         }
@@ -114,6 +119,16 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             return Math.Pow(left.Value, right.Value);
+        }
+
+        public static implicit operator double(Constant value)
+        {
+            return value.Value;
+        }
+
+        public static implicit operator int(Constant value)
+        {
+            return (int)value.Value;
         }
 
         public static Constant Create(double value)

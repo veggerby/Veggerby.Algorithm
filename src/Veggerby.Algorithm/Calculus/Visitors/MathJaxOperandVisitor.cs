@@ -93,6 +93,21 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             _result.Append(@"}");
         }
 
+        public void Visit(Root operand)
+        {
+            if (operand.Exponent == 2)
+            {
+                _result.Append(@"\sqrt{");
+                operand.Inner.Accept(this);
+                _result.Append("{");
+            }
+            else{
+                _result.Append($@"\sqrt[{operand.Exponent}]{{");
+                operand.Inner.Accept(this);
+                _result.Append("}");
+            }
+        }
+
         public void Visit(Multiplication operand)
         {
             if (operand.Left.IsConstant())
@@ -135,6 +150,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         public void Visit(Constant operand)
         {
             _result.Append(operand.ToString());
+        }
+
+        public void Visit(Fraction operand)
+        {
+            _result.Append($"{operand.Numerator}/{operand.Denominator}");
         }
     }
 }

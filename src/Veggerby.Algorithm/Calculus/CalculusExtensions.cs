@@ -49,6 +49,16 @@ namespace Veggerby.Algorithm.Calculus
             return operand is Negative;
         }
 
+        public static bool IsInteger(this Constant constant)
+        {
+            return constant.Value.IsInteger();
+        }
+
+        public static bool IsInteger(this double constant)
+        {
+            return (constant % 1 == 0);
+        }
+
         public static ISet<Operand> FlattenCommutative(this ICommutativeBinaryOperation operand, ISet<Operand> set = null)
         {
             var type = operand.GetType();

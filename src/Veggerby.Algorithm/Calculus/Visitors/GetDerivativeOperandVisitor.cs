@@ -166,6 +166,25 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             }
         }
 
+        public void Visit(Root operand)
+        {
+            var inner = GetDerivative(operand.Inner);
+
+            if (inner == null)
+            {
+                Result = null;
+            }
+            else
+            {
+                Result = Multiplication.Create(
+                    Division.Create(
+                        Power.Create(operand.Inner, (Constant.One - operand.Exponent) / operand.Exponent), 
+                        operand.Exponent),
+                    inner
+                );
+            }
+        }
+
         public void Visit(Multiplication operand)
         {
             var left = GetDerivative(operand.Left);
@@ -185,7 +204,8 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
             Result = left != null && right != null
                 ? Addition.Create(left, right)
-                : null;        }
+                : null;       
+        }
 
         public void Visit(NamedConstant operand)
         {
@@ -193,6 +213,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         }
 
         public void Visit(Constant operand)
+        {
+            Result = 0;
+        }
+
+        public void Visit(Fraction operand)
         {
             Result = 0;
         }

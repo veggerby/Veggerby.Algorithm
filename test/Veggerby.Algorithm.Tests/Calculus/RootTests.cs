@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Veggerby.Algorithm.Tests.Calculus
 {
-    public class LogarithmBaseTests
+    public class RootTests
     {
         public class ctor
         {
@@ -14,10 +14,10 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 // arrange
                 
                 // act
-                var actual = (LogarithmBase)LogarithmBase.Create(10, Variable.x);
+                var actual = (Root)Root.Create(3, Variable.x);
                 
                 // assert
-                actual.Base.ShouldBe(10);
+                actual.Exponent.ShouldBe(3);
                 actual.Inner.ShouldBe(Variable.x);
             }
         }
@@ -28,7 +28,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_equal_self()
             {
                 // arrange
-                var v = LogarithmBase.Create(10, Variable.x);
+                var v = Root.Create(3, Variable.x);
                 
                 // act
                 var actual = v.Equals(v);
@@ -41,7 +41,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_not_equal_null()
             {
                 // arrange
-                var v = LogarithmBase.Create(10, Variable.x);
+                var v = Root.Create(3, Variable.x);
                 
                 // act
                 var actual = v.Equals(null);
@@ -54,8 +54,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_equal_same_operands()
             {
                 // arrange
-                var v1 = LogarithmBase.Create(10, Variable.x);
-                var v2 = LogarithmBase.Create(10, Variable.x);
+                var v1 = Root.Create(3, Variable.x);
+                var v2 = Root.Create(3, Variable.x);
                 
                 // act
                 var actual = v1.Equals(v2);
@@ -68,8 +68,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_not_equal_different_operands()
             {
                 // arrange
-                var v1 = LogarithmBase.Create(10, Variable.x);
-                var v2 = LogarithmBase.Create(10, 2);
+                var v1 = Root.Create(3, Variable.x);
+                var v2 = Root.Create(3, 2);
                 
                 // act
                 var actual = v1.Equals(v2);
@@ -82,8 +82,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_not_equal_different_base()
             {
                 // arrange
-                var v1 = LogarithmBase.Create(10, Variable.x);
-                var v2 = LogarithmBase.Create(2, Variable.x);
+                var v1 = Root.Create(3, Variable.x);
+                var v2 = Root.Create(2, Variable.x);
                 
                 // act
                 var actual = v1.Equals(v2);
@@ -96,7 +96,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_not_equal_different_operation_identical_operands()
             {
                 // arrange
-                var v1 = LogarithmBase.Create(10, Variable.x);
+                var v1 = Root.Create(3, Variable.x);
                 var v2 = Sine.Create(Variable.x);
                 
                 // act

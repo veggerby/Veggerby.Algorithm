@@ -117,6 +117,21 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             VisitOperand(operand, operand.Right);
         }
 
+        public void Visit(Root operand)
+        {
+            if (operand.Exponent == 2)
+            {
+                _result.Append("sqrt(");
+                operand.Inner.Accept(this);
+                _result.Append(")");
+            }
+            else{
+                _result.Append($"root({operand.Exponent}, ");
+                operand.Inner.Accept(this);
+                _result.Append(")");
+            }
+        }
+
         public void Visit(Multiplication operand)
         {
             VisitOperand(operand, operand.Left);
@@ -141,5 +156,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             var result = operand.Value.ToString(CultureInfo.InvariantCulture).TrimEnd('0', '.');
             _result.Append(result);
         }
+
+        public void Visit(Fraction operand)
+        {
+            _result.Append($"{operand.Numerator}/{operand.Denominator}");
+        }
+
     }
 }
