@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 
 namespace Veggerby.Algorithm.Calculus
 {
@@ -31,11 +30,6 @@ namespace Veggerby.Algorithm.Calculus
         public override Operand GetDerivative(Variable variable)
         {
             return 0;
-        }
-
-        public override string ToString()
-        {
-            return Value.ToString(CultureInfo.InvariantCulture).TrimEnd('0', '.');
         }
 
         protected bool Equals(Constant other)

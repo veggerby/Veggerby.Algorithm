@@ -11,6 +11,13 @@ namespace Veggerby.Algorithm.Calculus
         public abstract void Accept(IOperandVisitor visitor);
         public abstract Operand GetDerivative(Variable variable);
 
+        public sealed override string ToString()
+        {
+            var visitor = new ToStringOperandVisitor();
+            this.Accept(visitor);
+            return visitor.Result;
+        }
+
         public static Operand operator +(Operand left, Operand right)
         {
             return Addition.Create(left, right);

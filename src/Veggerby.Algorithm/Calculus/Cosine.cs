@@ -33,11 +33,6 @@ namespace Veggerby.Algorithm.Calculus
             return Multiplication.Create(Negative.Create(inner), Sine.Create(Inner));
         }
 
-        public override string ToString()
-        {
-            return $"cos({Inner})";
-        }
-
         public static Operand Create(Operand inner)
         {
             return new Cosine(inner);

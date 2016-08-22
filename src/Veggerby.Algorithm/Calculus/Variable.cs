@@ -26,11 +26,6 @@ namespace Veggerby.Algorithm.Calculus
         {
             return Equals(variable) ? 1 : 0;
         }
-
-        public override string ToString()
-        {
-            return Identifier;
-        }
         
         protected bool Equals(Variable other)
         {

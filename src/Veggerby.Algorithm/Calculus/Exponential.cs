@@ -32,11 +32,6 @@ namespace Veggerby.Algorithm.Calculus
             return Multiplication.Create(inner, new Exponential(Inner));
         }
 
-        public override string ToString()
-        {
-            return $"exp({Inner})";
-        }
-
         public static Operand Create(Operand inner)
         {
             return new Exponential(inner);

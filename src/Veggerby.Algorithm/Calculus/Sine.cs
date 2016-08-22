@@ -33,11 +33,6 @@ namespace Veggerby.Algorithm.Calculus
             return Multiplication.Create(inner, Cosine.Create(Inner));
         }
 
-        public override string ToString()
-        {
-            return $"sin({Inner})";
-        }
-
         public static Operand Create(Operand inner)
         {
             return new Sine(inner);

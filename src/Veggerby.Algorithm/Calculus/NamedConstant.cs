@@ -14,11 +14,6 @@ namespace Veggerby.Algorithm.Calculus
             visitor.Visit(this);
         }
 
-        public override string ToString()
-        {
-            return Symbol;
-        }
-
         protected bool Equals(NamedConstant other)
         {
             return Symbol.Equals(other.Symbol) && Value.Equals(other.Value);

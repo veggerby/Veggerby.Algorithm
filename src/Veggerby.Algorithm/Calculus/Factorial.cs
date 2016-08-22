@@ -37,11 +37,6 @@ namespace Veggerby.Algorithm.Calculus
             visitor.Visit(this);
         }
 
-        public override string ToString()
-        {
-            return $"{Inner}!";
-        }
-
         public static Operand Create(Operand inner)
         {
             return new Factorial(inner);

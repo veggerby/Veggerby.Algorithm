@@ -28,11 +28,6 @@ namespace Veggerby.Algorithm.Calculus
                 : null;
         }
 
-        protected override string ToString(string left, string right)
-        {
-            return $"{left}+{right}";
-        }
-
         public static Operand Create(Operand left, Operand right)
         {
             if (left == null)

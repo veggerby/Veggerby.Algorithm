@@ -21,11 +21,6 @@ namespace Veggerby.Algorithm.Calculus
             visitor.Visit(this);
         }
 
-        public override string ToString()
-        {
-            return Inner.CouldUseParenthesis() ? $"-({Inner})" : $"-{Inner}";
-        }
-
         public static Operand Create(Operand inner)
         {
             if (inner.IsConstant())

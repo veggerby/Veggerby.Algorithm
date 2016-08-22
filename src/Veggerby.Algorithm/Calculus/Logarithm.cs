@@ -32,11 +32,6 @@ namespace Veggerby.Algorithm.Calculus
             return Division.Create(inner, Inner);
         }
 
-        public override string ToString()
-        {
-            return $"ln({Inner})";
-        }
-
         public static Operand Create(Operand inner)
         {
             return new Logarithm(inner);

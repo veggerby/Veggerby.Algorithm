@@ -34,11 +34,6 @@ namespace Veggerby.Algorithm.Calculus
             return Exponential.Create(Multiplication.Create(Right, Logarithm.Create(Left)));
         }
 
-        protected override string ToString(string left, string right)
-        {
-            return $"{left}^{right}";
-        }
-
         public static Operand Create(Operand left, Operand right)
         {
             if (left == null)

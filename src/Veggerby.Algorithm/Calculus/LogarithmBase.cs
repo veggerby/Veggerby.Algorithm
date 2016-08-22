@@ -59,11 +59,6 @@ namespace Veggerby.Algorithm.Calculus
             }
         }
 
-        public override string ToString()
-        {
-            return Base == 10 ? $"log({Inner})" : $"log{Base}({Inner})";
-        }
-
         public static Operand Create(int @base, Operand inner)
         {
             return new LogarithmBase(@base, inner);

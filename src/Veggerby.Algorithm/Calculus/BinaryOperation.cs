@@ -56,18 +56,5 @@ namespace Veggerby.Algorithm.Calculus
 
             return GetType().Name.GetHashCode() ^ Left.GetHashCode() ^ Right.GetHashCode();
         }
-
-        protected abstract string ToString(string left, string right);
-
-        public override string ToString()
-        {
-            var leftPriority = Left.GetPriority();
-            var rightPriority = Right.GetPriority();
-            var thisPriority = this.GetPriority();
-
-            var left = Left.CouldUseParenthesis() && (leftPriority != null && leftPriority > thisPriority) ? $"({Left})" : Left.ToString();
-            var right = Right.CouldUseParenthesis() && (rightPriority != null && rightPriority > thisPriority) ? $"({Right})" : Right.ToString();
-            return ToString(left, right);
-        }
     }
 }

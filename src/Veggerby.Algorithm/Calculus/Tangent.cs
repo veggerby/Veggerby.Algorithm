@@ -25,11 +25,6 @@ namespace Veggerby.Algorithm.Calculus
             visitor.Visit(this);
         }
 
-        public override string ToString()
-        {
-            return $"tan({Inner})";
-        }
-
         public static Operand Create(Operand inner)
         {
             return new Tangent(inner);
