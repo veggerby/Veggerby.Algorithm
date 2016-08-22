@@ -21,21 +21,6 @@ namespace Veggerby.Algorithm.Calculus
             visitor.Visit(this);
         }
 
-        public override Operand GetDerivative(Variable variable)
-        {
-            var inner = Inner.GetDerivative(variable);
-
-            if (inner == null)
-            {
-                return null;
-            }
-
-            // chain rule
-            return Division.Create(
-                inner, 
-                Multiplication.Create(Logarithm.Create(Base), Inner));
-        }
-
         protected bool Equals(LogarithmBase other)
         {
             return Base.Equals(other.Base) && base.Equals(other);

@@ -20,19 +20,6 @@ namespace Veggerby.Algorithm.Calculus
             visitor.Visit(this);
         }
 
-        public override Operand GetDerivative(Variable variable)
-        {
-            var inner = Inner.GetDerivative(variable);
-
-            if (inner == null)
-            {
-                return null;
-            }
-
-            // chain rule
-            return Multiplication.Create(inner, Cosine.Create(Inner));
-        }
-
         public static Operand Create(Operand inner)
         {
             return new Sine(inner);

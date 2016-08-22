@@ -9,11 +9,17 @@ namespace Veggerby.Algorithm.Calculus
     {
         public abstract double Evaluate(OperationContext context);
         public abstract void Accept(IOperandVisitor visitor);
-        public abstract Operand GetDerivative(Variable variable);
 
         public sealed override string ToString()
         {
             var visitor = new ToStringOperandVisitor();
+            this.Accept(visitor);
+            return visitor.Result;
+        }
+
+        public Operand GetDerivative(Variable variable)
+        {
+            var visitor = new GetDerivativeOperandVisitor(variable);
             this.Accept(visitor);
             return visitor.Result;
         }

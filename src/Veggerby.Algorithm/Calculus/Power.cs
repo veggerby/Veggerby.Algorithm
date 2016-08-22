@@ -18,22 +18,6 @@ namespace Veggerby.Algorithm.Calculus
             visitor.Visit(this);
         }
 
-        public override Operand GetDerivative(Variable variable)
-        {
-            if (Right.IsConstant())
-            {
-                return Multiplication.Create(
-                    Right,
-                    Power.Create(
-                        Left, 
-                        Subtraction.Create(Right, 1)
-                    ));
-            }
-
-            // exponential rule
-            return Exponential.Create(Multiplication.Create(Right, Logarithm.Create(Left)));
-        }
-
         public static Operand Create(Operand left, Operand right)
         {
             if (left == null)

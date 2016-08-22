@@ -27,11 +27,6 @@ namespace Veggerby.Algorithm.Calculus
             visitor.Visit(this);
         }
 
-        public override Operand GetDerivative(Variable variable)
-        {
-            return 0;
-        }
-
         protected bool Equals(Constant other)
         {
             return Value == other.Value;

@@ -13,22 +13,6 @@ namespace Veggerby.Algorithm.Calculus
             return Left.Evaluate(context) * Right.Evaluate(context);
         }
 
-        public override Operand GetDerivative(Variable variable)
-        {
-            var left = Left.GetDerivative(variable);
-            var right = Right.GetDerivative(variable);
-
-            if (left == null || right == null)
-            {
-                return null;
-            }
-
-            // product rule
-            return Addition.Create(
-                Multiplication.Create(left, Right),
-                Multiplication.Create(right, Left));
-        }
-
         public override void Accept(IOperandVisitor visitor)
         {
             visitor.Visit(this);

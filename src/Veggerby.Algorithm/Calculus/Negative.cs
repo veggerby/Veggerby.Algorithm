@@ -11,11 +11,6 @@ namespace Veggerby.Algorithm.Calculus
             return -Inner.Evaluate(context);
         }
 
-        public override Operand GetDerivative(Variable variable)
-        {
-            return new Negative(Inner.GetDerivative(variable));
-        }
-
         public override void Accept(IOperandVisitor visitor)
         {
             visitor.Visit(this);

@@ -18,24 +18,6 @@ namespace Veggerby.Algorithm.Calculus
             visitor.Visit(this);
         }
 
-        public override Operand GetDerivative(Variable variable)
-        {
-            var left = Left.GetDerivative(variable);
-            var right = Right.GetDerivative(variable);
-
-            if (left == null || right == null)
-            {
-                return null;
-            }
-
-            // division rule
-            return Division.Create(
-                Subtraction.Create(
-                    Multiplication.Create(left, Right),
-                    Multiplication.Create(right, Left)), 
-                Power.Create(Right, 2));
-        }
-
         public static Operand Create(Operand left, Operand right)
         {
             if (left == null)
