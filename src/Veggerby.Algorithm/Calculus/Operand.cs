@@ -7,7 +7,13 @@ namespace Veggerby.Algorithm.Calculus
 {
     public abstract class Operand
     {
-        public abstract double Evaluate(OperationContext context);
+        public double Evaluate(OperationContext context)
+        {
+            var visitor = new EvaluateOperandVisitor(context);
+            this.Accept(visitor);
+            return visitor.Result;
+        }
+
         public abstract void Accept(IOperandVisitor visitor);
 
         public sealed override string ToString()

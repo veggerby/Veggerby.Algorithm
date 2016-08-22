@@ -8,11 +8,6 @@ namespace Veggerby.Algorithm.Calculus
         { 
         }
 
-        public override double Evaluate(OperationContext context)
-        {
-            return Left.Evaluate(context) / Right.Evaluate(context);
-        }
-
         public override void Accept(IOperandVisitor visitor)
         {
             visitor.Visit(this);

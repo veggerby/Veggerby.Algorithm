@@ -12,11 +12,6 @@ namespace Veggerby.Algorithm.Calculus
             Identifier = identifier;
         }
 
-        public override double Evaluate(OperationContext context)
-        {
-            return context.Get(Identifier);
-        }
-
         public override void Accept(IOperandVisitor visitor)
         {
             visitor.Visit(this);

@@ -1,5 +1,3 @@
-using System;
-
 namespace Veggerby.Algorithm.Calculus
 {
     public class LogarithmBase : UnaryOperation
@@ -8,12 +6,6 @@ namespace Veggerby.Algorithm.Calculus
         private LogarithmBase(int @base, Operand inner) : base(inner)
         {
             Base = @base;
-        }
-
-        public override double Evaluate(OperationContext context)
-        {
-            var inner = Inner.Evaluate(context);
-            return Math.Log(inner) / Math.Log(Base);
         }
 
         public override void Accept(IOperandVisitor visitor)

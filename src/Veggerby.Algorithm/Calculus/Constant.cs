@@ -17,11 +17,6 @@ namespace Veggerby.Algorithm.Calculus
             Value = value;
         }
 
-        public override double Evaluate(OperationContext context)
-        {
-            return Value;
-        }
-
         public override void Accept(IOperandVisitor visitor)
         {
             visitor.Visit(this);
