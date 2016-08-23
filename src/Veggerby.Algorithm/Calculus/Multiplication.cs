@@ -7,7 +7,7 @@ namespace Veggerby.Algorithm.Calculus
     public class Multiplication : BinaryOperation, ICommutativeBinaryOperation, IAssociativeBinaryOperation
     {
         private Multiplication(Operand left, Operand right) : base(left, right)
-        { 
+        {
         }
 
         public override void Accept(IOperandVisitor visitor)
@@ -126,7 +126,7 @@ namespace Veggerby.Algorithm.Calculus
 
             var groups = flat.GroupBy(x => x).ToList();
             if (groups.Any(x => x.Count() > 1))
-            {                    
+            {
                 return groups.Aggregate((Operand)Constant.One, (seed, group) => Multiplication.Create(seed, Power.Create(group.Key, group.Count())));
             }
 

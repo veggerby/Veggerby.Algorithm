@@ -7,7 +7,7 @@ namespace Veggerby.Algorithm.Calculus
     public class Addition : BinaryOperation, ICommutativeBinaryOperation, IAssociativeBinaryOperation
     {
         private Addition(Operand left, Operand right) : base(left, right)
-        { 
+        {
         }
 
         public override void Accept(IOperandVisitor visitor)

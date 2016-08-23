@@ -18,7 +18,7 @@ namespace Veggerby.Algorithm.Calculus
         {
             visitor.Visit(this);
         }
-        
+
         protected bool Equals(Variable other)
         {
             return string.Equals(Identifier, other.Identifier);

@@ -126,7 +126,7 @@ namespace Veggerby.Algorithm.Calculus
             {
                 throw new ArgumentNullException(nameof(left));
             }
-            
+
             return Fraction.Create(right * left.Numerator, left.Denominator);
         }
 
@@ -156,7 +156,7 @@ namespace Veggerby.Algorithm.Calculus
             {
                 throw new ArgumentNullException(nameof(right));
             }
-        
+
             return Fraction.Create(left.Numerator * right.Denominator, left.Denominator * right.Numerator);
         }
 
@@ -166,7 +166,7 @@ namespace Veggerby.Algorithm.Calculus
             {
                 throw new ArgumentNullException(nameof(right));
             }
-        
+
             return Fraction.Create(left * right.Denominator, right.Numerator);
         }
 
@@ -176,7 +176,7 @@ namespace Veggerby.Algorithm.Calculus
             {
                 throw new ArgumentNullException(nameof(left));
             }
-        
+
             return Fraction.Create(left.Numerator, left.Denominator * right);
         }
 
@@ -192,7 +192,7 @@ namespace Veggerby.Algorithm.Calculus
             {
                 return ((int)left) / right;
             }
-        
+
             return left * right.Denominator / right.Numerator;
         }
 
@@ -207,7 +207,7 @@ namespace Veggerby.Algorithm.Calculus
             {
                 return left / ((int)right);
             }
-        
+
             return left.Numerator / (left.Denominator * right);
         }
 

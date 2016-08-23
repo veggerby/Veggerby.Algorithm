@@ -15,7 +15,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
 
             if (item == null)
             {
-                throw new ArgumentNullException(nameof(item));                
+                throw new ArgumentNullException(nameof(item));
             }
 
             return source.TakeWhile(x => !item.Equals(x));
@@ -30,7 +30,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
 
             if (item == null)
             {
-                throw new ArgumentNullException(nameof(item));                
+                throw new ArgumentNullException(nameof(item));
             }
 
             return source

@@ -17,7 +17,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var operation = Addition.Create(Variable.x, Constant.Create(3));
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Constant.One;
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -35,7 +35,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var operation = Constant.Create(3);
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Constant.Zero;
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -53,7 +53,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var operation = Cosine.Create(Variable.x);
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Negative.Create(Sine.Create(Variable.x));
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -71,7 +71,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var operation = Division.Create(Constant.One, Variable.x);
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Division.Create(-1, Power.Create(Variable.x, 2));
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -84,14 +84,14 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             {
                 // arrange
                 var operation = Division.Create(
-                    Sine.Create(Variable.x), 
+                    Sine.Create(Variable.x),
                     Variable.x);
 
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Division.Create(
                     Subtraction.Create(
                         Multiplication.Create(Variable.x, Cosine.Create(Variable.x)),
-                        Sine.Create(Variable.x)), 
+                        Sine.Create(Variable.x)),
                     Power.Create(Variable.x, 2));
 
                 // act
@@ -111,7 +111,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var operation = Exponential.Create(Variable.x);
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Exponential.Create(Variable.x);
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -149,7 +149,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var operation = Factorial.Create(Variable.x);
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 Operand expected = null;
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -167,7 +167,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var operation = LogarithmBase.Create(10, Variable.x);
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Division.Create(Constant.One, Multiplication.Create(Variable.x, Logarithm.Create(10)));
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -185,7 +185,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var operation = Logarithm.Create(Variable.x);
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Division.Create(Constant.One, Variable.x);
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -203,7 +203,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var operation = Multiplication.Create(Variable.x, Constant.Create(2));
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Constant.Create(2);
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -221,7 +221,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var operation = NamedConstant.Create("a", 3);
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Constant.Zero;
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -239,7 +239,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var operation = Power.Create(Variable.x, Constant.Create(2));
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Multiplication.Create(2, Variable.x);
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -257,7 +257,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var operation = Sine.Create(Variable.x);
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Cosine.Create(Variable.x);
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -275,7 +275,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var operation = Root.Create(2, Variable.x);
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Division.Create(Power.Create(Variable.x, Fraction.Create(-1, 2)), 2);
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -283,7 +283,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 visitor.Result.ShouldBe(expected);
             }
         }
-        
+
         public class Visit_Subtraction
         {
             [Fact]
@@ -293,7 +293,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var operation = Subtraction.Create(Variable.x, Constant.One);
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Constant.One;
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -310,7 +310,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Tangent.Create(Variable.x);
                 var visitor = new DerivativeOperandVisitor(Variable.x);
-                
+
                 // act
                 Should.Throw<NotImplementedException>(() => operation.Accept(visitor));
 
@@ -327,7 +327,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var operation = Variable.Create("x");
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Constant.One;
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -344,7 +344,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Fraction.Create(1, 4);
                 var visitor = new DerivativeOperandVisitor(Variable.x);
-                
+
                 // act
                 operation.Accept(visitor);
 

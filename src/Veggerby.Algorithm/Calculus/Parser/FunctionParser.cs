@@ -23,7 +23,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
             None
         }
 
-        public static Operand Parse(string function) 
+        public static Operand Parse(string function)
         {
             var root = new Group(null);
 
@@ -127,7 +127,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
             }
 
             root.Restructure();
-        
+
             return Parse(root.ChildNodes.Single());
         }
 
@@ -137,7 +137,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
             {
                 return Parse(((Group)node).ChildNodes.Single());
             }
-            
+
             if (node is BinaryNode)
             {
                 var binary = (BinaryNode)node;

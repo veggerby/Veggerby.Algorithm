@@ -6,7 +6,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
     public class ToStringOperandVisitor : IOperandVisitor
     {
         private readonly StringBuilder _result = new StringBuilder();
-        
+
         public string Result => _result.ToString();
 
         private void VisitOperand(Operand operation, Operand operand)
@@ -16,17 +16,17 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
             var useParenthesis = operand.CouldUseParenthesis() && (operandPriority != null && operandPriority > operaitonPriority);
 
-            if (useParenthesis) 
+            if (useParenthesis)
             {
                 _result.Append("(");
-            }            
+            }
 
             operand.Accept(this);
 
-            if (useParenthesis) 
+            if (useParenthesis)
             {
                 _result.Append(")");
-            }            
+            }
         }
 
         public void Visit(Variable operand)
@@ -74,13 +74,13 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             {
                 _result.Append("log(");
             }
-            else 
+            else
             {
                 _result.Append($"log{operand.Base}(");
             }
-            
+
             operand.Inner.Accept(this);
-            _result.Append(")");            
+            _result.Append(")");
         }
 
         public void Visit(Negative operand)

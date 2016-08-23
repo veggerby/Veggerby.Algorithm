@@ -95,7 +95,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             else
             {
                 Result = Division.Create(
-                    inner, 
+                    inner,
                     Multiplication.Create(Logarithm.Create(operand.Base), operand.Inner));
             }
         }
@@ -154,7 +154,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
                 Result = Multiplication.Create(
                     operand.Right,
                     Power.Create(
-                        operand.Left, 
+                        operand.Left,
                         Subtraction.Create(operand.Right, 1)
                     ));
             }
@@ -178,7 +178,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             {
                 Result = Multiplication.Create(
                     Division.Create(
-                        Power.Create(operand.Inner, (Constant.One - operand.Exponent) / operand.Exponent), 
+                        Power.Create(operand.Inner, (Constant.One - operand.Exponent) / operand.Exponent),
                         operand.Exponent),
                     inner
                 );
@@ -204,7 +204,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
             Result = left != null && right != null
                 ? Addition.Create(left, right)
-                : null;       
+                : null;
         }
 
         public void Visit(NamedConstant operand)

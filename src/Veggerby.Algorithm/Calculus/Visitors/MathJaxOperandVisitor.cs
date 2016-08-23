@@ -5,7 +5,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
     public class MathJaxOperandVisitor : IOperandVisitor
     {
         private readonly StringBuilder _result = new StringBuilder();
-        
+
         public string Result => _result.ToString();
 
         public void Visit(Variable operand)
@@ -54,7 +54,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         {
             _result.Append($@"\log_{operand.Base}\left(");
             operand.Inner.Accept(this);
-            _result.Append(@"\right)");            
+            _result.Append(@"\right)");
         }
 
         public void Visit(Negative operand)
@@ -67,7 +67,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         {
             _result.Append($@"\ln\left(");
             operand.Inner.Accept(this);
-            _result.Append(@"\right)");            
+            _result.Append(@"\right)");
         }
 
         public void Visit(Tangent operand)

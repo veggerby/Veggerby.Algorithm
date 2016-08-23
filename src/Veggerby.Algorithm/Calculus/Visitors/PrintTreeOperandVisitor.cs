@@ -120,6 +120,5 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         {
             System.Console.WriteLine($"{_indent}Fraction: {operand.Numerator}/{operand.Denominator}");
         }
-
     }
 }

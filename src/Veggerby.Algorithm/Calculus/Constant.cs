@@ -97,7 +97,7 @@ namespace Veggerby.Algorithm.Calculus
             {
                 throw new ArgumentNullException(nameof(right));
             }
-        
+
             if (left.IsInteger() && right.IsInteger())
             {
                 return Fraction.Create((int)left.Value, (int)right.Value);

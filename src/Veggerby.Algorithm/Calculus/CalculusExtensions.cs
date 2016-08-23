@@ -7,7 +7,7 @@ namespace Veggerby.Algorithm.Calculus
 {
     public static class CalculusExtensions
     {
-        private static readonly Type[] _priorities = new [] 
+        private static readonly Type[] _priorities = new []
         {
             typeof(Factorial),
             typeof(Power),
@@ -83,7 +83,7 @@ namespace Veggerby.Algorithm.Calculus
                 var right = (ICommutativeBinaryOperation)operand.Right;
                 right.FlattenCommutative(set);
             }
-            else 
+            else
             {
                 set.Add(operand.Right);
             }

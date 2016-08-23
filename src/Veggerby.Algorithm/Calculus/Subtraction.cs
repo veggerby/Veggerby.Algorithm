@@ -6,7 +6,7 @@ namespace Veggerby.Algorithm.Calculus
     public class Subtraction : BinaryOperation
     {
         private Subtraction(Operand left, Operand right) : base(left, right)
-        { 
+        {
         }
 
         public override void Accept(IOperandVisitor visitor)

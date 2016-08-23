@@ -39,7 +39,7 @@ namespace Veggerby.Algorithm.Graphs
             var shortestPath = new List<Edge<T>>();
             var current = to;
 
-            while(!from.Equals(current)) 
+            while(!from.Equals(current))
             {
                 shortestPath.Add(graph.GetEdge(parent[current], current));
                 current = parent[current];
@@ -55,7 +55,7 @@ namespace Veggerby.Algorithm.Graphs
                 .OrderBy(x => distances.ContainsKey(x) ? distances[x] : int.MaxValue)
                 .FirstOrDefault();
         }
-    
+
         private void EvaluateNeighbours<T>(T evaluationNode, IEnumerable<T> settled, Graph<T> graph, IList<T> unsettled, IDictionary<T, int> distances, IDictionary<T, T> parent)
         {
             foreach (var destinationNode in graph.Vertices)
@@ -77,5 +77,5 @@ namespace Veggerby.Algorithm.Graphs
                 }
             }
         }
-    }    
+    }
 }
