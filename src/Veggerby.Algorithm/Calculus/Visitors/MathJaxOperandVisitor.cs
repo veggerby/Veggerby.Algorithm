@@ -99,7 +99,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             {
                 _result.Append(@"\sqrt{");
                 operand.Inner.Accept(this);
-                _result.Append("{");
+                _result.Append("}");
             }
             else{
                 _result.Append($@"\sqrt[{operand.Exponent}]{{");

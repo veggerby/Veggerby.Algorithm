@@ -28,10 +28,25 @@ namespace Veggerby.Algorithm.Calculus
         {
             if (this is ICommutativeBinaryOperation)
             {
-                var thisSet = ((ICommutativeBinaryOperation)this).FlattenCommutative();
-                var otherSet = ((ICommutativeBinaryOperation)other).FlattenCommutative();
+                var thisSet = ((ICommutativeBinaryOperation)this).FlattenCommutative().ToList();
+                var otherSet = ((ICommutativeBinaryOperation)other).FlattenCommutative().ToList();
 
-                return thisSet.SetEquals(otherSet);
+                // simple case -> different items in list
+                if (thisSet.Count() != otherSet.Count())
+                {
+                    return false;
+                }
+
+                // if either set contains items not in the other
+                if (thisSet.Except(otherSet).Any() || otherSet.Except(thisSet).Any())
+                {
+                    return false;
+                }
+
+                // compare the number of item count to ensure 2*x*2 != x*2*x
+                return thisSet.GroupBy(x => x)
+                    .Join(otherSet.GroupBy(x => x), x => x.Key, x => x.Key, (a, b) => a.Count() - b.Count())
+                    .All(x => x == 0);
             }
 
             return Left.Equals(other.Left) && Right.Equals(other.Right);

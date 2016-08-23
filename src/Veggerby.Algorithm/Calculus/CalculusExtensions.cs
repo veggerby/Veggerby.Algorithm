@@ -59,13 +59,13 @@ namespace Veggerby.Algorithm.Calculus
             return (constant % 1 == 0);
         }
 
-        public static ISet<Operand> FlattenCommutative(this ICommutativeBinaryOperation operand, ISet<Operand> set = null)
+        public static IEnumerable<Operand> FlattenCommutative(this ICommutativeBinaryOperation operand, IList<Operand> set = null)
         {
             var type = operand.GetType();
 
             if (set == null)
             {
-                set = new HashSet<Operand>();
+                set = new List<Operand>();
             }
 
             if (operand.Left.GetType() == type)

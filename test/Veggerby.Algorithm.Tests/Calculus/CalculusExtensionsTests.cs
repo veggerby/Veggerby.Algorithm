@@ -185,6 +185,20 @@ namespace Veggerby.Algorithm.Tests.Calculus
             }
 
             [Fact]
+            public void Should_return_flatten_from_string()
+            {
+                // arrange
+                Operand f = "(2*pi*cos(x)*x)*2";
+                var expected = new Operand[] { Constant.Create(4), Constant.Pi, Cosine.Create(Variable.x), Variable.x };
+
+                // act
+                var actual = ((ICommutativeBinaryOperation)f).FlattenCommutative();
+
+                // assert
+                actual.ShouldBe(expected);
+            }
+
+            [Fact]
             public void Should_return_flatten_nested()
             {
                 // arrange
@@ -197,7 +211,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
                             Cosine.Create(Variable.x),
                             Logarithm.Create(Variable.x)
                         ),
-                        Division.Create(
+                        Addition.Create(
                             Constant.One,
                             Variable.x
                 )));
@@ -208,7 +222,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
                     Sine.Create(Variable.x),
                     Cosine.Create(Variable.x),
                     Logarithm.Create(Variable.x),
-                    Division.Create(Constant.One, Variable.x) 
+                    Addition.Create(Constant.One, Variable.x) 
                 };
 
                 // act

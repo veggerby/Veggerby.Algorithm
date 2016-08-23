@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
@@ -24,6 +25,37 @@ namespace Veggerby.Algorithm.Calculus
             if (right == null)
             {
                 throw new ArgumentNullException(nameof(right));
+            }
+
+            if (left is Division && right is Division)
+            {
+                var l = (Division)left;
+                var r = (Division)right;
+
+                return Division.Create(
+                    Multiplication.Create(l.Left, r.Left),
+                    Multiplication.Create(l.Right, r.Right)
+                );
+            }
+
+            if (left is Division)
+            {
+                var l = (Division)left;
+
+                return Division.Create(
+                    Multiplication.Create(l.Left, right),
+                    l.Right
+                );
+            }
+
+            if (right is Division)
+            {
+                var r = (Division)right;
+
+                return Division.Create(
+                    Multiplication.Create(left, r.Left),
+                    r.Right
+                );
             }
 
             if (left.Equals(right))
@@ -81,7 +113,16 @@ namespace Veggerby.Algorithm.Calculus
                 return Multiplication.Create(right, left);
             }
 
-            return new Multiplication(left, right);
+            var result = new Multiplication(left, right);
+
+            var flat = result.FlattenCommutative().GroupBy(x => x).ToList();
+
+            if (flat.Any(x => x.Count() > 1))
+            {
+                return flat.Aggregate((Operand)Constant.One, (seed, group) => Multiplication.Create(seed, Power.Create(group.Key, group.Count())));
+            }
+
+            return result;
         }
     }
 }
