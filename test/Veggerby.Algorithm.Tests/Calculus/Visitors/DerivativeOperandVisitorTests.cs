@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Veggerby.Algorithm.Tests.Calculus.Visitors
 {
-    public class GetDerivativeOperandVisitorTests
+    public class DerivativeOperandVisitorTests
     {
         public class Visit_Addition
         {
