@@ -115,11 +115,19 @@ namespace Veggerby.Algorithm.Calculus
 
             var result = new Multiplication(left, right);
 
-            var flat = result.FlattenCommutative().GroupBy(x => x).ToList();
+            var flat = result.FlattenCommutative().ToList();
 
-            if (flat.Any(x => x.Count() > 1))
+            if (flat.Where(x => x.IsConstant()).Count() > 1)
             {
-                return flat.Aggregate((Operand)Constant.One, (seed, group) => Multiplication.Create(seed, Power.Create(group.Key, group.Count())));
+                var constants = flat.Where(x => x.IsConstant()).OfType<Constant>();
+                Operand @const = constants.Aggregate((seed, x) => (Constant)(seed + x));
+                return flat.Where(x => !x.IsConstant()).Aggregate(@const, (seed, x) => Multiplication.Create(seed, x));
+            }
+
+            var groups = flat.GroupBy(x => x).ToList();
+            if (groups.Any(x => x.Count() > 1))
+            {                    
+                return groups.Aggregate((Operand)Constant.One, (seed, group) => Multiplication.Create(seed, Power.Create(group.Key, group.Count())));
             }
 
             return result;

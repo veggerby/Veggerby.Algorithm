@@ -12,7 +12,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_initialize()
             {
                 var actual = (Addition)Addition.Create(Constant.One, Variable.x);
-                
+
                 // assert
                 actual.Left.ShouldBe(Constant.One);
                 actual.Right.ShouldBe(Variable.x);
@@ -22,12 +22,27 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_collapse()
             {
                 // arrange
-                
+
                 // act
                 var actual = Addition.Create(Constant.One, Constant.Create(3));
-                
+
                 // assert
                 actual.ShouldBe(Constant.Create(4));
+            }
+
+            [Fact]
+            public void Should_collapse_flattened()
+            {
+                // arrange
+
+                // act
+                var actual = (Addition)Addition.Create(
+                    Addition.Create(Constant.Create(7), Sine.Create(Variable.x)),
+                    Addition.Create(Constant.Create(3), Sine.Create(Variable.x)));
+
+                // assert
+                actual.Left.ShouldBe(Constant.Create(10));
+                actual.Right.ShouldBe(Multiplication.Create(2, Sine.Create(Variable.x)));
             }
         }
 
@@ -38,7 +53,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             {
                 // arrange
                 var v = Addition.Create(Constant.One, Variable.x);
-                
+
                 // act
                 var actual = v.Equals(v);
 
@@ -51,21 +66,21 @@ namespace Veggerby.Algorithm.Tests.Calculus
             {
                 // arrange
                 var v = Addition.Create(Constant.One, Variable.x);
-                
+
                 // act
                 var actual = v.Equals(null);
 
                 // assert
                 actual.ShouldBeFalse();
             }
-            
+
             [Fact]
             public void Should_equal_same_operands()
             {
                 // arrange
                 var v1 = Addition.Create(Constant.One, Variable.x);
                 var v2 = Addition.Create(Constant.One, Variable.x);
-                
+
                 // act
                 var actual = v1.Equals(v2);
 
@@ -79,7 +94,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 // arrange
                 var v1 = Addition.Create(Constant.One, Variable.x);
                 var v2 = Addition.Create(Variable.y, Constant.Create(2));
-                
+
                 // act
                 var actual = v1.Equals(v2);
 
@@ -93,7 +108,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 // arrange
                 var v1 = Addition.Create(Constant.One, Variable.x);
                 var v2 = Addition.Create(Variable.x, Constant.One);
-                
+
                 // act
                 var actual = v1.Equals(v2);
 
@@ -107,7 +122,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 // arrange
                 var v1 = Addition.Create(Constant.One, Variable.x);
                 var v2 = Subtraction.Create(Constant.One, Variable.x);
-                
+
                 // act
                 var actual = v1.Equals(v2);
 

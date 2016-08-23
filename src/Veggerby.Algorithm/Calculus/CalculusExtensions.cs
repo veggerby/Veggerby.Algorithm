@@ -112,5 +112,10 @@ namespace Veggerby.Algorithm.Calculus
             return visitor.Result;
         }
 
+        public static void PrintTree(this Operand operand)
+        {
+            var visitor = new PrintTreeOperandVisitor();
+            operand.Accept(visitor);
+        }
     }
 }
