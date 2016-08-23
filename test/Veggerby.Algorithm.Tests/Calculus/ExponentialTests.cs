@@ -91,40 +91,5 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 actual.ShouldBeFalse();
             }
         }
-
-        public class GetDerivative
-        {
-            [Fact]
-            public void Should_get_derivative()
-            {
-                // arrange
-                var func = Exponential.Create(Variable.x);
-                var expected = Exponential.Create(Variable.x);
-
-                // act
-                var actual = func.GetDerivative(Variable.x);
-
-                // assert
-                actual.ShouldBe(expected);
-            }
-
-            [Fact]
-            public void Should_get_complex_derivative()
-            {
-                // arrange
-                var func = Exponential.Create(
-                    Division.Create(
-                        Multiplication.Create(2, Variable.x),
-                        Sine.Create(2 * Constant.Pi / Variable.x)));
-
-                Operand expected = "(2*sin((2*π)/x)+(2*π)/x^2*cos((2*π)/x)*2*x)/sin((2*π)/x)^2*exp((2*x)/sin((2*π)/x))";
-
-                // act
-                var actual = func.GetDerivative(Variable.x);
-
-                // assert
-                actual.ShouldBe(expected);
-            }
-        }
     }
 }

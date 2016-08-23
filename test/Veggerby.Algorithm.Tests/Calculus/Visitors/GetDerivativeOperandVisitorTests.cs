@@ -78,8 +78,29 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // assert
                 visitor.Result.ShouldBe(expected);
             }
-        }
 
+            [Fact]
+            public void Should_get_complex_derivative()
+            {
+                // arrange
+                var operation = Division.Create(
+                    Sine.Create(Variable.x), 
+                    Variable.x);
+
+                var visitor = new DerivativeOperandVisitor(Variable.x);
+                var expected = Division.Create(
+                    Subtraction.Create(
+                        Multiplication.Create(Variable.x, Cosine.Create(Variable.x)),
+                        Sine.Create(Variable.x)), 
+                    Power.Create(Variable.x, 2));
+
+                // act
+                operation.Accept(visitor);
+
+                // assert
+                visitor.Result.ShouldBe(expected);
+            }
+        }
 
         public class Visit_Exponential
         {
@@ -91,6 +112,26 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var visitor = new DerivativeOperandVisitor(Variable.x);
                 var expected = Exponential.Create(Variable.x);
                 
+                // act
+                operation.Accept(visitor);
+
+                // assert
+                visitor.Result.ShouldBe(expected);
+            }
+
+            [Fact]
+            public void Should_get_complex_derivative()
+            {
+                // arrange
+                var operation = Exponential.Create(
+                    Division.Create(
+                        Multiplication.Create(2, Variable.x),
+                        Sine.Create(2 * Constant.Pi / Variable.x)));
+
+                var visitor = new DerivativeOperandVisitor(Variable.x);
+
+                Operand expected = "(2*sin((2*π)/x)+(2*π)/x^2*cos((2*π)/x)*2*x)/sin((2*π)/x)^2*exp((2*x)/sin((2*π)/x))";
+
                 // act
                 operation.Accept(visitor);
 

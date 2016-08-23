@@ -130,22 +130,5 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 actual.ShouldBeFalse();
             }
         }
-
-        public class GetDerivative
-        {
-            [Fact]
-            public void Should_get_derivative()
-            {
-                // arrange
-                var func = Addition.Create(Power.Create(Variable.x, 2), Variable.x);
-                var expected = Addition.Create(Multiplication.Create(2, Variable.x), 1);
-
-                // act
-                var actual = func.GetDerivative(Variable.x);
-
-                // assert
-                actual.ShouldBe(expected);
-            }
-        }
     }
 }
