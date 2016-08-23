@@ -125,7 +125,8 @@ namespace Veggerby.Algorithm.Calculus.Visitors
                 operand.Inner.Accept(this);
                 _result.Append(")");
             }
-            else{
+            else
+            {
                 _result.Append($"root({operand.Exponent}, ");
                 operand.Inner.Accept(this);
                 _result.Append(")");
