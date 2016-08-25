@@ -16,7 +16,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Addition.Create(Constant.One, Constant.Create(3));
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -33,7 +33,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Constant.Create(3);
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -51,7 +51,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Cosine.Create(Constant.Pi);
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -69,7 +69,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Division.Create(Constant.Create(4), Constant.Create(2));
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -87,7 +87,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Exponential.Create(1);
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -104,7 +104,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Factorial.Create(Constant.Create(4));
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -121,7 +121,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = LogarithmBase.Create(10, 1000);
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -135,7 +135,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = LogarithmBase.Create(2, 1024);
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -153,12 +153,12 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Logarithm.Create(Constant.e);
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe(1); 
+                visitor.Result.ShouldBe(1);
             }
         }
 
@@ -170,12 +170,12 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Multiplication.Create(Constant.Create(4), Constant.Create(2));
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe(8); 
+                visitor.Result.ShouldBe(8);
             }
         }
 
@@ -187,12 +187,12 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = NamedConstant.Create("a", 3);
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe(3); 
+                visitor.Result.ShouldBe(3);
             }
         }
 
@@ -204,12 +204,12 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Power.Create(Constant.Create(3), Constant.Create(2));
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe(9); 
+                visitor.Result.ShouldBe(9);
             }
         }
 
@@ -221,12 +221,12 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Root.Create(2, Constant.Create(16));
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe(4); 
+                visitor.Result.ShouldBe(4);
             }
         }
 
@@ -238,12 +238,12 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Sine.Create(Constant.Pi / 2);
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe(1); 
+                visitor.Result.ShouldBe(1);
             }
         }
 
@@ -255,12 +255,12 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Subtraction.Create(Constant.Create(3), Constant.One);
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe(2); 
+                visitor.Result.ShouldBe(2);
             }
         }
 
@@ -272,7 +272,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Tangent.Create(Constant.Pi);
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -291,7 +291,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 var ctx = new OperationContext();
                 ctx.Add("x", 2);
                 var visitor = new EvaluateOperandVisitor(ctx);
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -308,12 +308,50 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Fraction.Create(1, 4);
                 var visitor = new EvaluateOperandVisitor(new OperationContext());
-                
+
                 // act
                 operation.Accept(visitor);
 
                 // assert
                 visitor.Result.ShouldBe(0.25);
+            }
+        }
+
+        public class Visit_Minimum
+        {
+            [Fact]
+            public void Should_evaluate()
+            {
+                // arrange
+                var operation = Minimum.Create(Variable.x, 4);
+                var ctx = new OperationContext();
+                ctx.Add("x", 2);
+                var visitor = new EvaluateOperandVisitor(ctx);
+
+                // act
+                operation.Accept(visitor);
+
+                // assert
+                visitor.Result.ShouldBe(2);
+            }
+        }
+
+        public class Visit_Maximum
+        {
+            [Fact]
+            public void Should_evaluate()
+            {
+                // arrange
+                var operation = Maximum.Create(Variable.x, 4);
+                var ctx = new OperationContext();
+                ctx.Add("x", 2);
+                var visitor = new EvaluateOperandVisitor(ctx);
+
+                // act
+                operation.Accept(visitor);
+
+                // assert
+                visitor.Result.ShouldBe(4);
             }
         }
     }

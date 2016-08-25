@@ -26,7 +26,7 @@ namespace Veggerby.Algorithm.Calculus
 
         protected bool Equals(BinaryOperation other)
         {
-            if (this is IAssociativeBinaryOperation)
+            if (this is IAssociativeBinaryOperation && this is ICommutativeBinaryOperation)
             {
                 var thisSet = ((IAssociativeBinaryOperation)this).FlattenAssociative().ToList();
                 var otherSet = ((IAssociativeBinaryOperation)other).FlattenAssociative().ToList();
@@ -47,6 +47,12 @@ namespace Veggerby.Algorithm.Calculus
                 return thisSet.GroupBy(x => x)
                     .Join(otherSet.GroupBy(x => x), x => x.Key, x => x.Key, (a, b) => a.Count() - b.Count())
                     .All(x => x == 0);
+            }
+
+            if (this is ICommutativeBinaryOperation)
+            {
+                return (Left.Equals(other.Left) && Right.Equals(other.Right))
+                    || (Left.Equals(other.Right) && Right.Equals(other.Left));
             }
 
             return Left.Equals(other.Left) && Right.Equals(other.Right);

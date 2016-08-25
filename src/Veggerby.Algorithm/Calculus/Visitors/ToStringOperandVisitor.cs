@@ -163,5 +163,22 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             _result.Append($"{operand.Numerator}/{operand.Denominator}");
         }
 
+        public void Visit(Minimum operand)
+        {
+            _result.Append("min(");
+            operand.Left.Accept(this);
+            _result.Append(", ");
+            operand.Right.Accept(this);
+            _result.Append(")");
+        }
+
+        public void Visit(Maximum operand)
+        {
+            _result.Append("max(");
+            operand.Left.Accept(this);
+            _result.Append(", ");
+            operand.Right.Accept(this);
+            _result.Append(")");
+        }
     }
 }

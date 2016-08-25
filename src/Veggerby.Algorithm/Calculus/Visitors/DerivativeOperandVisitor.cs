@@ -221,5 +221,15 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         {
             Result = 0;
         }
+
+        public void Visit(Minimum operand)
+        {
+            Result = null;
+        }
+
+        public void Visit(Maximum operand)
+        {
+            Result = null;
+        }
     }
 }

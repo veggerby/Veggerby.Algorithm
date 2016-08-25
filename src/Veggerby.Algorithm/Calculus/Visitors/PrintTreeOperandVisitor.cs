@@ -120,5 +120,15 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         {
             System.Console.WriteLine($"{_indent}Fraction: {operand.Numerator}/{operand.Denominator}");
         }
+
+        public void Visit(Minimum operand)
+        {
+            VisitBinary(operand);
+        }
+
+        public void Visit(Maximum operand)
+        {
+            VisitBinary(operand);
+        }
     }
 }

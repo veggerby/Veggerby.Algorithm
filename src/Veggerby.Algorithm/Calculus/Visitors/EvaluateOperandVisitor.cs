@@ -129,5 +129,15 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         {
             Result = 1d * operand.Numerator / operand.Denominator;
         }
+
+        public void Visit(Minimum operand)
+        {
+            Result = Math.Min(Evaluate(operand.Left), Evaluate(operand.Right));
+        }
+
+        public void Visit(Maximum operand)
+        {
+            Result = Math.Max(Evaluate(operand.Left), Evaluate(operand.Right));
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Addition.Create(Variable.x, Constant.Create(3));
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -36,7 +36,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Constant.Create(value);
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -54,7 +54,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Cosine.Create(Variable.x);
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -72,7 +72,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Division.Create(Variable.x, Constant.Create(2));
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -90,7 +90,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Exponential.Create(Variable.x);
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -107,7 +107,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Factorial.Create(Variable.x);
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -124,7 +124,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = LogarithmBase.Create(10, Variable.x);
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -138,7 +138,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = LogarithmBase.Create(2, Variable.x);
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -155,12 +155,12 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Logarithm.Create(Variable.x);
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("ln(x)"); 
+                visitor.Result.ShouldBe("ln(x)");
             }
         }
 
@@ -172,12 +172,12 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Multiplication.Create(Variable.x, Constant.Create(2));
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("2*x"); 
+                visitor.Result.ShouldBe("2*x");
             }
         }
 
@@ -189,12 +189,12 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = NamedConstant.Create("a", 3);
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("a"); 
+                visitor.Result.ShouldBe("a");
             }
         }
 
@@ -206,12 +206,12 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Power.Create(Variable.x, Constant.Create(2));
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("x^2"); 
+                visitor.Result.ShouldBe("x^2");
             }
         }
 
@@ -223,7 +223,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Root.Create(2, Variable.x);
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -237,7 +237,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Root.Create(3, Variable.x);
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -254,12 +254,12 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Sine.Create(Variable.x);
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("sin(x)"); 
+                visitor.Result.ShouldBe("sin(x)");
             }
         }
 
@@ -271,12 +271,12 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Subtraction.Create(Variable.x, Constant.One);
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
                 // assert
-                visitor.Result.ShouldBe("x-1"); 
+                visitor.Result.ShouldBe("x-1");
             }
         }
 
@@ -288,7 +288,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Tangent.Create(Variable.x);
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -305,7 +305,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Variable.Create("x");
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
@@ -322,12 +322,46 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = Fraction.Create(1, 4);
                 var visitor = new ToStringOperandVisitor();
-                
+
                 // act
                 operation.Accept(visitor);
 
                 // assert
                 visitor.Result.ShouldBe("1/4");
+            }
+        }
+
+        public class Visit_Minimum
+        {
+            [Fact]
+            public void Should_evaluate()
+            {
+                // arrange
+                var operation = Minimum.Create(Variable.x, 4);
+                var visitor = new ToStringOperandVisitor();
+
+                // act
+                operation.Accept(visitor);
+
+                // assert
+                visitor.Result.ShouldBe("min(x, 4)");
+            }
+        }
+
+        public class Visit_Maximum
+        {
+            [Fact]
+            public void Should_evaluate()
+            {
+                // arrange
+                var operation = Maximum.Create(Variable.x, 4);
+                var visitor = new ToStringOperandVisitor();
+
+                // act
+                operation.Accept(visitor);
+
+                // assert
+                visitor.Result.ShouldBe("max(x, 4)");
             }
         }
     }

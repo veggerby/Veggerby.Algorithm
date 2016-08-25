@@ -39,6 +39,11 @@ namespace Veggerby.Algorithm.Calculus.Parser
             {
                 bool isMatch = false;
 
+                if (remain.StartsWith(","))
+                {
+                    remain = remain.Substring(1).Trim();
+                }
+
                 var m = _number.Match(remain);
                 if (m.Success && (previousType == OperandType.None || previousType == OperandType.Operation || previousType == OperandType.ParenthesisOpen))
                 {
@@ -48,7 +53,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
                     var node = new UnstructuredNode(currentGroup, m.Groups["number"].Value);
                     currentGroup.Add(node);
 
-                    remain = remain.Substring(m.Length);
+                    remain = remain.Substring(m.Length).Trim();
                 }
 
                 m = _operation.Match(remain);
@@ -60,7 +65,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
                     var node = new UnstructuredNode(currentGroup, m.Groups["operation"].Value);
                     currentGroup.Add(node);
 
-                    remain = remain.Substring(m.Length);
+                    remain = remain.Substring(m.Length).Trim();
                 }
 
                 m = _function.Match(remain);
@@ -72,7 +77,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
                     var node = new UnstructuredNode(currentGroup, m.Groups["function"].Value);
                     currentGroup.Add(node);
 
-                    remain = remain.Substring(m.Length);
+                    remain = remain.Substring(m.Length).Trim();
                 }
 
                 m = _variable.Match(remain);
@@ -84,7 +89,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
                     var node = new UnstructuredNode(currentGroup, m.Groups["variable"].Value);
                     currentGroup.Add(node);
 
-                    remain = remain.Substring(m.Length);
+                    remain = remain.Substring(m.Length).Trim();
                 }
 
                 if (remain.StartsWith("(") || remain.StartsWith(")"))
@@ -112,7 +117,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
                         throw new Exception("Parenthesis not properly nested");
                     }
 
-                    remain = remain.Substring(1);
+                    remain = remain.Substring(1).Trim();
                 }
 
                 if (!isMatch)
@@ -157,8 +162,9 @@ namespace Veggerby.Algorithm.Calculus.Parser
                     case "^":
                         return Power.Create(left, right);
                     case "min":
+                        return Minimum.Create(left, right);
                     case "max":
-                        throw new NotImplementedException();
+                        return Maximum.Create(left, right);
                     default:
                         throw new NotSupportedException("Invalid operation");
                 }

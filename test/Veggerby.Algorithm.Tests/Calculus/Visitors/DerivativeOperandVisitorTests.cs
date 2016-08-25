@@ -352,5 +352,39 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 visitor.Result.ShouldBe(0);
             }
         }
+
+        public class Visit_Minimum
+        {
+            [Fact]
+            public void Should_evaluate()
+            {
+                // arrange
+                var operation = Minimum.Create(Variable.x, 4);
+                var visitor = new DerivativeOperandVisitor(Variable.x);
+
+                // act
+                operation.Accept(visitor);
+
+                // assert
+                visitor.Result.ShouldBeNull();
+            }
+        }
+
+        public class Visit_Maximum
+        {
+            [Fact]
+            public void Should_evaluate()
+            {
+                // arrange
+                var operation = Maximum.Create(Variable.x, 4);
+                var visitor = new DerivativeOperandVisitor(Variable.x);
+
+                // act
+                operation.Accept(visitor);
+
+                // assert
+                visitor.Result.ShouldBeNull();
+            }
+        }
     }
 }

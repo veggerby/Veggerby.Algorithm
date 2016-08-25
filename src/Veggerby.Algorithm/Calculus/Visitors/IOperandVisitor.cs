@@ -20,5 +20,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         void Visit(LogarithmBase operand);
         void Visit(Negative operand);
         void Visit(Fraction operand);
+        void Visit(Minimum operand);
+        void Visit(Maximum operand);
     }
 }
