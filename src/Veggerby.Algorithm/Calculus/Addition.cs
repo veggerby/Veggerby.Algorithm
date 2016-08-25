@@ -59,7 +59,7 @@ namespace Veggerby.Algorithm.Calculus
 
             var result = new Addition(left, right);
 
-            var flat = result.FlattenCommutative().ToList();
+            var flat = result.FlattenAssociative().ToList();
 
             if (flat.Where(x => x.IsConstant()).Count() > 1)
             {

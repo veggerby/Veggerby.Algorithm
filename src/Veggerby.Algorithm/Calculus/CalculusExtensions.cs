@@ -59,7 +59,7 @@ namespace Veggerby.Algorithm.Calculus
             return (constant % 1 == 0);
         }
 
-        public static IEnumerable<Operand> FlattenCommutative(this ICommutativeBinaryOperation operand, IList<Operand> set = null)
+        public static IEnumerable<Operand> FlattenAssociative(this IAssociativeBinaryOperation operand, IList<Operand> set = null)
         {
             var type = operand.GetType();
 
@@ -70,8 +70,8 @@ namespace Veggerby.Algorithm.Calculus
 
             if (operand.Left.GetType() == type)
             {
-                var left = (ICommutativeBinaryOperation)operand.Left;
-                left.FlattenCommutative(set);
+                var left = (IAssociativeBinaryOperation)operand.Left;
+                left.FlattenAssociative(set);
             }
             else
             {
@@ -80,8 +80,8 @@ namespace Veggerby.Algorithm.Calculus
 
             if (operand.Right.GetType() == type)
             {
-                var right = (ICommutativeBinaryOperation)operand.Right;
-                right.FlattenCommutative(set);
+                var right = (IAssociativeBinaryOperation)operand.Right;
+                right.FlattenAssociative(set);
             }
             else
             {

@@ -26,10 +26,10 @@ namespace Veggerby.Algorithm.Calculus
 
         protected bool Equals(BinaryOperation other)
         {
-            if (this is ICommutativeBinaryOperation)
+            if (this is IAssociativeBinaryOperation)
             {
-                var thisSet = ((ICommutativeBinaryOperation)this).FlattenCommutative().ToList();
-                var otherSet = ((ICommutativeBinaryOperation)other).FlattenCommutative().ToList();
+                var thisSet = ((IAssociativeBinaryOperation)this).FlattenAssociative().ToList();
+                var otherSet = ((IAssociativeBinaryOperation)other).FlattenAssociative().ToList();
 
                 // simple case -> different items in list
                 if (thisSet.Count() != otherSet.Count())
@@ -62,9 +62,9 @@ namespace Veggerby.Algorithm.Calculus
 
         public override int GetHashCode()
         {
-            if (this is ICommutativeBinaryOperation)
+            if (this is IAssociativeBinaryOperation)
             {
-                var thisSet = ((ICommutativeBinaryOperation)this).FlattenCommutative();
+                var thisSet = ((IAssociativeBinaryOperation)this).FlattenAssociative();
 
                 return thisSet.Aggregate(GetType().Name.GetHashCode(), (seed, x) => seed ^ x.GetHashCode());
             }

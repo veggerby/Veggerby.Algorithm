@@ -174,11 +174,11 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_return_simple_flatten()
             {
                 // arrange
-                var f = (ICommutativeBinaryOperation)Multiplication.Create(Variable.x, Constant.Pi);
+                var f = (IAssociativeBinaryOperation)Multiplication.Create(Variable.x, Constant.Pi);
                 var expected = new HashSet<Operand> { f.Left, f.Right };
 
                 // act
-                var actual = f.FlattenCommutative();
+                var actual = f.FlattenAssociative();
 
                 // assert
                 actual.ShouldBe(expected);
@@ -192,7 +192,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
                 var expected = new Operand[] { Constant.Create(4), Constant.Pi, Cosine.Create(Variable.x), Variable.x };
 
                 // act
-                var actual = ((ICommutativeBinaryOperation)f).FlattenCommutative();
+                var actual = ((IAssociativeBinaryOperation)f).FlattenAssociative();
 
                 // assert
                 actual.ShouldBe(expected);
@@ -202,10 +202,10 @@ namespace Veggerby.Algorithm.Tests.Calculus
             public void Should_return_flatten_nested()
             {
                 // arrange
-                var f = (ICommutativeBinaryOperation)Multiplication.Create(
+                var f = (IAssociativeBinaryOperation)Multiplication.Create(
                     Multiplication.Create(
-                        Variable.x, 
-                        Sine.Create(Variable.x)), 
+                        Variable.x,
+                        Sine.Create(Variable.x)),
                     Multiplication.Create(
                         Multiplication.Create(
                             Cosine.Create(Variable.x),
@@ -216,17 +216,17 @@ namespace Veggerby.Algorithm.Tests.Calculus
                             Variable.x
                 )));
 
-                var expected = new HashSet<Operand> 
-                { 
-                    Variable.x, 
+                var expected = new HashSet<Operand>
+                {
+                    Variable.x,
                     Sine.Create(Variable.x),
                     Cosine.Create(Variable.x),
                     Logarithm.Create(Variable.x),
-                    Addition.Create(Constant.One, Variable.x) 
+                    Addition.Create(Constant.One, Variable.x)
                 };
 
                 // act
-                var actual = f.FlattenCommutative();
+                var actual = f.FlattenAssociative();
 
                 // assert
                 actual.ShouldBe(expected);
@@ -260,7 +260,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             {
                 // arrange
                 var constant = Constant.Create(value);
-                
+
                 // act
                 var actual = constant.IsInteger();
 
