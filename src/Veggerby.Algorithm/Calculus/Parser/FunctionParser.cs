@@ -9,7 +9,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
     {
         private static readonly Regex _number = new Regex(@"^(?<number>([\-+]?[0-9]+(\.[0-9]+)?((e|E)[\-+]?[0-9]+)?|pi|π))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex _operation = new Regex(@"^(?<operation>\+|-|\*|\/|\^)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex _function = new Regex(@"^(?<function>sin|cos|tan|exp|ln|log|log2|sqrt|!)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex _function = new Regex(@"^(?<function>sin|cos|tan|exp|ln|log|log2|sqrt|root|min|max|!)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex _variable = new Regex(@"^(?<variable>[a-z][a-z0-9]*)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private enum OperandType
@@ -41,6 +41,12 @@ namespace Veggerby.Algorithm.Calculus.Parser
 
                 if (remain.StartsWith(","))
                 {
+                    // treat comma as "closing one group and starting a new group"
+                    // ie max(x,y) => max(x)(y)
+                    var parent = (Group)currentGroup.Parent;
+                    var group = new Group(parent);
+                    parent.Add(group);
+                    currentGroup = group;
                     remain = remain.Substring(1).Trim();
                 }
 
@@ -165,6 +171,13 @@ namespace Veggerby.Algorithm.Calculus.Parser
                         return Minimum.Create(left, right);
                     case "max":
                         return Maximum.Create(left, right);
+                    case "root":
+                        if (!left.IsConstant() || !((Constant)left).IsInteger())
+                        {
+                            throw new Exception("Invalid root value");
+                        }
+
+                        return Root.Create((int)((Constant)left).Value, right);
                     default:
                         throw new NotSupportedException("Invalid operation");
                 }

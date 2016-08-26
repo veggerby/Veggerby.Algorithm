@@ -21,7 +21,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
         private static string[] _unaryOperations = new [] { "!" };
         private static string[] _binaryOperations = new [] { "^", "/", "*", "-", "+" };
         private static string[] _unaryFunctions = new [] { "sin", "cos", "tan", "exp", "log", "ln", "sqrt" };
-        private static string[] _binaryFunctions = new [] { "max", "min" };
+        private static string[] _binaryFunctions = new [] { "max", "min", "root" };
 
         private static string[] _operations =
             _unaryOperations

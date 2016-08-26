@@ -90,6 +90,34 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             }
 
             [Fact]
+            public void Should_binary_function()
+            {
+                // arrange
+
+                // act
+                var actual = FunctionParser.Parse("max(3,x)");
+
+                // assert
+                actual.ShouldBeOfType<Maximum>();
+                ((Maximum)actual).Left.ShouldBe(Constant.Create(3));
+                ((Maximum)actual).Right.ShouldBe(Variable.x);
+            }
+
+            [Fact]
+            public void Should_root_function()
+            {
+                // arrange
+
+                // act
+                var actual = FunctionParser.Parse("root(3,x)");
+
+                // assert
+                actual.ShouldBeOfType<Root>();
+                ((Root)actual).Exponent.ShouldBe(3);
+                ((Root)actual).Inner.ShouldBe(Variable.x);
+            }
+
+            [Fact]
             public void Should_parse_complex_function()
             {
                 // arrange
@@ -140,7 +168,6 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
                 // assert
                 actual.Message.ShouldBe("Parenthesis not properly nested");
             }
-
 
             [Fact]
             public void Should_fail_with_unmatching_parenthesis_close_nested()
