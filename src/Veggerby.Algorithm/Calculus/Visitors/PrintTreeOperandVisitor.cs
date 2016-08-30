@@ -1,8 +1,16 @@
+using System.IO;
+
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
     public class PrintTreeOperandVisitor : IOperandVisitor
     {
+        private readonly TextWriter _writer;
         private string _indent = string.Empty;
+
+        public PrintTreeOperandVisitor(TextWriter writer)
+        {
+            _writer = writer;
+        }
 
         private void Indent()
         {
@@ -16,7 +24,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         private void VisitBinary(IBinaryOperation operand)
         {
-            System.Console.WriteLine($"{_indent}{operand.GetType().Name} {operand}");
+            _writer.WriteLine($"{_indent}{operand.GetType().Name} {operand}");
             Indent();
             operand.Left.Accept(this);
             operand.Right.Accept(this);
@@ -25,7 +33,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         private void VisitUnary(IUnaryOperation operand)
         {
-            System.Console.WriteLine($"{_indent}{operand.GetType().Name} {operand}");
+            _writer.WriteLine($"{_indent}{operand.GetType().Name} {operand}");
             Indent();
             operand.Inner.Accept(this);
             Outdent();
@@ -33,7 +41,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public void Visit(Variable operand)
         {
-            System.Console.WriteLine($"{_indent}Variable: {operand.Identifier}");
+            _writer.WriteLine($"{_indent}Variable: {operand.Identifier}");
         }
 
         public void Visit(Subtraction operand)
@@ -108,17 +116,17 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public void Visit(NamedConstant operand)
         {
-            System.Console.WriteLine($"{_indent}Constant: {operand.Symbol}");
+            _writer.WriteLine($"{_indent}Constant: {operand.Symbol}");
         }
 
         public void Visit(Constant operand)
         {
-            System.Console.WriteLine($"{_indent}Constant: {operand.Value}");
+            _writer.WriteLine($"{_indent}Constant: {operand.Value}");
         }
 
         public void Visit(Fraction operand)
         {
-            System.Console.WriteLine($"{_indent}Fraction: {operand.Numerator}/{operand.Denominator}");
+            _writer.WriteLine($"{_indent}Fraction: {operand.Numerator}/{operand.Denominator}");
         }
 
         public void Visit(Minimum operand)

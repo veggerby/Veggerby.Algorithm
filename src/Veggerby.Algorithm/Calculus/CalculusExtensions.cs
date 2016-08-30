@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Veggerby.Algorithm.Calculus.Visitors;
 
@@ -112,9 +113,9 @@ namespace Veggerby.Algorithm.Calculus
             return visitor.Result;
         }
 
-        public static void PrintTree(this Operand operand)
+        public static void PrintTree(this Operand operand, TextWriter writer)
         {
-            var visitor = new PrintTreeOperandVisitor();
+            var visitor = new PrintTreeOperandVisitor(writer);
             operand.Accept(visitor);
         }
     }
