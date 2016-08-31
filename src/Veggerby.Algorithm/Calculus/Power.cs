@@ -26,22 +26,7 @@ namespace Veggerby.Algorithm.Calculus
                 throw new ArgumentNullException(nameof(right));
             }
 
-            if (left.Equals(Constant.One) || right.Equals(Constant.Zero))
-            {
-                return 1;
-            }
-
-            if (right.Equals(Constant.One))
-            {
-                return left;
-            }
-
-            if (left.IsConstant() && right.IsConstant())
-            {
-                return (Constant)left ^ (Constant)right;
-            }
-
-            return new Power(left, right);
+            return new Power(left, right).Reduce();
         }
     }
 }

@@ -50,9 +50,14 @@ namespace Veggerby.Algorithm.Calculus
             return operand is Negative;
         }
 
-        public static bool IsInteger(this Constant constant)
+         public static bool IsInteger(this Constant constant)
         {
             return constant.Value.IsInteger();
+        }
+
+        public static bool IsInteger(this Operand operand)
+        {
+            return operand.IsConstant() && ((Constant)operand).IsInteger();
         }
 
         public static bool IsInteger(this double constant)
@@ -117,6 +122,13 @@ namespace Veggerby.Algorithm.Calculus
         {
             var visitor = new PrintTreeOperandVisitor(writer);
             operand.Accept(visitor);
+        }
+
+        public static Operand Reduce(this Operand operand)
+        {
+            var visitor = new ReduceOperandVisitor();
+            operand.Accept(visitor);
+            return visitor.Result;
         }
     }
 }

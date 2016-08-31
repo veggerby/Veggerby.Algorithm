@@ -46,12 +46,7 @@ namespace Veggerby.Algorithm.Calculus
 
         public static Operand Create(int exponent, Operand inner)
         {
-            if (exponent == 1)
-            {
-                return inner;
-            }
-
-            return new Root(exponent, inner);
+            return new Root(exponent, inner).Reduce();
         }
     }
 }

@@ -26,17 +26,7 @@ namespace Veggerby.Algorithm.Calculus
                 throw new ArgumentNullException(nameof(right));
             }
 
-            if (left.Equals(right))
-            {
-                return left;
-            }
-
-            if (left.IsConstant() && right.IsConstant())
-            {
-                return Math.Max((Constant)left, (Constant)right);
-            }
-
-            return new Maximum(left, right);
+            return new Maximum(left, right).Reduce();
         }
     }
 }

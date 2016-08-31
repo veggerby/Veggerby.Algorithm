@@ -26,17 +26,7 @@ namespace Veggerby.Algorithm.Calculus
                 throw new ArgumentNullException(nameof(right));
             }
 
-            if (left.Equals(right))
-            {
-                return left;
-            }
-
-            if (left.IsConstant() && right.IsConstant())
-            {
-                return Math.Min((Constant)left, (Constant)right);
-            }
-
-            return new Minimum(left, right);
+            return new Minimum(left, right).Reduce();
         }
     }
 }

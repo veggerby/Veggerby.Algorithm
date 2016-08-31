@@ -213,24 +213,7 @@ namespace Veggerby.Algorithm.Calculus
 
         public static Operand Create(int numerator, int denominator)
         {
-            if (denominator < 0)
-            {
-                return Fraction.Create(-numerator, -denominator); // flip sign on both 1/-x -> -1/x and -1/-x -> 1/x
-            }
-
-            var gcd = GreatestCommonDivisor.Euclid(Math.Abs(numerator), Math.Abs(denominator));
-
-            if (gcd > 1)
-            {
-                return Fraction.Create(numerator / gcd, denominator / gcd);
-            }
-
-            if (denominator == 1)
-            {
-                return numerator;
-            }
-
-            return new Fraction(numerator, denominator);
+            return new Fraction(numerator, denominator).Reduce();
         }
     }
 }

@@ -26,32 +26,7 @@ namespace Veggerby.Algorithm.Calculus
                 throw new ArgumentNullException(nameof(right));
             }
 
-            if (left.Equals(right))
-            {
-                return 0;
-            }
-
-            if (left.IsConstant() && right.IsConstant())
-            {
-                return (Constant)left - (Constant)right;
-            }
-
-            if (left.Equals(Constant.Zero))
-            {
-                return Negative.Create(right);
-            }
-
-            if (right.IsNegative())
-            {
-                return Addition.Create(left, ((Negative)right).Inner);
-            }
-
-            if (right.IsConstant() && ((Constant)right).Value < 0)
-            {
-                return Addition.Create(left, -((Constant)right).Value);
-            }
-
-            return new Subtraction(left, right);
+            return new Subtraction(left, right).Reduce();
         }
     }
 }

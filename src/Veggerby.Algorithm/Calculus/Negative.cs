@@ -15,12 +15,7 @@ namespace Veggerby.Algorithm.Calculus
 
         public static Operand Create(Operand inner)
         {
-            if (inner.IsConstant())
-            {
-                return Constant.Create(-((Constant)inner).Value);
-            }
-
-            return new Negative(inner);
+            return new Negative(inner).Reduce();
         }
     }
 }
