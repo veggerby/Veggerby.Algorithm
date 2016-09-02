@@ -8,351 +8,290 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
 {
     public class EvaluateOperandVisitorTests
     {
-        public class Visit_Addition
+        [Fact]
+        public void Should_evaluate_addition()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Addition.Create(Constant.One, Constant.Create(3));
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = Addition.Create(Constant.One, Constant.Create(3));
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(4);
-            }
+            // assert
+            visitor.Result.ShouldBe(4);
         }
 
-        public class Visit_Constant
+        [Fact]
+        public void Should_evaluate_constant()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Constant.Create(3);
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = Constant.Create(3);
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(3);
-            }
+            // assert
+            visitor.Result.ShouldBe(3);
         }
 
-
-        public class Visit_Cosine
+        [Fact]
+        public void Should_evaluate_cosine()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Cosine.Create(Constant.Pi);
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = Cosine.Create(Constant.Pi);
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(-1);
-            }
+            // assert
+            visitor.Result.ShouldBe(-1);
         }
 
-
-        public class Visit_Division
+        [Fact]
+        public void Should_evaluate_division()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Division.Create(Constant.Create(4), Constant.Create(2));
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = Division.Create(Constant.Create(4), Constant.Create(2));
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(2);
-            }
+            // assert
+            visitor.Result.ShouldBe(2);
         }
 
-
-        public class Visit_Exponential
+        [Fact]
+        public void Should_evaluate_exponential()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Exponential.Create(1);
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = Exponential.Create(1);
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(Math.E);
-            }
+            // assert
+            visitor.Result.ShouldBe(Math.E);
         }
 
-        public class Visit_Factorial
+        [Fact]
+        public void Should_evaluate_factorial()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Factorial.Create(Constant.Create(4));
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = Factorial.Create(Constant.Create(4));
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(24);
-            }
+            // assert
+            visitor.Result.ShouldBe(24);
         }
 
-        public class Visit_LogarithmBase
+        [Fact]
+        public void Should_evaluate_log_base10()
         {
-            [Fact]
-            public void Should_evaluate_base10()
-            {
-                // arrange
-                var operation = LogarithmBase.Create(10, 1000);
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = LogarithmBase.Create(10, 1000);
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(3, 1e-15); // if no tolerance 3d should be equal to 3d :/
-            }
-
-            [Fact]
-            public void Should_evaluate_base2()
-            {
-                // arrange
-                var operation = LogarithmBase.Create(2, 1024);
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
-
-                // act
-                operation.Accept(visitor);
-
-                // assert
-                visitor.Result.ShouldBe(10, 1e-15); // if no tolerance 3d should be equal to 3d :/
-            }
+            // assert
+            visitor.Result.ShouldBe(3, 1e-15); // if no tolerance 3d should be equal to 3d :/
         }
 
-
-        public class Visit_Logarithm
+        [Fact]
+        public void Should_evaluate_log_base2()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Logarithm.Create(Constant.e);
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = LogarithmBase.Create(2, 1024);
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(1);
-            }
+            // assert
+            visitor.Result.ShouldBe(10, 1e-15); // if no tolerance 3d should be equal to 3d :/
         }
 
-        public class Visit_Multiplication
+        [Fact]
+        public void Should_evaluate_ln()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Multiplication.Create(Constant.Create(4), Constant.Create(2));
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = Logarithm.Create(Constant.e);
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(8);
-            }
+            // assert
+            visitor.Result.ShouldBe(1);
         }
 
-        public class Visit_NamedConstant
+        [Fact]
+        public void Should_evaluate_multiplication()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = NamedConstant.Create("a", 3);
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = Multiplication.Create(Constant.Create(4), Constant.Create(2));
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(3);
-            }
+            // assert
+            visitor.Result.ShouldBe(8);
         }
 
-        public class Visit_Power
+        [Fact]
+        public void Should_evaluate_named_constant()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Power.Create(Constant.Create(3), Constant.Create(2));
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = NamedConstant.Create("a", 3);
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(9);
-            }
+            // assert
+            visitor.Result.ShouldBe(3);
         }
 
-        public class Visit_Root
+        [Fact]
+        public void Should_evaluate_power()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Root.Create(2, Constant.Create(16));
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = Power.Create(Constant.Create(3), Constant.Create(2));
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(4);
-            }
+            // assert
+            visitor.Result.ShouldBe(9);
         }
 
-        public class Visit_Sine
+        [Fact]
+        public void Should_evaluate_root()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Sine.Create(Constant.Pi / 2);
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = Root.Create(2, Constant.Create(16));
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(1);
-            }
+            // assert
+            visitor.Result.ShouldBe(4);
         }
 
-        public class Visit_Subtraction
+        [Fact]
+        public void Should_evaluate_sine()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Subtraction.Create(Constant.Create(3), Constant.One);
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = Sine.Create(Constant.Pi / 2);
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(2);
-            }
+            // assert
+            visitor.Result.ShouldBe(1);
         }
 
-        public class Visit_Tangent
+        [Fact]
+        public void Should_evaluate_subtraction()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Tangent.Create(Constant.Pi);
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = Subtraction.Create(Constant.Create(3), Constant.One);
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(0, 1E-15); // -1.22464679914735E-16d
-            }
+            // assert
+            visitor.Result.ShouldBe(2);
         }
 
-        public class Visit_Variable
+        [Fact]
+        public void Should_evaluate_tangent()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Variable.Create("x");
-                var ctx = new OperationContext();
-                ctx.Add("x", 2);
-                var visitor = new EvaluateOperandVisitor(ctx);
+            // arrange
+            var operation = Tangent.Create(Constant.Pi);
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(2);
-            }
+            // assert
+            visitor.Result.ShouldBe(0, 1E-15); // -1.22464679914735E-16d
         }
 
-        public class Visit_Fraction
+        [Fact]
+        public void Should_evaluate_variable()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Fraction.Create(1, 4);
-                var visitor = new EvaluateOperandVisitor(new OperationContext());
+            // arrange
+            var operation = Variable.Create("x");
+            var ctx = new OperationContext();
+            ctx.Add("x", 2);
+            var visitor = new EvaluateOperandVisitor(ctx);
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(0.25);
-            }
+            // assert
+            visitor.Result.ShouldBe(2);
         }
 
-        public class Visit_Minimum
+        [Fact]
+        public void Should_evaluate_fraction()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Minimum.Create(Variable.x, 4);
-                var ctx = new OperationContext();
-                ctx.Add("x", 2);
-                var visitor = new EvaluateOperandVisitor(ctx);
+            // arrange
+            var operation = Fraction.Create(1, 4);
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(2);
-            }
+            // assert
+            visitor.Result.ShouldBe(0.25);
         }
 
-        public class Visit_Maximum
+        [Fact]
+        public void Should_evaluate_minimum()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Maximum.Create(Variable.x, 4);
-                var ctx = new OperationContext();
-                ctx.Add("x", 2);
-                var visitor = new EvaluateOperandVisitor(ctx);
+            // arrange
+            var operation = Minimum.Create(Variable.x, 4);
+            var ctx = new OperationContext();
+            ctx.Add("x", 2);
+            var visitor = new EvaluateOperandVisitor(ctx);
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(4);
-            }
+            // assert
+            visitor.Result.ShouldBe(2);
+        }
+
+        [Fact]
+        public void Should_evaluate_maximum()
+        {
+            // arrange
+            var operation = Maximum.Create(Variable.x, 4);
+            var ctx = new OperationContext();
+            ctx.Add("x", 2);
+            var visitor = new EvaluateOperandVisitor(ctx);
+
+            // act
+            operation.Accept(visitor);
+
+            // assert
+            visitor.Result.ShouldBe(4);
         }
     }
 }

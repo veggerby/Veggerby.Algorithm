@@ -7,362 +7,302 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
 {
     public class ToStringOperandVisitorTests
     {
-        public class Visit_Addition
+        [Fact]
+        public void Should_return_tostring_addition()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Addition.Create(Variable.x, Constant.Create(3));
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Addition.Create(Variable.x, Constant.Create(3));
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("x+3");
-            }
+            // assert
+            visitor.Result.ShouldBe("x+3");
         }
 
-        public class Visit_Constant
+        [Theory]
+        [InlineData(1, "1")]
+        [InlineData(3.2, "3.2")]
+        [InlineData(3.0000001, "3.0000001")]
+        [InlineData(3.000000, "3")]
+        public void Should_return_correct_constant_string(double value, string expected)
         {
-            [Theory]
-            [InlineData(1, "1")]
-            [InlineData(3.2, "3.2")]
-            [InlineData(3.0000001, "3.0000001")]
-            [InlineData(3.000000, "3")]
-            public void Should_return_correct_string(double value, string expected)
-            {
-                // arrange
-                var operation = Constant.Create(value);
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Constant.Create(value);
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe(expected);
-            }
+            // assert
+            visitor.Result.ShouldBe(expected);
         }
 
-
-        public class Visit_Cosine
+        [Fact]
+        public void Should_return_tostring_cosine()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Cosine.Create(Variable.x);
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Cosine.Create(Variable.x);
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("cos(x)");
-            }
+            // assert
+            visitor.Result.ShouldBe("cos(x)");
         }
 
-
-        public class Visit_Division
+        [Fact]
+        public void Should_return_tostring_division()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Division.Create(Variable.x, Constant.Create(2));
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Division.Create(Variable.x, Constant.Create(2));
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("x/2");
-            }
+            // assert
+            visitor.Result.ShouldBe("x/2");
         }
 
-
-        public class Visit_Exponential
+        [Fact]
+        public void Should_return_tostring_exponential()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Exponential.Create(Variable.x);
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Exponential.Create(Variable.x);
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("exp(x)");
-            }
+            // assert
+            visitor.Result.ShouldBe("exp(x)");
         }
 
-        public class Visit_Factorial
+        [Fact]
+        public void Should_return_tostring_factorial()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Factorial.Create(Variable.x);
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Factorial.Create(Variable.x);
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("x!");
-            }
+            // assert
+            visitor.Result.ShouldBe("x!");
         }
 
-        public class Visit_LogarithmBase
+        [Fact]
+        public void Should_return_tostring_log_base10()
         {
-            [Fact]
-            public void Should_evaluate_base10()
-            {
-                // arrange
-                var operation = LogarithmBase.Create(10, Variable.x);
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = LogarithmBase.Create(10, Variable.x);
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("log(x)");
-            }
-
-            [Fact]
-            public void Should_evaluate_base2()
-            {
-                // arrange
-                var operation = LogarithmBase.Create(2, Variable.x);
-                var visitor = new ToStringOperandVisitor();
-
-                // act
-                operation.Accept(visitor);
-
-                // assert
-                visitor.Result.ShouldBe("log2(x)");
-            }
+            // assert
+            visitor.Result.ShouldBe("log(x)");
         }
 
-        public class Visit_Logarithm
+        [Fact]
+        public void Should_return_tostring_log_base2()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Logarithm.Create(Variable.x);
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = LogarithmBase.Create(2, Variable.x);
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("ln(x)");
-            }
+            // assert
+            visitor.Result.ShouldBe("log2(x)");
         }
 
-        public class Visit_Multiplication
+        [Fact]
+        public void Should_return_tostring_ln()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Multiplication.Create(Variable.x, Constant.Create(2));
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Logarithm.Create(Variable.x);
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("2*x");
-            }
+            // assert
+            visitor.Result.ShouldBe("ln(x)");
         }
 
-        public class Visit_NamedConstant
+        [Fact]
+        public void Should_return_tostring_multiplication()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = NamedConstant.Create("a", 3);
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Multiplication.Create(Variable.x, Constant.Create(2));
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("a");
-            }
+            // assert
+            visitor.Result.ShouldBe("2*x");
         }
 
-        public class Visit_Power
+        [Fact]
+        public void Should_return_tostring_named_constant()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Power.Create(Variable.x, Constant.Create(2));
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = NamedConstant.Create("a", 3);
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("x^2");
-            }
+            // assert
+            visitor.Result.ShouldBe("a");
         }
 
-        public class Visit_Root
+        [Fact]
+        public void Should_return_tostring_power()
         {
-            [Fact]
-            public void Should_evaluate_sqrt()
-            {
-                // arrange
-                var operation = Root.Create(2, Variable.x);
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Power.Create(Variable.x, Constant.Create(2));
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("sqrt(x)");
-            }
-
-            [Fact]
-            public void Should_evaluate_third_root()
-            {
-                // arrange
-                var operation = Root.Create(3, Variable.x);
-                var visitor = new ToStringOperandVisitor();
-
-                // act
-                operation.Accept(visitor);
-
-                // assert
-                visitor.Result.ShouldBe("root(3, x)");
-            }
+            // assert
+            visitor.Result.ShouldBe("x^2");
         }
 
-        public class Visit_Sine
+        [Fact]
+        public void Should_return_tostring_sqrt()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Sine.Create(Variable.x);
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Root.Create(2, Variable.x);
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("sin(x)");
-            }
+            // assert
+            visitor.Result.ShouldBe("sqrt(x)");
         }
 
-        public class Visit_Subtraction
+        [Fact]
+        public void Should_return_tostring_cubic_root()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Subtraction.Create(Variable.x, Constant.One);
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Root.Create(3, Variable.x);
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("x-1");
-            }
+            // assert
+            visitor.Result.ShouldBe("root(3, x)");
         }
 
-        public class Visit_Tangent
+        [Fact]
+        public void Should_return_tostring_sine()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Tangent.Create(Variable.x);
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Sine.Create(Variable.x);
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("tan(x)");
-            }
+            // assert
+            visitor.Result.ShouldBe("sin(x)");
         }
 
-        public class Visit_Variable
+        [Fact]
+        public void Should_return_tostring_subtraction()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Variable.Create("x");
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Subtraction.Create(Variable.x, Constant.One);
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("x");
-            }
+            // assert
+            visitor.Result.ShouldBe("x-1");
         }
 
-        public class Visit_Fraction
+        [Fact]
+        public void Should_return_tostring_tangent()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Fraction.Create(1, 4);
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Tangent.Create(Variable.x);
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("1/4");
-            }
+            // assert
+            visitor.Result.ShouldBe("tan(x)");
         }
 
-        public class Visit_Minimum
+        [Fact]
+        public void Should_return_tostring_variable()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Minimum.Create(Variable.x, 4);
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Variable.Create("x");
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("min(x, 4)");
-            }
+            // assert
+            visitor.Result.ShouldBe("x");
         }
 
-        public class Visit_Maximum
+        [Fact]
+        public void Should_return_tostring_fraction()
         {
-            [Fact]
-            public void Should_evaluate()
-            {
-                // arrange
-                var operation = Maximum.Create(Variable.x, 4);
-                var visitor = new ToStringOperandVisitor();
+            // arrange
+            var operation = Fraction.Create(1, 4);
+            var visitor = new ToStringOperandVisitor();
 
-                // act
-                operation.Accept(visitor);
+            // act
+            operation.Accept(visitor);
 
-                // assert
-                visitor.Result.ShouldBe("max(x, 4)");
-            }
+            // assert
+            visitor.Result.ShouldBe("1/4");
+        }
+
+        [Fact]
+        public void Should_return_tostring_minimum()
+        {
+            // arrange
+            var operation = Minimum.Create(Variable.x, 4);
+            var visitor = new ToStringOperandVisitor();
+
+            // act
+            operation.Accept(visitor);
+
+            // assert
+            visitor.Result.ShouldBe("min(x, 4)");
+        }
+
+        [Fact]
+        public void Should_return_tostring_maximum()
+        {
+            // arrange
+            var operation = Maximum.Create(Variable.x, 4);
+            var visitor = new ToStringOperandVisitor();
+
+            // act
+            operation.Accept(visitor);
+
+            // assert
+            visitor.Result.ShouldBe("max(x, 4)");
         }
     }
 }

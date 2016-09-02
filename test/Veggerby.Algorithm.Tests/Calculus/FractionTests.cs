@@ -6,104 +6,98 @@ namespace Veggerby.Algorithm.Tests.Calculus
 {
     public class FractionTests
     {
-        public class ctor
+        [Fact]
+        public void Should_initialize_from_constructor()
         {
-            [Fact]
-            public void Should_initialize_from_constructor()
-            {
-                // arrange
-                
-                // act
-                var actual = (Fraction)Fraction.Create(1, 2);
-                
-                // assert
-                actual.Numerator.ShouldBe(1);
-                actual.Denominator.ShouldBe(2);
-            }
+            // arrange
 
-            [Fact]
-            public void Should_reduce_with_gcd()
-            {
-                // arrange
-                
-                // act
-                var actual = (Fraction)Fraction.Create(81, 36);
-                
-                // assert
-                actual.Numerator.ShouldBe(9);
-                actual.Denominator.ShouldBe(4);
-            }
+            // act
+            var actual = (Fraction)Fraction.Create(1, 2);
+
+            // assert
+            actual.Numerator.ShouldBe(1);
+            actual.Denominator.ShouldBe(2);
         }
 
-        public class _Equals
+        [Fact]
+        public void Should_reduce_with_gcd()
         {
-            [Fact]
-            public void Should_equal_self()
-            {
-                // arrange
-                var v = Fraction.Create(1, 2);
-                
-                // act
-                var actual = v.Equals(v);
+            // arrange
 
-                // assert
-                actual.ShouldBeTrue();
-            }
+            // act
+            var actual = (Fraction)Fraction.Create(81, 36);
 
-            [Fact]
-            public void Should_not_equal_null()
-            {
-                // arrange
-                var v = Fraction.Create(1, 2);
-                
-                // act
-                var actual = v.Equals(null);
+            // assert
+            actual.Numerator.ShouldBe(9);
+            actual.Denominator.ShouldBe(4);
+        }
 
-                // assert
-                actual.ShouldBeFalse();
-            }
-            
-            [Fact]
-            public void Should_equal_same_operands()
-            {
-                // arrange
-                var v1 = Fraction.Create(1, 2);
-                var v2 = Fraction.Create(1, 2);
-                
-                // act
-                var actual = v1.Equals(v2);
+        [Fact]
+        public void Should_equal_self()
+        {
+            // arrange
+            var v = Fraction.Create(1, 2);
 
-                // assert
-                actual.ShouldBeTrue();
-            }
+            // act
+            var actual = v.Equals(v);
 
-            [Fact]
-            public void Should_not_equal_different_operands()
-            {
-                // arrange
-                var v1 = Fraction.Create(1, 2);
-                var v2 = Fraction.Create(2, 3);
-                
-                // act
-                var actual = v1.Equals(v2);
+            // assert
+            actual.ShouldBeTrue();
+        }
 
-                // assert
-                actual.ShouldBeFalse();
-            }
+        [Fact]
+        public void Should_not_equal_null()
+        {
+            // arrange
+            var v = Fraction.Create(1, 2);
 
-            [Fact]
-            public void Should_not_equal_different_operation_identical_operands()
-            {
-                // arrange
-                var v1 = Fraction.Create(1, 2);
-                var v2 = Sine.Create(Variable.x);
-                
-                // act
-                var actual = v1.Equals(v2);
+            // act
+            var actual = v.Equals(null);
 
-                // assert
-                actual.ShouldBeFalse();
-            }
+            // assert
+            actual.ShouldBeFalse();
+        }
+
+        [Fact]
+        public void Should_equal_same_operands()
+        {
+            // arrange
+            var v1 = Fraction.Create(1, 2);
+            var v2 = Fraction.Create(1, 2);
+
+            // act
+            var actual = v1.Equals(v2);
+
+            // assert
+            actual.ShouldBeTrue();
+        }
+
+        [Fact]
+        public void Should_not_equal_different_operands()
+        {
+            // arrange
+            var v1 = Fraction.Create(1, 2);
+            var v2 = Fraction.Create(2, 3);
+
+            // act
+            var actual = v1.Equals(v2);
+
+            // assert
+            actual.ShouldBeFalse();
+        }
+
+        [Fact]
+        public void Should_not_equal_different_operation_identical_operands()
+        {
+            // arrange
+            var v1 = Fraction.Create(1, 2);
+            var v2 = Sine.Create(Variable.x);
+
+            // act
+            var actual = v1.Equals(v2);
+
+            // assert
+            actual.ShouldBeFalse();
         }
     }
 }
