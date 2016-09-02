@@ -177,7 +177,9 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 // arrange
                 var operation = NamedConstant.Create("a", 3);
                 var visitor = new IntegralOperandVisitor(Variable.x);
-                Operand expected = "a*x+c";
+                Operand expected = Addition.Create(
+                    Multiplication.Create(operation, Variable.x),
+                    Variable.Create("c"));
 
                 // act
                 operation.Accept(visitor);
