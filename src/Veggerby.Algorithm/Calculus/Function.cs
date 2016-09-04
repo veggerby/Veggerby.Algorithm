@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Veggerby.Algorithm.Calculus.Parser;
 using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
@@ -43,7 +44,7 @@ namespace Veggerby.Algorithm.Calculus
             return Operand.GetHashCode();
         }
 
-        public static Operand Create(string identifier, Operand operand)
+        public static Function Create(string identifier, Operand operand)
         {
             if (string.IsNullOrEmpty(identifier))
             {
@@ -56,6 +57,13 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             return new Function(identifier, operand);
+        }
+
+        public static implicit operator Function(string value)
+        {
+            return Function.Create(
+                "f",
+                FunctionParser.Parse(value));
         }
     }
 }
