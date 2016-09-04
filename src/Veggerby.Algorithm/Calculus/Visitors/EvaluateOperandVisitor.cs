@@ -27,7 +27,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public void Visit(Variable operand)
         {
-            Result = _context.Get(operand.Identifier);
+            Result = _context.GetVariable(operand.Identifier);
         }
 
         public void Visit(Subtraction operand)
