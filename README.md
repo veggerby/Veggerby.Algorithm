@@ -1,5 +1,7 @@
 # Veggerby.Algorithm
 
+[![Build Status](https://travis-ci.org/veggerby/Veggerby.Algorithm.svg?branch=master)](https://travis-ci.org/veggerby/Veggerby.Algorithm)
+
 Contains code for:
 
 * Linear Algebra
