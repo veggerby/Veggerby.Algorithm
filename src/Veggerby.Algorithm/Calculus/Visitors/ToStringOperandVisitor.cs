@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
@@ -27,6 +28,15 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             {
                 _result.Append(")");
             }
+        }
+
+        public void Visit(Function operand)
+        {
+            _result.Append($@"{operand.Identifier}(");
+            var variables = string.Join(", ", operand.Variables.Select(x => x.Identifier));
+            _result.Append(variables);
+            _result.Append(")=");
+            operand.Operand.Accept(this);
         }
 
         public void Visit(Variable operand)

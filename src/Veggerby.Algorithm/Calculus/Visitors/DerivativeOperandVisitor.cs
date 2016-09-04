@@ -20,6 +20,12 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return visitor.Result;
         }
 
+        public void Visit(Function operand)
+        {
+            var innerOperand = GetDerivative(operand.Operand);
+            Result = Function.Create($"{operand.Identifier}'", innerOperand);
+        }
+
         public void Visit(Variable operand)
         {
             Result = operand.Equals(_variable) ? 1 : 0;

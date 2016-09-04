@@ -8,6 +8,20 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
     public class ToStringOperandVisitorTests
     {
         [Fact]
+        public void Should_return_tostring_function()
+        {
+            // arrange
+            var operation = Function.Create("f", Sine.Create(Variable.x));
+            var visitor = new ToStringOperandVisitor();
+
+            // act
+            operation.Accept(visitor);
+
+            // assert
+            visitor.Result.ShouldBe("f(x)=sin(x)");
+        }
+
+        [Fact]
         public void Should_return_tostring_addition()
         {
             // arrange

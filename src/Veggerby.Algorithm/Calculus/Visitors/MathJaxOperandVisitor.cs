@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
@@ -7,6 +8,15 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         private readonly StringBuilder _result = new StringBuilder();
 
         public string Result => _result.ToString();
+
+        public void Visit(Function operand)
+        {
+            _result.Append($@"{operand.Identifier}\left(");
+            var variables = string.Join(", ", operand.Variables.Select(x => x.Identifier));
+            _result.Append(variables);
+            _result.Append("\right) = ");
+            operand.Operand.Accept(this);
+        }
 
         public void Visit(Variable operand)
         {

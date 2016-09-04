@@ -82,6 +82,12 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             }
         }
 
+        public void Visit(Function operand)
+        {
+            var innerOperand = GetIntegral(operand.Operand);
+            Result = Function.Create(operand.Identifier.ToUpperInvariant(), innerOperand);
+        }
+
         public void Visit(Variable operand)
         {
             Result = operand.Equals(_variable)

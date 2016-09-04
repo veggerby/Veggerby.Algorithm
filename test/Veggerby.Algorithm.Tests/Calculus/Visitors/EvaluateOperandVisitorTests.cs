@@ -9,6 +9,20 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
     public class EvaluateOperandVisitorTests
     {
         [Fact]
+        public void Should_evaluate_function()
+        {
+            // arrange
+            var operation = Function.Create("f", Constant.Create(3));
+            var visitor = new EvaluateOperandVisitor(new OperationContext());
+
+            // act
+            operation.Accept(visitor);
+
+            // assert
+            visitor.Result.ShouldBe(3);
+        }
+
+        [Fact]
         public void Should_evaluate_addition()
         {
             // arrange

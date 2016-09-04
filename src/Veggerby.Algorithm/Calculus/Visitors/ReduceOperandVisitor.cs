@@ -7,6 +7,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
     {
         public Operand Result { get; private set; }
 
+        public void Visit(Function operand)
+        {
+            Result = Function.Create(operand.Identifier, operand.Operand.Reduce());
+        }
+
         public void Visit(Constant operand)
         {
             Result = operand;

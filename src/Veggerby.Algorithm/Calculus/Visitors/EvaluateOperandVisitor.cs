@@ -20,6 +20,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return visitor.Result;
         }
 
+        public void Visit(Function operand)
+        {
+            Result = Evaluate(operand.Operand);
+        }
+
         public void Visit(Variable operand)
         {
             Result = _context.Get(operand.Identifier);

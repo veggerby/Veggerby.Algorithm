@@ -9,6 +9,25 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
     public class IntegralOperandVisitorTests
     {
         [Fact]
+        public void Should_integrate_function()
+        {
+            // arrange
+            var operation = Function.Create("f", Constant.Create(3));
+            var visitor = new IntegralOperandVisitor(Variable.x);
+            var expected = "3*x+c";
+
+            // act
+            operation.Accept(visitor);
+
+            // assert
+            visitor.Result.ShouldBeOfType<Function>();
+            Function result = (Function)visitor.Result;
+            result.Identifier.ShouldBe("F");
+            result.Variables.ShouldBe(new[] { Variable.x, Variable.Create("c") });
+            result.Operand.ShouldBe(expected);
+        }
+
+        [Fact]
         public void Should_integrate_addition()
         {
             // arrange

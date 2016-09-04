@@ -9,6 +9,25 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
     public class DerivativeOperandVisitorTests
     {
         [Fact]
+        public void Should_derive_function()
+        {
+            // arrange
+            var operation = Function.Create("f", Variable.x);
+            var visitor = new DerivativeOperandVisitor(Variable.x);
+            var expected = Constant.One;
+
+            // act
+            operation.Accept(visitor);
+
+            // assert
+            visitor.Result.ShouldBeOfType<Function>();
+            Function result = (Function)visitor.Result;
+            result.Identifier.ShouldBe("f'");
+            result.Variables.ShouldBeEmpty();
+            result.Operand.ShouldBe(expected);
+        }
+
+        [Fact]
         public void Should_derive_addition()
         {
             // arrange

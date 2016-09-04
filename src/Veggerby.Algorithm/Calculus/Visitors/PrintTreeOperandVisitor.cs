@@ -39,6 +39,14 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             Outdent();
         }
 
+        public void Visit(Function operand)
+        {
+            _writer.WriteLine($"{_indent}Function: {operand.Identifier}");
+            Indent();
+            operand.Operand.Accept(this);
+            Outdent();
+        }
+
         public void Visit(Variable operand)
         {
             _writer.WriteLine($"{_indent}Variable: {operand.Identifier}");
