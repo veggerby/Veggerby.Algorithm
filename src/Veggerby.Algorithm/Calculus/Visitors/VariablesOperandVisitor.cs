@@ -19,6 +19,14 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             }
         }
 
+        public void Visit(FunctionReference operand)
+        {
+            foreach (var parameter in operand.Parameters)
+            {
+                parameter.Accept(this);
+            }
+        }
+
         public void Visit(Variable operand)
         {
             if (!_result.Contains(operand))

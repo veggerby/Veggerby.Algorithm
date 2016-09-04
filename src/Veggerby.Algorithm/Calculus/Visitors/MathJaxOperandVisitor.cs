@@ -18,6 +18,25 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             operand.Operand.Accept(this);
         }
 
+        public void Visit(FunctionReference operand)
+        {
+            _result.Append($@"{operand.Identifier}\left(");
+
+            var first = true;
+            foreach (var parameter in operand.Parameters)
+            {
+                if (!first)
+                {
+                    _result.Append(", ");
+                }
+
+                parameter.Accept(this);
+                first = false;
+            }
+
+            _result.Append("\right)");
+        }
+
         public void Visit(Variable operand)
         {
             _result.Append(operand.Identifier);

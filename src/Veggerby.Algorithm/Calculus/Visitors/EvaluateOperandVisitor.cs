@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
@@ -13,9 +15,9 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             _context = context;
         }
 
-        private double Evaluate(Operand operand)
+        private double Evaluate(Operand operand, OperationContext context = null)
         {
-            var visitor = new EvaluateOperandVisitor(_context);
+            var visitor = new EvaluateOperandVisitor(context ?? _context);
             operand.Accept(visitor);
             return visitor.Result;
         }
@@ -23,6 +25,31 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         public void Visit(Function operand)
         {
             Result = Evaluate(operand.Operand);
+        }
+
+        public void Visit(FunctionReference operand)
+        {
+            var f = _context.GetFunction(operand.Identifier);
+            if (f == null)
+            {
+                throw new Exception("Unknown function");
+            }
+
+            if (f.Variables.Count() != operand.Parameters.Count())
+            {
+                throw new Exception("Invalid parameter count");
+            }
+
+            var parameters = operand.Parameters.Select(x => x.Evaluate(_context));
+
+            var variables = f
+                .Variables
+                .Zip(operand.Parameters, (variable, parameter) => new KeyValuePair<string, double>(variable.Identifier, Evaluate(parameter)))
+                .ToList();
+
+            var context = new OperationContext(variables, _context.Functions);
+
+            Result = Evaluate(f, context);
         }
 
         public void Visit(Variable operand)

@@ -3,6 +3,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
     public interface IOperandVisitor
     {
         void Visit(Function operand);
+        void Visit(FunctionReference operand);
         void Visit(Constant operand);
         void Visit(NamedConstant operand);
         void Visit(Variable operand);

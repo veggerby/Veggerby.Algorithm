@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Veggerby.Algorithm.Calculus.Parser;
 using Veggerby.Algorithm.Calculus.Visitors;
 
@@ -18,7 +19,7 @@ namespace Veggerby.Algorithm.Calculus
 
             var visitor = new VariablesOperandVisitor();
             operand.Accept(visitor);
-            Variables = visitor.Result;
+            Variables = visitor.Result.OrderBy(x => x.Identifier).ToList();
         }
 
         public override void Accept(IOperandVisitor visitor)

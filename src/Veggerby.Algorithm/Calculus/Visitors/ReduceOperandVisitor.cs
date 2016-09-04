@@ -12,6 +12,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             Result = Function.Create(operand.Identifier, operand.Operand.Reduce());
         }
 
+        public void Visit(FunctionReference operand)
+        {
+            Result = FunctionReference.Create(operand.Identifier, operand.Parameters.Select(x => x.Reduce()));
+        }
+
         public void Visit(Constant operand)
         {
             Result = operand;

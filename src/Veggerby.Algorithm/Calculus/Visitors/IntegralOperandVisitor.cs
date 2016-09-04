@@ -88,6 +88,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             Result = Function.Create(operand.Identifier.ToUpperInvariant(), innerOperand);
         }
 
+        public void Visit(FunctionReference operand)
+        {
+            Result = null;
+        }
+
         public void Visit(Variable operand)
         {
             Result = operand.Equals(_variable)

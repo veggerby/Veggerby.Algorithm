@@ -23,8 +23,22 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             visitor.Result.ShouldBeOfType<Function>();
             Function result = (Function)visitor.Result;
             result.Identifier.ShouldBe("F");
-            result.Variables.ShouldBe(new[] { Variable.x, Variable.Create("c") });
+            result.Variables.ShouldBe(new[] { Variable.Create("c"), Variable.x });
             result.Operand.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void Should_return_null_integrate_function_reference()
+        {
+            // arrange
+            var operation = FunctionReference.Create("f", new[] { Variable.x });
+            var visitor = new IntegralOperandVisitor(Variable.x);
+
+            // act
+            operation.Accept(visitor);
+
+            // assert
+            visitor.Result.ShouldBeNull();
         }
 
         [Fact]

@@ -23,6 +23,22 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         }
 
         [Fact]
+        public void Should_evaluate_function_reference()
+        {
+            // arrange
+            var operation = FunctionReference.Create("f", new [] { Constant.Create(3) });
+            var ctx = new OperationContext();
+            ctx.Add(Function.Create("f", "z+1"));
+            var visitor = new EvaluateOperandVisitor(ctx);
+
+            // act
+            operation.Accept(visitor);
+
+            // assert
+            visitor.Result.ShouldBe(4);
+        }
+
+        [Fact]
         public void Should_evaluate_addition()
         {
             // arrange

@@ -47,6 +47,17 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             Outdent();
         }
 
+        public void Visit(FunctionReference operand)
+        {
+            _writer.WriteLine($"{_indent}Function: {operand.Identifier}");
+            Indent();
+            foreach (var parameter in operand.Parameters)
+            {
+                parameter.Accept(this);
+            }
+            Outdent();
+        }
+
         public void Visit(Variable operand)
         {
             _writer.WriteLine($"{_indent}Variable: {operand.Identifier}");

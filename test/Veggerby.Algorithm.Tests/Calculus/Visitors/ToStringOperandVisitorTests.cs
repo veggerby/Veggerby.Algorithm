@@ -22,6 +22,20 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         }
 
         [Fact]
+        public void Should_return_tostring_function_reference()
+        {
+            // arrange
+            var operation = FunctionReference.Create("f", new[] { Sine.Create(Variable.x), Power.Create(Variable.y, 2) });
+            var visitor = new ToStringOperandVisitor();
+
+            // act
+            operation.Accept(visitor);
+
+            // assert
+            visitor.Result.ShouldBe("f(sin(x), y^2)");
+        }
+
+        [Fact]
         public void Should_return_tostring_addition()
         {
             // arrange

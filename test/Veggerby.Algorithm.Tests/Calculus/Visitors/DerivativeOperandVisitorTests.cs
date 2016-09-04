@@ -28,6 +28,20 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         }
 
         [Fact]
+        public void Should_return_null_derive_function_reference()
+        {
+            // arrange
+            var operation = FunctionReference.Create("f", new[] { Variable.x });
+            var visitor = new DerivativeOperandVisitor(Variable.x);
+
+            // act
+            operation.Accept(visitor);
+
+            // assert
+            visitor.Result.ShouldBeNull();
+        }
+
+        [Fact]
         public void Should_derive_addition()
         {
             // arrange
