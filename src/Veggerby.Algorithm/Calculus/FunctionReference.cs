@@ -39,6 +39,11 @@ namespace Veggerby.Algorithm.Calculus
             return Parameters.Aggregate(Identifier.GetHashCode(), (seed, operand) => seed ^ operand.GetHashCode());
         }
 
+        public static Operand Create(string identifier, params Operand[] parameters)
+        {
+            return Create(identifier, parameters.AsEnumerable());
+        }
+
         public static Operand Create(string identifier, IEnumerable<Operand> parameters)
         {
             if (string.IsNullOrEmpty(identifier))

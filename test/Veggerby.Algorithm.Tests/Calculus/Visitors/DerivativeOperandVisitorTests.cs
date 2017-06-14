@@ -31,7 +31,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_null_derive_function_reference()
         {
             // arrange
-            var operation = FunctionReference.Create("f", new[] { Variable.x });
+            var operation = FunctionReference.Create("f", Variable.x);
             var visitor = new DerivativeOperandVisitor(Variable.x);
 
             // act

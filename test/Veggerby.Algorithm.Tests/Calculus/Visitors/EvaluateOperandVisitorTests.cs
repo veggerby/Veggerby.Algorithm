@@ -26,7 +26,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_evaluate_function_reference()
         {
             // arrange
-            var operation = FunctionReference.Create("f", new [] { Constant.Create(3) });
+            var operation = FunctionReference.Create("f", Constant.Create(3));
             var ctx = new OperationContext();
             ctx.Add(Function.Create("f", "z+1"));
             var visitor = new EvaluateOperandVisitor(ctx);

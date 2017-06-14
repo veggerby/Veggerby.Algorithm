@@ -12,7 +12,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             // arrange
 
             // act
-            var actual = (FunctionReference)FunctionReference.Create("f", new [] { Power.Create(Variable.x, 2) });
+            var actual = (FunctionReference)FunctionReference.Create("f", Power.Create(Variable.x, 2));
 
             // assert
             actual.Identifier.ShouldBe("f");
@@ -24,7 +24,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_equal_self()
         {
             // arrange
-            var v = FunctionReference.Create("f", new [] { Power.Create(Variable.x, 2) });
+            var v = FunctionReference.Create("f", Power.Create(Variable.x, 2));
 
             // act
             var actual = v.Equals(v);
@@ -37,7 +37,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_not_equal_null()
         {
             // arrange
-            var v = FunctionReference.Create("f", new [] { Power.Create(Variable.x, 2) });
+            var v = FunctionReference.Create("f", Power.Create(Variable.x, 2));
 
             // act
             var actual = v.Equals(null);
@@ -50,8 +50,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_equal_same_operands()
         {
             // arrange
-            var v1 = FunctionReference.Create("f", new [] { Power.Create(Variable.x, 2) });
-            var v2 = FunctionReference.Create("f", new [] { Power.Create(Variable.x, 2) });
+            var v1 = FunctionReference.Create("f", Power.Create(Variable.x, 2));
+            var v2 = FunctionReference.Create("f", Power.Create(Variable.x, 2));
 
             // act
             var actual = v1.Equals(v2);
@@ -64,8 +64,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_not_equal_same_operands_different_identifier()
         {
             // arrange
-            var v1 = FunctionReference.Create("f", new [] { Power.Create(Variable.x, 2) });
-            var v2 = FunctionReference.Create("g", new [] { Power.Create(Variable.x, 2) });
+            var v1 = FunctionReference.Create("f", Power.Create(Variable.x, 2));
+            var v2 = FunctionReference.Create("g", Power.Create(Variable.x, 2));
 
             // act
             var actual = v1.Equals(v2);
@@ -78,8 +78,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_not_equal_different_operands()
         {
             // arrange
-            var v1 = FunctionReference.Create("f", new [] { Power.Create(Variable.x, 2), Variable.x });
-            var v2 = FunctionReference.Create("g", new [] { Variable.y, Division.Create(Variable.x, 2) });
+            var v1 = FunctionReference.Create("f", Power.Create(Variable.x, 2), Variable.x);
+            var v2 = FunctionReference.Create("g", Variable.y, Division.Create(Variable.x, 2));
 
             // act
             var actual = v1.Equals(v2);
@@ -92,7 +92,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_not_equal_different_operation_identical_operands()
         {
             // arrange
-            var v1 = FunctionReference.Create("f", new [] { Power.Create(Variable.x, 2) });
+            var v1 = FunctionReference.Create("f", Power.Create(Variable.x, 2));
             var v2 = Sine.Create(Power.Create(Variable.x, 2));
 
             // act

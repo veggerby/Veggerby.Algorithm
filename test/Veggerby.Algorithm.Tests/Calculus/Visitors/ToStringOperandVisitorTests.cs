@@ -25,7 +25,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_tostring_function_reference()
         {
             // arrange
-            var operation = FunctionReference.Create("f", new[] { Sine.Create(Variable.x), Power.Create(Variable.y, 2) });
+            var operation = FunctionReference.Create("f", Sine.Create(Variable.x), Power.Create(Variable.y, 2));
             var visitor = new ToStringOperandVisitor();
 
             // act
