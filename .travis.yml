@@ -5,5 +5,5 @@ services:
 #before_install:
 #    - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 script:
-    - docker build -t veggerby/algorithm .
-    - docker run veggerby/algorithm dotnet test /app/test/Veggerby.Algorithm.Tests
+    - docker build -t veggerby/algorithm-test .
+    - docker run veggerby/algorithm-test dotnet test
