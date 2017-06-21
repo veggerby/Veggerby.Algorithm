@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Shouldly;
@@ -27,6 +28,8 @@ namespace Veggerby.Algorithm.Tests.Trees.MerkleTree
             var actualHash = BitConverter.ToString(actual.Hash);
             actualHash.ShouldBe(expectedHash);
             actual.Parent.ShouldBeNull();
+            actual.IsLeaf.ShouldBeTrue();
+            actual.Height.ShouldBe(0);
         }
 
         [Fact]
@@ -51,6 +54,61 @@ namespace Veggerby.Algorithm.Tests.Trees.MerkleTree
             var actualHash = BitConverter.ToString(actual.Hash);
             actualHash.ShouldBe(expectedHash);
             actual.Parent.ShouldBeNull();
+            actual.IsLeaf.ShouldBeFalse();
+            actual.Left.IsLeaf.ShouldBeTrue();
+            actual.Right.IsLeaf.ShouldBeTrue();
+            actual.Height.ShouldBe(1);
+            actual.Left.Height.ShouldBe(0);
+            actual.Right.Height.ShouldBe(0);
+        }
+
+        
+        [Fact]
+        public void Should_initialize_merkle_tree()
+        {
+            // arrange            
+            var list = Enumerable.Range(0, 7).Select(x => MerkleNode<string>.Create($"node-{x}")).ToArray();
+            var n0 = list[0];
+            var n1 = list[1];
+            var n2 = list[2];
+            var n3 = list[3];
+            var n4 = list[4];
+            var n5 = list[5];
+            var n6 = list[6];
+
+            var n01 = MerkleNode<string>.Create(n0, n1);
+            var n23 = MerkleNode<string>.Create(n2, n3);
+            var n45 = MerkleNode<string>.Create(n4, n5);
+            var n0123 = MerkleNode<string>.Create(n01, n23);
+            var n012345 = MerkleNode<string>.Create(n0123, n45);
+
+            // act 
+            var actual = MerkleNode<string>.Create(n012345, n6);
+            
+            // assert
+            actual.Height.ShouldBe(4);
+            actual.LeafNodeCount.ShouldBe(7);
+            actual.TotalNodeCount.ShouldBe(13);
+            n01.Hash.ShouldBe(n0.Hash.Concat(n1.Hash));
+            n23.Hash.ShouldBe(n2.Hash.Concat(n3.Hash));
+            n45.Hash.ShouldBe(n4.Hash.Concat(n5.Hash));
+            n0123.Hash.ShouldBe(n0.Hash.Concat(n1.Hash).Concat(n2.Hash).Concat(n3.Hash));
+            n012345.Hash.ShouldBe(n0.Hash.Concat(n1.Hash).Concat(n2.Hash).Concat(n3.Hash).Concat(n4.Hash).Concat(n5.Hash));
+            actual.Hash.ShouldBe(n0.Hash.Concat(n1.Hash).Concat(n2.Hash).Concat(n3.Hash).Concat(n4.Hash).Concat(n5.Hash).Concat(n6.Hash));
+        }
+        
+        [Fact]
+        public void Should_initialize_merkle_node_from_list()
+        {
+            // arrange
+            var list = Enumerable.Range(0, 13).Select(x => $"node-{x}").ToList();
+
+            // act 
+            var actual = MerkleNode<string>.Create(list, Encoding.UTF8.GetBytes);            
+            
+            // assert
+            actual.Height.ShouldBe(4);
+            actual.LeafNodeCount.ShouldBe(13);
         }
     }
 }

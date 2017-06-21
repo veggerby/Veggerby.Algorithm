@@ -19,6 +19,8 @@ namespace Veggerby.Algorithm.Tests.Trees
             actual.Right.ShouldBeNull();
             actual.Payload.ShouldBe("this");
             actual.Parent.ShouldBeNull();
+            actual.IsLeaf.ShouldBeTrue();
+            actual.Height.ShouldBe(0);
         }
 
         [Fact]
@@ -40,6 +42,12 @@ namespace Veggerby.Algorithm.Tests.Trees
             actual.Children.ShouldContain(left as IChildNode<IParentNode>);
             actual.Children.ShouldContain(right as IChildNode<IParentNode>);
             actual.Payload.ShouldBe("this");
+            actual.IsLeaf.ShouldBeFalse();
+            actual.Left.IsLeaf.ShouldBeTrue();
+            actual.Right.IsLeaf.ShouldBeTrue();
+            actual.Height.ShouldBe(1);
+            actual.Left.Height.ShouldBe(0);
+            actual.Right.Height.ShouldBe(0);
         }
     }
 }

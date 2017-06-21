@@ -21,6 +21,8 @@ namespace Veggerby.Algorithm.Trees
             set { SetParent(value); }
         }
 
+        public virtual bool IsLeaf => true;
+
         protected virtual void SetPayload(T payload)
         {
             _payload = payload;

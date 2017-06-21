@@ -9,7 +9,7 @@ namespace Veggerby.Algorithm.Trees
         private TNode _left;
         private TNode _right;
 
-        public TNode Left 
+        public TNode Left
         {
             get { return _left; }
             set { SetLeft(value); }
@@ -21,21 +21,29 @@ namespace Veggerby.Algorithm.Trees
             set { SetRight(value); }
         }
 
-        public IEnumerable<IChildNode<IParentNode>> Children 
+        public IEnumerable<IChildNode<IParentNode>> Children
         {
-            get 
+            get
             {
                 if (Left != null)
                 {
                     yield return Left as IChildNode<IParentNode>;
                 }
 
-                if (Right != null) 
+                if (Right != null)
                 {
                     yield return Right as IChildNode<IParentNode>;
                 }
             }
-        }        
+        }
+
+        public override bool IsLeaf => !Children.Any();
+
+        public int Height => IsLeaf ? 0 : Math.Max(Left.Height, Right.Height) + 1;
+
+        public int TotalNodeCount => (Left?.TotalNodeCount ?? 0) + (Right?.TotalNodeCount ?? 0) + 1;
+
+        public int LeafNodeCount => IsLeaf ? 1 : (Left?.LeafNodeCount ?? 0) + (Right?.LeafNodeCount ?? 0);
 
         protected void SetLeft(TNode left)
         {
