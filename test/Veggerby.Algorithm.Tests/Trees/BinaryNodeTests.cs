@@ -10,7 +10,7 @@ namespace Veggerby.Algorithm.Tests.Trees
         public void Should_initialize_binary_node_simple()
         {
             // arrange
-            // act 
+            // act
             var actual = new BinaryNode<string>("this");
 
             // assert
@@ -30,7 +30,7 @@ namespace Veggerby.Algorithm.Tests.Trees
             var left = new BinaryNode<string>("left");
             var right = new BinaryNode<string>("right");
 
-            // act 
+            // act
             var actual = new BinaryNode<string>("this", left, right);
 
             // assert

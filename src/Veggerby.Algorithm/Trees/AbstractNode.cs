@@ -15,7 +15,7 @@ namespace Veggerby.Algorithm.Trees
             set { SetPayload(value); }
         }
 
-        public TParent Parent 
+        public TParent Parent
         {
             get { return _parent; }
             set { SetParent(value); }

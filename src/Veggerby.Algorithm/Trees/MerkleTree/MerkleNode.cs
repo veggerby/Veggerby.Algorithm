@@ -41,7 +41,7 @@ namespace Veggerby.Algorithm.Trees.MerkleTree
         }
 
         public static IMerkleNode<T> Create(T chunk, Func<T, byte[]> bufferFunc, HashAlgorithm hashAlgorithm = null)
-        {            
+        {
             var buffer = bufferFunc(chunk);
             var hash = (hashAlgorithm ?? DefaultHashAlgorithm).ComputeHash(buffer);
             var merkleChunk = new MerkleChunk<T>(chunk, hash);
@@ -49,12 +49,12 @@ namespace Veggerby.Algorithm.Trees.MerkleTree
         }
 
         public static IMerkleNode<string> Create(string chunk, Encoding encoding = null, HashAlgorithm hashAlgorithm = null)
-        {            
+        {
             return MerkleNode<string>.Create(chunk, (encoding ?? Encoding.UTF8).GetBytes, hashAlgorithm);
         }
 
         public static IMerkleNode<T> Create(IEnumerable<T> chunks, Func<T, byte[]> bufferFunc, HashAlgorithm hashAlgorithm = null)
-        {            
+        {
             var count = chunks.Count();
 
             if (count == 0)
@@ -67,7 +67,7 @@ namespace Veggerby.Algorithm.Trees.MerkleTree
                 return Create(chunks.Single(), bufferFunc, hashAlgorithm);
             }
 
- 
+
             var leftChunks = chunks.Take(count / 2).ToList();
             var rightChunks = chunks.Skip(count / 2).ToList();
 

@@ -7,24 +7,24 @@ using System.Text;
 namespace Veggerby.Algorithm.Trees.MerkleTree
 {
     public class MerkleHash<T>
-    {   
-        private byte[] _value;    
+    {
+        private byte[] _value;
         private bool _isValid = false;
 
         public byte[] Hash
         {
             get { return _value; }
             set { SetHash(value); }
-        }        
+        }
 
         protected virtual void SetHash(byte[] hash)
         {
             _value = hash;
             _isValid = hash != null && hash.Any();
         }
-        
+
         public void SetInvalid()
-        {            
+        {
             _isValid = false;
         }
 

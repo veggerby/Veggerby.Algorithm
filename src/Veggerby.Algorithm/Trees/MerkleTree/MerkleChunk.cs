@@ -7,14 +7,14 @@ using System.Text;
 namespace Veggerby.Algorithm.Trees.MerkleTree
 {
     public class MerkleChunk<T> : MerkleHash<T>
-    {   
+    {
         private T _chunk;
 
         public T Chunk
         {
             get { return _chunk; }
             set { SetChunk(value); }
-        }    
+        }
 
         protected virtual void SetChunk(T chunk)
         {

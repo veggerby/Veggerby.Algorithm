@@ -6,10 +6,10 @@ using System.Linq;
 namespace Veggerby.Algorithm.LinearAlgebra
 {
     public class Vector
-    {        
+    {
         public Vector(int d)
         {
-            if (d <= 0) 
+            if (d <= 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(d));
             }
@@ -23,12 +23,12 @@ namespace Veggerby.Algorithm.LinearAlgebra
 
         public Vector(IEnumerable<double> values)
         {
-            if (values == null) 
+            if (values == null)
             {
                 throw new ArgumentNullException(nameof(values));
             }
-            
-            if (!values.Any()) 
+
+            if (!values.Any())
             {
                 throw new ArgumentException("Cannot create empty Vector", nameof(values));
             }
@@ -42,14 +42,14 @@ namespace Veggerby.Algorithm.LinearAlgebra
 
         public double this[int i]
         {
-            get 
-            { 
-                if (i < 0 || i >= Size) 
+            get
+            {
+                if (i < 0 || i >= Size)
                 {
                     throw new ArgumentOutOfRangeException(nameof(i));
                 }
 
-                return _values[i]; 
+                return _values[i];
             }
         }
 
