@@ -213,6 +213,13 @@ namespace Veggerby.Algorithm.Calculus.Parser
                 }
             }
 
+            if (node is MultiNode)
+            {
+                var multi = (MultiNode)node;
+                var inner = multi.Nodes.Select(Parse).ToList();
+                return FunctionReference.Create(multi.Value, inner);
+            }
+
             if (node is UnstructuredNode)
             {
                 return ParseSimpleNode(node);

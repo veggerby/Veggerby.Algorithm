@@ -102,6 +102,33 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
         }
 
         [Fact]
+        public void Should_parse_function_reference()
+        {
+            // arrange
+
+            // act
+            var actual = FunctionParser.Parse("f(3,x,x+2)");
+
+            // assert
+            actual.ShouldBeOfType<FunctionReference>();
+            ((FunctionReference)actual).Identifier.ShouldBe("f");
+            ((FunctionReference)actual).Parameters.ShouldBe(new[] { Constant.Create(3), Variable.x, Addition.Create(Variable.x, 2) });
+        }
+
+
+        [Fact]
+        public void Should_throw_exception_trying_to_parse_function_reference_no_parameters()
+        {
+            // arrange
+
+            // act
+            var actual = Should.Throw<Exception>(() => FunctionParser.Parse("f()"));
+
+            // assert
+            actual.Message.ShouldBe("Empty group: n/a");
+        }
+
+        [Fact]
         public void Should_root_function()
         {
             // arrange

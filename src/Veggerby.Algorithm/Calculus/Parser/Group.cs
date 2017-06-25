@@ -126,6 +126,32 @@ namespace Veggerby.Algorithm.Calculus.Parser
             }
         }
 
+        private void ReplaceFunctionReference(UnstructuredNode node)
+        {
+            var parameters = new List<Group>();
+            var operand = ChildNodes.Next(node);
+            while (operand is Group)
+            {
+                parameters.Add((Group)operand);
+                operand = ChildNodes.Next(operand);
+            }
+
+            if (!parameters.Any())
+            {
+                throw new Exception("Missing parameters");
+            }
+
+            var unaryNode = new MultiNode(node.Parent, node.Value, parameters);
+
+            foreach(var parameter in parameters)
+            {
+                parameter.Parent = unaryNode;
+                ChildNodes.Remove(parameter);
+            }
+
+            Replace(node, unaryNode);
+        }
+
         public void Restructure()
         {
             foreach (var group in ChildNodes.OfType<Group>())
@@ -142,9 +168,16 @@ namespace Veggerby.Algorithm.Calculus.Parser
 
                 foreach (var node in nodes)
                 {
-                    Replace(node);
+                    ReplaceFunctionReference(node);
                 }
             }
+
+            // var functionReferenceNodes = ChildNodes.OfType<UnstructuredNode>().Where(x => ChildNodes.Next(x) is Group).ToList();
+
+            // foreach (var node in functionReferenceNodes)
+            // {
+            //     Replace(node);
+            // }
 
             if (!ChildNodes.Any())
             {
