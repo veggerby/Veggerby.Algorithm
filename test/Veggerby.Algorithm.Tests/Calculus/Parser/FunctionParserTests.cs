@@ -23,6 +23,20 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
         }
 
         [Fact]
+        public void Should_parse_simple_function_with_priority()
+        {
+            // arrange
+
+            // act
+            var actual = FunctionParser.Parse("x+3*x");
+
+            // assert
+            actual.ShouldBeOfType<Addition>();
+            ((Addition)actual).Right.ShouldBe(Variable.x);
+            ((Addition)actual).Right.ShouldBeOfType<MulticastDelegate>();
+        }
+
+        [Fact]
         public void Should_parse_negative_constant()
         {
             // arrange
@@ -34,6 +48,33 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             actual.ShouldBeOfType<Subtraction>();
             ((Subtraction)actual).Left.ShouldBe(Variable.x);
             ((Subtraction)actual).Right.ShouldBe(Constant.Create(3));
+        }
+
+        [Fact]
+        public void Should_parse_positive_constant()
+        {
+            // arrange
+
+            // act
+            var actual = FunctionParser.Parse("x-+3");
+
+            // assert
+            actual.ShouldBeOfType<Subtraction>();
+            ((Subtraction)actual).Left.ShouldBe(Variable.x);
+            ((Subtraction)actual).Right.ShouldBe(Constant.Create(3));
+        }
+
+        [Fact]
+        public void Should_parse_simple_factorial()
+        {
+            // arrange
+
+            // act
+            var actual = FunctionParser.Parse("x!");
+
+            // assert
+            actual.ShouldBeOfType<Factorial>();
+            ((Factorial)actual).Inner.ShouldBe(Variable.x);
         }
 
         [Fact]
@@ -72,6 +113,35 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             actual.ShouldBeOfType<Addition>();
             ((Addition)actual).Left.ShouldBe(Negative.Create(Variable.x));
             ((Addition)actual).Right.ShouldBe(Constant.Create(3));
+        }
+
+        [Fact]
+        public void Should_parse_negative_v2()
+        {
+            // arrange
+
+            // act
+            var actual = FunctionParser.Parse("+x-3");
+
+            // assert
+            actual.ShouldBeOfType<Addition>();
+            ((Addition)actual).Left.ShouldBe(Negative.Create(Variable.x));
+            ((Addition)actual).Right.ShouldBe(Constant.Create(3));
+        }
+
+
+        [Fact]
+        public void Should_parse_negative_in_parenthesis()
+        {
+            // arrange
+
+            // act
+            var actual = FunctionParser.Parse("x*(-3+x)");
+
+            // assert
+            actual.ShouldBeOfType<Multiplication>();
+            ((Multiplication)actual).Left.ShouldBe(Negative.Create(Variable.x));
+            ((Multiplication)actual).Right.ShouldBeOfType<Addition>();
         }
 
         [Fact]

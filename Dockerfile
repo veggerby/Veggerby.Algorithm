@@ -1,4 +1,4 @@
-from microsoft/dotnet
+FROM microsoft/dotnet
 
 ADD . /app
 WORKDIR /app/test/Veggerby.Algorithm.Tests
