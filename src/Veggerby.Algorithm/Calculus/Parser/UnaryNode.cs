@@ -14,9 +14,6 @@ namespace Veggerby.Algorithm.Calculus.Parser
             Inner = inner;
         }
 
-        public override string ToString()
-        {
-            return $"{base.ToString()}({Inner})";
-        }
+        public override string ToString() => $"{base.ToString()}({Inner})";
     }
 }

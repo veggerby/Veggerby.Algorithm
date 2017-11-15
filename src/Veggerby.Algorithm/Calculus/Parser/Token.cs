@@ -13,9 +13,6 @@ namespace Veggerby.Algorithm.Calculus.Parser
             Position = position;
         }
 
-        public override string ToString()
-        {
-            return $"Token: {Type}={Value}";
-        }
+        public override string ToString() => $"Token: {Type}={Value}";
     }
 }

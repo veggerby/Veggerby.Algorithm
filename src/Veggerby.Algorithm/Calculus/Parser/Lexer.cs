@@ -39,7 +39,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
 
                 if (match == null)
                 {
-                    throw new Exception(string.Format("Unrecognized symbol '{0}' at index {1} (line {2}, column {3}).", source[currentPosition.Index], currentPosition.Index, currentPosition.Line, currentPosition.Column));
+                    throw new Exception($"Unrecognized symbol '{source[currentPosition.Index]}' at index {currentPosition.Index} (line {currentPosition.Line}, column {currentPosition.Column}).");
                 }
 
                 yield return match;

@@ -16,9 +16,6 @@ namespace Veggerby.Algorithm.Calculus.Parser
             Right = right;
         }
 
-        public override string ToString()
-        {
-            return $"({Left}){base.ToString()}({Right})";
-        }
+        public override string ToString() => $"({Left}){base.ToString()}({Right})";
     }
 }
