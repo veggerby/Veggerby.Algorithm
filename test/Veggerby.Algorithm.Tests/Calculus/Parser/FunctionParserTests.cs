@@ -252,6 +252,15 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             actual.ShouldBeOfType<Subtraction>();
             ((Subtraction)actual).Left.ShouldBeOfType<Multiplication>();
             ((Subtraction)actual).Right.ShouldBeOfType<Root>();
+
+            Multiplication left = ((Subtraction)actual).Left as Multiplication;
+            Root right = ((Subtraction)actual).Right as Root;
+
+            left.Left.ShouldBe(Constant.Create(4));
+            left.Right.ShouldBe(Variable.x);
+
+            right.Exponent.ShouldBe(3);
+            right.Inner.ShouldBeOfType<Sine>();
         }
 
         [Fact]
