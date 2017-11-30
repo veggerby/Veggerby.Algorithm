@@ -71,6 +71,30 @@ namespace Veggerby.Algorithm.Calculus.Parser
             return new BinaryNode(left, tokenGroup.Token, right);
         }
 
+        private Node ParseGroupChildrenForBinaryFunction(TokenType type, string[] values, IEnumerable<Group> children)
+        {
+            if (children.Count() != 3)
+            {
+                return null;
+            }
+
+            var function = children.First();
+
+            if (!values.Any(x => string.Equals(x, function.Token.Value, StringComparison.OrdinalIgnoreCase)))
+            {
+                return null;
+            }
+
+            var leftGroup = children.Skip(1).First();
+            var rightGroup = children.Last();
+
+
+            var left = ParseGroup(leftGroup);
+            var right = ParseGroup(rightGroup);
+
+            return new BinaryNode(left, function.Token, right);
+        }
+
         private Node ParseGroupChildrenForUnary(TokenType type, IEnumerable<Group> children)
         {
             if (children.Count() != 2)
@@ -109,6 +133,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
                 ParseGroupChildrenForBinary(TokenType.OperatorPriority1, "*", children) ??
                 ParseGroupChildrenForBinary(TokenType.OperatorPriority1, "/", children) ??
                 ParseGroupChildrenForBinary(TokenType.OperatorPriority1, "^", children) ??
+                ParseGroupChildrenForBinaryFunction(TokenType.Function, new [] { "root", "min", "max" }, children) ??
                 ParseGroupChildrenForUnary(TokenType.Factorial, children.Reverse()) ??
                 ParseGroupChildrenForUnary(TokenType.Function, children);
         }

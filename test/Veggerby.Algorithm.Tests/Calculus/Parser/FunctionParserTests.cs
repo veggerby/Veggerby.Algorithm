@@ -241,6 +241,20 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
         }
 
         [Fact]
+        public void Should_complex_function_with_binary_function()
+        {
+            // arrange
+
+            // act
+            var actual = FunctionParser.Parse("x*4-root(3,sin(x))");
+
+            // assert
+            actual.ShouldBeOfType<Subtraction>();
+            ((Subtraction)actual).Left.ShouldBeOfType<Multiplication>();
+            ((Subtraction)actual).Right.ShouldBeOfType<Root>();
+        }
+
+        [Fact]
         public void Should_parse_complex_function()
         {
             // arrange

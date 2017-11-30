@@ -37,7 +37,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
 
         private Group AddToken(Token previousToken, Token token)
         {
-            if (previousToken != null && previousToken.Type == TokenType.StartParenthesis)
+            if (previousToken != null && (previousToken.Type == TokenType.StartParenthesis || previousToken.Type == TokenType.Separator))
             {
                 return Current.AddChildToken(token);
             }
@@ -103,6 +103,12 @@ namespace Veggerby.Algorithm.Calculus.Parser
             if (!allowedTypes.Contains(token.Type))
             {
                 throw new Exception($"Invalid transition from {Current} to {token}");
+            }
+
+            if (token.Type == TokenType.Separator)
+            {
+                Current = (Group)Current.Parent;
+                return Current = Current.AddSiblingToken(token);
             }
 
             if (token.Type == TokenType.EndParenthesis)

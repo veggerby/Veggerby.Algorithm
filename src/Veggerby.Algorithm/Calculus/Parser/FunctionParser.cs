@@ -88,7 +88,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
                 return null;
             }
 
-            if (node.Token.Type != TokenType.Sign && node.Token.Type != TokenType.OperatorPriority1)
+            if (node.Token.Type != TokenType.Sign && node.Token.Type != TokenType.OperatorPriority1 && node.Token.Type != TokenType.Function)
             {
                 return null;
             }
@@ -103,6 +103,9 @@ namespace Veggerby.Algorithm.Calculus.Parser
                 case "*": return Multiplication.Create(left, right);
                 case "/": return Division.Create(left, right);
                 case "^": return Power.Create(left, right);
+                case "root": return Root.Create((int)(left as Constant).Value, right);
+                case "max": return Maximum.Create(left, right);
+                case "min": return Minimum.Create(left, right);
             }
 
             return null;
