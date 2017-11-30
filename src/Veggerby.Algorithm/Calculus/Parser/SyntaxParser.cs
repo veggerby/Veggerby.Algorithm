@@ -23,19 +23,15 @@ namespace Veggerby.Algorithm.Calculus.Parser
 
             if (!fsm.IsClosed)
             {
-                throw new ArgumentException("Incomplete tree");
+                throw new ArgumentException("Parenthesis not properly closed");
             }
 
-            var node = ParseGroup(fsm.Root);
-
-            //fsm.RootNode.Validate(); // check that structure is intact, e.g. idenfier has no children, etc.
-
-            return node;
+            return ParseGroup(fsm.Root);
         }
 
         private Node ParseGroupChildrenForBinary(TokenType type, string value, IEnumerable<Group> children)
         {
-            var childList = children.Where(x => x.Token.Type != TokenType.StartParenthesis).ToList();
+            var childList = children.ToList();
 
             var leftGroups = new List<Group>();
             var rightGroups = new List<Group>();
@@ -75,6 +71,26 @@ namespace Veggerby.Algorithm.Calculus.Parser
             return new BinaryNode(left, tokenGroup.Token, right);
         }
 
+        private Node ParseGroupChildrenForUnary(TokenType type, IEnumerable<Group> children)
+        {
+            if (children.Count() != 2)
+            {
+                return null;
+            }
+
+            var first = children.First();
+
+            if (first.Token.Type != type)
+            {
+                return null;
+            }
+
+            var second = children.Last();
+
+            var inner = ParseGroup(second);
+            return new UnaryNode(first.Token, inner);
+        }
+
         private Node ParseGroupChildren(IEnumerable<Group> children)
         {
             if (children == null || !children.Any())
@@ -92,7 +108,9 @@ namespace Veggerby.Algorithm.Calculus.Parser
                 ParseGroupChildrenForBinary(TokenType.Sign, "-", children) ??
                 ParseGroupChildrenForBinary(TokenType.OperatorPriority1, "*", children) ??
                 ParseGroupChildrenForBinary(TokenType.OperatorPriority1, "/", children) ??
-                ParseGroupChildrenForBinary(TokenType.OperatorPriority1, "^", children);
+                ParseGroupChildrenForBinary(TokenType.OperatorPriority1, "^", children) ??
+                ParseGroupChildrenForUnary(TokenType.Factorial, children.Reverse()) ??
+                ParseGroupChildrenForUnary(TokenType.Function, children);
         }
 
         private Node ParseGroup(Group group)
@@ -112,7 +130,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
                     return new UnaryNode(group.Token, childNode);
             }
 
-            return null;
+            return childNode;
         }
     }
 }

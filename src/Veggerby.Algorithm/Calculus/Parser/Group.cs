@@ -31,5 +31,11 @@ namespace Veggerby.Algorithm.Calculus.Parser
             Parent = parent;
             _children = new List<Group>();
         }
+
+        public override string ToString()
+        {
+            var children = _children.Any() ? $"[{string.Join(", ", _children.Select(x => x.ToString()))}]" : string.Empty;
+            return $"{Token}{children}";
+        }
     }
 }

@@ -23,6 +23,20 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
         }
 
         [Fact]
+        public void Should_parse_simple_function_with_parenthesis()
+        {
+            // arrange
+
+            // act
+            var actual = FunctionParser.Parse("x+(3)");
+
+            // assert
+            actual.ShouldBeOfType<Addition>();
+            ((Addition)actual).Left.ShouldBe(Variable.x);
+            ((Addition)actual).Right.ShouldBe(Constant.Create(3));
+        }
+
+        [Fact]
         public void Should_parse_simple_function_with_priority()
         {
             // arrange
@@ -32,8 +46,8 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
 
             // assert
             actual.ShouldBeOfType<Addition>();
-            ((Addition)actual).Right.ShouldBe(Variable.x);
-            ((Addition)actual).Right.ShouldBeOfType<MulticastDelegate>();
+            ((Addition)actual).Left.ShouldBe(Variable.x);
+            ((Addition)actual).Right.ShouldBeOfType<Multiplication>();
         }
 
         [Fact]
@@ -48,6 +62,34 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             actual.ShouldBeOfType<Subtraction>();
             ((Subtraction)actual).Left.ShouldBe(Variable.x);
             ((Subtraction)actual).Right.ShouldBe(Constant.Create(3));
+        }
+
+        [Fact]
+        public void Should_parse_subtraction_correct_order()
+        {
+            // arrange
+
+            // act
+            var actual = FunctionParser.Parse("x-3+x"); // should be (x-3)+x not x-(3+x)
+
+            // assert
+            actual.ShouldBeOfType<Addition>();
+            ((Addition)actual).Left.ShouldBeOfType<Subtraction>();
+            ((Addition)actual).Right.ShouldBe(Variable.x);
+        }
+
+        [Fact]
+        public void Should_parse_parenthesis_transition()
+        {
+            // arrange
+
+            // act
+            var actual = FunctionParser.Parse("(x-3)*x");
+
+            // assert
+            actual.ShouldBeOfType<Multiplication>();
+            ((Multiplication)actual).Left.ShouldBeOfType<Subtraction>();
+            ((Multiplication)actual).Right.ShouldBe(Variable.x);
         }
 
         [Fact]
@@ -124,11 +166,10 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             var actual = FunctionParser.Parse("+x-3");
 
             // assert
-            actual.ShouldBeOfType<Addition>();
-            ((Addition)actual).Left.ShouldBe(Negative.Create(Variable.x));
-            ((Addition)actual).Right.ShouldBe(Constant.Create(3));
+            actual.ShouldBeOfType<Subtraction>();
+            ((Subtraction)actual).Left.ShouldBe(Variable.x);
+            ((Subtraction)actual).Right.ShouldBe(Constant.Create(3));
         }
-
 
         [Fact]
         public void Should_parse_negative_in_parenthesis()
@@ -140,7 +181,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
 
             // assert
             actual.ShouldBeOfType<Multiplication>();
-            ((Multiplication)actual).Left.ShouldBe(Negative.Create(Variable.x));
+            ((Multiplication)actual).Left.ShouldBe(Variable.x);
             ((Multiplication)actual).Right.ShouldBeOfType<Addition>();
         }
 
@@ -150,11 +191,25 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             // arrange
 
             // act
-            var actual = FunctionParser.Parse("sin(3*4)");
+            var actual = FunctionParser.Parse("sin(x)");
 
             // assert
             actual.ShouldBeOfType<Sine>();
-            ((Sine)actual).Inner.ShouldBe(Constant.Create(12));
+            ((Sine)actual).Inner.ShouldBe(Variable.x);
+        }
+
+        [Fact]
+        public void Should_parse_function_with_addition()
+        {
+            // arrange
+
+            // act
+            var actual = FunctionParser.Parse("3+sin(x)");
+
+            // assert
+            actual.ShouldBeOfType<Addition>();
+            ((Addition)actual).Left.ShouldBe(Constant.Create(3));
+            ((Addition)actual).Right.ShouldBeOfType<Sine>();
         }
 
         [Fact]
@@ -234,7 +289,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             var actual = Should.Throw<Exception>(() => FunctionParser.Parse("(x+3))"));
 
             // assert
-            actual.Message.ShouldBe("Parenthesis not properly nested");
+            actual.Message.ShouldBe("Parenthesis not properly closed");
         }
 
         [Fact]

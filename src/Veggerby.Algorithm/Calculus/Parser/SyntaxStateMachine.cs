@@ -9,6 +9,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
     {
         public Group Root { get; private set; }
         public Group Current { get; private set; }
+        private Token PreviousToken { get; set; }
 
         public bool IsClosed { get; private set; }
 
@@ -34,6 +35,16 @@ namespace Veggerby.Algorithm.Calculus.Parser
             IsClosed = false;
         }
 
+        private Group AddToken(Token previousToken, Token token)
+        {
+            if (previousToken != null && previousToken.Type == TokenType.StartParenthesis)
+            {
+                return Current.AddChildToken(token);
+            }
+
+            return Current.AddSiblingToken(token);
+        }
+
         public Group GetNext(Token token)
         {
             if (token == null)
@@ -45,6 +56,9 @@ namespace Veggerby.Algorithm.Calculus.Parser
             {
                 throw new Exception("Parsing is closed");
             }
+
+            var previousToken = PreviousToken;
+            PreviousToken = token;
 
             if (token.Type == TokenType.Start)
             {
@@ -61,7 +75,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
             {
                 if (Current.Parent != Root)
                 {
-                    throw new Exception("Incomplete tree");
+                    throw new Exception("Parenthesis not properly closed");
                 }
 
                 IsClosed = true;
@@ -81,9 +95,9 @@ namespace Veggerby.Algorithm.Calculus.Parser
 
             TokenType[] allowedTypes;
 
-            if (!Transitions.TryGetValue(Current.Token.Type, out allowedTypes))
+            if (!Transitions.TryGetValue(previousToken.Type, out allowedTypes))
             {
-                throw new Exception($"No allowed transition from {Current}");
+                throw new Exception($"No allowed transition from {previousToken}");
             }
 
             if (!allowedTypes.Contains(token.Type))
@@ -93,13 +107,8 @@ namespace Veggerby.Algorithm.Calculus.Parser
 
             if (token.Type == TokenType.EndParenthesis)
             {
-                // do not add node, but step up tree
+                // do not add, but step up tree
                 return Current = (Group)Current.Parent;
-            }
-
-            if (token.Type == TokenType.StartParenthesis)
-            {
-                return Current = Current.AddChildToken(token);
             }
 
             if (Current == Root)
@@ -107,7 +116,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
                 return Current = Root.AddChildToken(token);
             }
 
-            return Current = Current.AddSiblingToken(token);
+            return Current = AddToken(previousToken, token);
         }
     }
 }
