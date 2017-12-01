@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
-    public class MathJaxOperandVisitor : IOperandVisitor
+    public class LaTexOperandVisitor : IOperandVisitor
     {
         private readonly StringBuilder _result = new StringBuilder();
 
@@ -185,7 +185,6 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         {
             _result.Append($"{operand.Numerator}/{operand.Denominator}");
         }
-
 
         public void Visit(Minimum operand)
         {

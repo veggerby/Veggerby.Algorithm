@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Veggerby.Algorithm.Tests.Calculus.Visitors
 {
-    public class MathJaxOperandVisitorTests
+    public class LaTexOperandVisitorTests
     {
         [Fact]
         public void Should_return_mathjax_simple()
@@ -13,7 +13,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             // arrange
             Operand func = "(2*pi*cos(x)*x/(x^2))*2";
 
-            var visitor = new MathJaxOperandVisitor();
+            var visitor = new LaTexOperandVisitor();
 
             // act
             func.Accept(visitor);
@@ -28,7 +28,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             // arrange
             Operand func = "(2*sin((2*π)/x)+(2*π)/x^2*cos((2*π)/x)*2*x)/sin((2*π)/x)^2*exp((2*x)/sqrt((2*π)/x))";
 
-            var visitor = new MathJaxOperandVisitor();
+            var visitor = new LaTexOperandVisitor();
 
             // act
             func.Accept(visitor);

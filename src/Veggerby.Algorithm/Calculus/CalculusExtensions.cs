@@ -99,7 +99,7 @@ namespace Veggerby.Algorithm.Calculus
 
         public static string ToMathJaxString(this Operand operand)
         {
-            var visitor = new MathJaxOperandVisitor();
+            var visitor = new LaTexOperandVisitor();
             operand.Accept(visitor);
             return visitor.Result;
         }
