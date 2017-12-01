@@ -42,16 +42,6 @@ namespace Veggerby.Algorithm.Calculus
             return Power.Create(left, right);
         }
 
-        public static bool operator ==(Operand left, Operand right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(Operand left, Operand right)
-        {
-            return !left.Equals(right);
-        }
-
         public static implicit operator Operand(int value)
         {
             return Constant.Create(value);

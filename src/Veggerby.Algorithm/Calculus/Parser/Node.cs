@@ -1,14 +1,19 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
 namespace Veggerby.Algorithm.Calculus.Parser
 {
     public class Node
     {
-        public Node Parent { get; set; }
-        public string Value { get; }
+        public Token Token { get; }
 
-        public Node(Node parent, string value)
+        public Node(Token token)
         {
-            Parent = parent;
-            Value = value;
+            Token = token;
         }
+
+        public override string ToString() => Token.ToString();
     }
 }

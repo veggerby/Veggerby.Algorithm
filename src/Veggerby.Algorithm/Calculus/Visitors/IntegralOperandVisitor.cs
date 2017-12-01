@@ -220,7 +220,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public void Visit(Power operand)
         {
-            if (operand.Left.Equals(_variable) && operand.Right.IsConstant() && operand.Right != -1)
+            if (operand.Left.Equals(_variable) && operand.Right.IsConstant() && operand.Right != Constant.MinusOne)
             {
                 Result = PowerRule(((Constant)operand.Right).Value);
             }
