@@ -31,39 +31,46 @@ namespace Veggerby.Algorithm.Calculus.Parser
 
         private Node ParseGroupChildrenForBinary(TokenType type, string value, IEnumerable<Group> children)
         {
+            // we need to find the item to the far right to properly chain operations, so that e.g. a-b-c becomes (a-b)-c and not a-(b-c)
+
             var childList = children.ToList();
 
-            var leftGroups = new List<Group>();
-            var rightGroups = new List<Group>();
+            var groups = new List<List<Group>>();
+            groups.Add(new List<Group>());
             Group previous = null;
-            Group tokenGroup = null;
 
             foreach (var group in childList)
             {
-                if (tokenGroup != null)
+                if ((group.Token.Type == type && string.Equals(group.Token.Value, value, StringComparison.OrdinalIgnoreCase)) &&
+                    previous != null && (previous.Token.Type != TokenType.Sign && previous.Token.Type != TokenType.OperatorPriority1))
                 {
-                    rightGroups.Add(group);
-                }
-                else if (group.Token.Type == type && string.Equals(group.Token.Value, value, StringComparison.OrdinalIgnoreCase))
-                {
-                    if (previous == null || (previous.Token.Type != TokenType.Sign && previous.Token.Type != TokenType.OperatorPriority1))
-                    {
-                        tokenGroup = group;
-                    }
+                    groups.Add(new List<Group>());
                 }
 
-                if (tokenGroup == null)
-                {
-                    leftGroups.Add(group);
-                }
+                groups.Last().Add(group);
 
                 previous = group;
             }
 
-            if (tokenGroup == null)
+            if (!groups.Where(x => x.Any()).Any())
             {
                 return null;
             }
+
+            var last = groups.Last();
+            // token = first item in last group
+            var tokenGroup = last.First();
+
+            if (tokenGroup.Token.Type != type || !string.Equals(tokenGroup.Token.Value, value, StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
+            // left groups = all groups except the last
+            var leftGroups = groups.Except(new [] { last }).SelectMany(x => x).ToList();
+
+            // right groups = all items except first in last group
+            var rightGroups = last.Skip(1).ToList();
 
             var left = ParseGroupChildren(leftGroups);
             var right = ParseGroupChildren(rightGroups);
