@@ -128,6 +128,20 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
         }
 
         [Fact]
+        public void Should_parse_fraction()
+        {
+            // arrange
+
+            // act
+            var actual = FunctionParser.Parse("1/2");
+
+            // assert
+            actual.ShouldBeOfType<Fraction>();
+            ((Fraction)actual).Numerator.ShouldBe(Constant.One);
+            ((Fraction)actual).Denominator.ShouldBe(Constant.Create(2));
+        }
+
+        [Fact]
         public void Should_parse_simple_factorial()
         {
             // arrange
