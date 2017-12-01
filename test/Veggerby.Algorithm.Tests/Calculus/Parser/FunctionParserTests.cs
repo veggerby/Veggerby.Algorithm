@@ -69,6 +69,10 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             actual.ShouldBeOfType<Addition>();
             ((Addition)actual).Left.ShouldBe(Variable.x);
             ((Addition)actual).Right.ShouldBeOfType<Multiplication>();
+
+            var right = ((Addition)actual).Right as Multiplication;
+            right.Left.ShouldBe(Constant.Create(3));
+            right.Right.ShouldBe(Variable.x);
         }
 
         [Fact]
@@ -97,6 +101,10 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             actual.ShouldBeOfType<Addition>();
             ((Addition)actual).Left.ShouldBeOfType<Subtraction>();
             ((Addition)actual).Right.ShouldBe(Variable.x);
+
+            var left = ((Addition)actual).Left as Subtraction;
+            left.Left.ShouldBe(Variable.x);
+            left.Right.ShouldBe(Constant.Create(3));
         }
 
         [Fact]
@@ -111,6 +119,10 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             actual.ShouldBeOfType<Multiplication>();
             ((Multiplication)actual).Left.ShouldBeOfType<Subtraction>();
             ((Multiplication)actual).Right.ShouldBe(Variable.x);
+
+            var left = ((Multiplication)actual).Left as Subtraction;
+            left.Left.ShouldBe(Variable.x);
+            left.Right.ShouldBe(Constant.Create(3));
         }
 
         [Fact]
@@ -245,6 +257,9 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             actual.ShouldBeOfType<Addition>();
             ((Addition)actual).Left.ShouldBe(Constant.Create(3));
             ((Addition)actual).Right.ShouldBeOfType<Sine>();
+
+            var right = ((Addition)actual).Right as Sine;
+            right.Inner.ShouldBe(Variable.x);
         }
 
         [Fact]
@@ -310,6 +325,10 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             actual.ShouldBeOfType<Multiplication>();
             ((Multiplication)actual).Left.ShouldBe(Constant.Create(2));
             ((Multiplication)actual).Right.ShouldBeOfType<Addition>();
+
+            var right = ((Multiplication)actual).Right as Addition;
+            right.Left.ShouldBe(Variable.x);
+            right.Right.ShouldBe(Constant.Create(3));
         }
 
         [Fact]
@@ -324,6 +343,14 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             actual.ShouldBeOfType<Subtraction>();
             ((Subtraction)actual).Left.ShouldBeOfType<Multiplication>();
             ((Subtraction)actual).Right.ShouldBeOfType<Sine>();
+
+            var left = ((Subtraction)actual).Left as Multiplication;
+            var right = ((Subtraction)actual).Right as Sine;
+
+            left.Left.ShouldBe(Constant.Create(2));
+            left.Right.ShouldBe(FunctionParser.Parse("x+3"));
+
+            right.Inner.ShouldBe(FunctionParser.Parse("x*cos(tan(exp(3-ln(4/sin(x)))))"));
         }
 
         [Fact]
