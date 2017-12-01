@@ -95,7 +95,6 @@ namespace Veggerby.Algorithm.Calculus.Parser
             var leftGroup = children.Skip(1).First();
             var rightGroup = children.Last();
 
-
             var left = ParseGroup(leftGroup);
             var right = ParseGroup(rightGroup);
 
