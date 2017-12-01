@@ -23,6 +23,27 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
         }
 
         [Fact]
+        public void Should_parse_chained_subtraction_in_correct_order()
+        {
+            // arrange
+
+            // act
+            var actual = FunctionParser.Parse("x-y-1");  // should be (x-y)-1 not x-(y-1)
+
+            // assert
+            actual.ShouldBeOfType<Subtraction>();
+            ((Subtraction)actual).Left.ShouldBeOfType<Subtraction>();
+
+            var left = ((Subtraction)actual).Left as Subtraction;
+
+            left.Left.ShouldBe(Variable.x);
+            left.Right.ShouldBe(Variable.y);
+
+            ((Subtraction)actual).Right.ShouldBe(Constant.One);
+        }
+
+
+        [Fact]
         public void Should_parse_simple_function_with_parenthesis()
         {
             // arrange
