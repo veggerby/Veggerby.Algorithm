@@ -350,7 +350,28 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             left.Left.ShouldBe(Constant.Create(2));
             left.Right.ShouldBe(FunctionParser.Parse("x+3"));
 
-            right.Inner.ShouldBe(FunctionParser.Parse("x*cos(tan(exp(3-ln(4/sin(x)))))"));
+            right.Inner.ShouldBeOfType<Multiplication>();
+
+            var inner = right.Inner as Multiplication;
+
+            inner.Left.ShouldBe(Variable.x);
+            inner.Right.ShouldBeOfType<Cosine>();
+
+            ((Cosine)inner.Right).Inner.ShouldBeOfType<Tangent>();
+            ((Tangent)((Cosine)inner.Right).Inner).Inner.ShouldBeOfType<Exponential>();
+
+            var exp = ((Tangent)((Cosine)inner.Right).Inner).Inner as Exponential;
+            exp.Inner.ShouldBeOfType<Subtraction>();
+
+            ((Subtraction)exp.Inner).Left.ShouldBe(Constant.Create(3));
+            ((Subtraction)exp.Inner).Right.ShouldBeOfType<Logarithm>();
+
+            ((exp.Inner as Subtraction).Right as Logarithm).Inner.ShouldBeOfType<Division>();
+
+            var innerMostDivision = ((exp.Inner as Subtraction).Right as Logarithm).Inner as Division;
+            innerMostDivision.Left.ShouldBe(Constant.Create(4));
+            innerMostDivision.Right.ShouldBeOfType<Sine>();
+            ((Sine)innerMostDivision.Right).Inner.ShouldBe(Variable.x);
         }
 
         [Fact]
