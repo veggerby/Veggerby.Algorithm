@@ -344,7 +344,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             ((Subtraction)actual).Left.ShouldBeOfType<Multiplication>();
             ((Subtraction)actual).Right.ShouldBeOfType<Sine>();
 
-            var left = ((Subtraction)actual).Left as Multiplication;
+            var left = ((Subtraction)actual).Left as Multiplication; // (x+3)*(4-2) will be reduced to 2*(x+3)
             var right = ((Subtraction)actual).Right as Sine;
 
             left.Left.ShouldBe(Constant.Create(2));
