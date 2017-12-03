@@ -7,6 +7,24 @@ namespace Veggerby.Algorithm.Calculus.Parser
 {
     public class FunctionParser
     {
+        public static Lexer GetLexer()
+        {
+            var lexer = new Lexer();
+            lexer.AddDefinition(new TokenDefinition(TokenType.Function, @"sin|cos|tan|exp|ln|log(2)?|sqrt|root|min|max"));
+            lexer.AddDefinition(new TokenDefinition(TokenType.Number, @"[0-9]+(\.[0-9]+)?((e|E)[\-+]?[0-9]+)?"));
+            lexer.AddDefinition(new TokenDefinition(TokenType.StartParenthesis, @"\("));
+            lexer.AddDefinition(new TokenDefinition(TokenType.EndParenthesis, @"\)"));
+            lexer.AddDefinition(new TokenDefinition(TokenType.Separator, @","));
+            lexer.AddDefinition(new TokenDefinition(TokenType.Identifier, @"([a-zA-Z]([a-zA-Z0-9_]*))|π"));
+            lexer.AddDefinition(new TokenDefinition(TokenType.Factorial, @"\!"));
+            lexer.AddDefinition(new TokenDefinition(TokenType.OperatorPriority1, @"\*|\/|\^"));
+            lexer.AddDefinition(new TokenDefinition(TokenType.Sign, @"\+|\-"));
+            lexer.AddDefinition(new TokenDefinition(TokenType.Whitespace, @"[\t ]+"));
+            lexer.AddDefinition(new TokenDefinition(TokenType.EndOfLine, @"[\f\n\r\v]+"));
+
+            return lexer;
+        }
+
         private static Lexer _lexer;
         private static SyntaxParser _syntax;
         private static Compiler _compiler;
@@ -21,18 +39,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
                 {
                     if (!_isInitialized)
                     {
-                        _lexer = new Lexer();
-                        _lexer.AddDefinition(new TokenDefinition(TokenType.Function, @"sin|cos|tan|exp|ln|log|log2|sqrt|root|min|max"));
-                        _lexer.AddDefinition(new TokenDefinition(TokenType.Number, @"[0-9]+(\.[0-9]+)?((e|E)[\-+]?[0-9]+)?"));
-                        _lexer.AddDefinition(new TokenDefinition(TokenType.StartParenthesis, @"\("));
-                        _lexer.AddDefinition(new TokenDefinition(TokenType.EndParenthesis, @"\)"));
-                        _lexer.AddDefinition(new TokenDefinition(TokenType.Separator, @","));
-                        _lexer.AddDefinition(new TokenDefinition(TokenType.Identifier, @"([a-zA-Z]([a-zA-Z0-9_]*))|π"));
-                        _lexer.AddDefinition(new TokenDefinition(TokenType.Factorial, @"\!"));
-                        _lexer.AddDefinition(new TokenDefinition(TokenType.OperatorPriority1, @"\*|\/|\^|!"));
-                        _lexer.AddDefinition(new TokenDefinition(TokenType.Sign, @"\+|\-"));
-                        _lexer.AddDefinition(new TokenDefinition(TokenType.Whitespace, @"[\t ]+"));
-                        _lexer.AddDefinition(new TokenDefinition(TokenType.EndOfLine, @"[\f\n\r\v]+"));
+                        _lexer = GetLexer();
 
                         _syntax = new SyntaxParser();
 
