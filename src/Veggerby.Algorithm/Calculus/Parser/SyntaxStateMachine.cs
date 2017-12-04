@@ -102,7 +102,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
 
             if (!allowedTypes.Contains(token.Type))
             {
-                throw new Exception($"Invalid transition from {Current} to {token}");
+                throw new Exception($"Invalid transition from {Current.Token.Type} to {token.Type}");
             }
 
             if (token.Type == TokenType.Separator)
