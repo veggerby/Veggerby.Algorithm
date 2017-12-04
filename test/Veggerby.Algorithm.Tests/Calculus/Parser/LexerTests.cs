@@ -156,5 +156,46 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             // assert
             actual.ShouldBe(expected);
         }
+
+        [Fact]
+        public void Should_fail_invalid_token_dummy_lexer()
+        {
+            // arrange
+            var lexer = new Lexer();
+            lexer.AddDefinition(new TokenDefinition(TokenType.Whitespace, " "));
+            lexer.AddDefinition(new TokenDefinition(TokenType.Identifier, "[a-zA-Z]+"));
+
+            // act
+            var actual = Should.Throw<Exception>(() => lexer.Tokenize("1234+123").ToList());
+
+            // assert
+            actual.Message.ShouldBe("Unrecognized symbol '1' at index 0 (line 1, column 0).");
+        }
+
+        [Fact]
+        public void Should_fail_invalid_token()
+        {
+            // arrange
+            var lexer = FunctionParser.GetLexer();
+
+            // act
+            var actual = Should.Throw<Exception>(() => lexer.Tokenize("[").ToList());
+
+            // assert
+            actual.Message.ShouldBe("Unrecognized symbol '[' at index 0 (line 1, column 0).");
+        }
+
+        [Fact]
+        public void Should_fail_invalid_token_in_body()
+        {
+            // arrange
+            var lexer = FunctionParser.GetLexer();
+
+            // act
+            var actual = Should.Throw<Exception>(() => lexer.Tokenize("sin{1+x}").ToList());
+
+            // assert
+            actual.Message.ShouldBe("Unrecognized symbol '{' at index 3 (line 1, column 3).");
+        }
     }
 }
