@@ -1,0 +1,90 @@
+using System;
+using System.Linq;
+using Shouldly;
+using Veggerby.Algorithm.Calculus;
+using Veggerby.Algorithm.Calculus.Parser;
+using Xunit;
+
+namespace Veggerby.Algorithm.Tests.Calculus.Parser
+{
+    public class SyntaxStateMachineTests
+    {
+        [Theory]
+        [InlineData(TokenType.Number)]
+        [InlineData(TokenType.Identifier)]
+        [InlineData(TokenType.OperatorPriority1)]
+        [InlineData(TokenType.Sign)]
+        [InlineData(TokenType.Factorial)]
+        [InlineData(TokenType.Function)]
+        [InlineData(TokenType.StartParenthesis)]
+        [InlineData(TokenType.EndParenthesis)]
+        [InlineData(TokenType.Separator)]
+        [InlineData(TokenType.Whitespace)]
+        [InlineData(TokenType.EndOfLine)]
+        public void Shoud_fail_when_first_state_is_not_start(TokenType tokenType)
+        {
+            // arrange
+            var sfsm = new SyntaxStateMachine();
+            var token = new Token(tokenType, "dummy", new TokenPosition(0, 1, 0));
+
+            // act
+            var actual = Should.Throw<Exception>(() => sfsm.GetNext(token));
+
+            // assert
+            actual.Message.ShouldBe("Tree has to start with a start node");
+        }
+
+        [Fact]
+        public void Shoud_allow_first_state_is_not_start()
+        {
+            var sfsm = new SyntaxStateMachine();
+            var token = new Token(TokenType.Start, "dummy", new TokenPosition(0, 1, 0));
+
+            // act
+            var actual = sfsm.GetNext(token);
+
+            // assert
+            actual.Token.ShouldBe(token);
+        }
+
+        [Theory]
+        [InlineData(TokenType.Number)]
+        [InlineData(TokenType.Sign)]
+        [InlineData(TokenType.Identifier)]
+        [InlineData(TokenType.Function)]
+        [InlineData(TokenType.StartParenthesis)]
+        public void Should_allow_first_transition(TokenType tokenType)
+        {
+            // arrange
+            var sfsm = new SyntaxStateMachine();
+            sfsm.GetNext(new Token(TokenType.Start, "dummy", new TokenPosition(0, 1, 0)));
+
+            var token = new Token(tokenType, "dummy", new TokenPosition(0, 1, 0));
+
+            // act
+            var actual = sfsm.GetNext(token);
+
+            // assert
+            actual.Token.ShouldBe(token);
+        }
+
+        [Theory]
+        [InlineData(TokenType.OperatorPriority1)]
+        [InlineData(TokenType.Factorial)]
+        [InlineData(TokenType.EndParenthesis)]
+        public void Should_reject_first_transition(TokenType tokenType)
+        {
+            // arrange
+            var sfsm = new SyntaxStateMachine();
+            sfsm.GetNext(new Token(TokenType.Start, "dummy", new TokenPosition(0, 1, 0)));
+
+            var token = new Token(tokenType, "dummy", new TokenPosition(0, 1, 0));
+
+            // act
+            var actual = Should.Throw<Exception>(() => sfsm.GetNext(token));
+
+            // assert
+            actual.Message.ShouldBe($"Invalid transition from Start to {tokenType}");
+        }
+    }
+}
