@@ -150,5 +150,83 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             ((BinaryNode)actual).Left.Token.ShouldBe(xToken);
             ((BinaryNode)actual).Right.Token.ShouldBe(yToken);
         }
+
+        [Fact]
+        public void Should_get_parse_tree_complex_function()
+        {
+            // arrange
+            var parser = new SyntaxParser();
+
+            // x^2+sin(x*cos(3*pi-x))
+            var xToken1 = new Token(TokenType.Identifier, "x", new TokenPosition(0, 1, 0));
+            var powerToken = new Token(TokenType.OperatorPriority1, "^", new TokenPosition(1, 1, 1));
+            var constant2Token = new Token(TokenType.Number, "2", new TokenPosition(2, 1, 2));
+            var signPlusToken = new Token(TokenType.Sign, "+", new TokenPosition(3, 1, 3));
+            var sinToken = new Token(TokenType.Function, "sin", new TokenPosition(4, 1, 4));
+            var parenthesisToken1 = new Token(TokenType.StartParenthesis, "(", new TokenPosition(7, 1, 7));
+            var xToken2 = new Token(TokenType.Identifier, "x", new TokenPosition(8, 1, 8));
+            var multiplicationToken1 = new Token(TokenType.OperatorPriority1, "*", new TokenPosition(9, 1, 9));
+            var cosToken = new Token(TokenType.Function, "cos", new TokenPosition(10, 1, 10));
+            var parenthesisToken2 = new Token(TokenType.StartParenthesis, "(", new TokenPosition(11, 1, 11));
+            var constant3Token = new Token(TokenType.Number, "3", new TokenPosition(12, 1, 12));
+            var multiplicationToken2 = new Token(TokenType.OperatorPriority1, "*", new TokenPosition(13, 1, 13));
+            var piToken = new Token(TokenType.Identifier, "pi", new TokenPosition(15, 1, 15));
+            var signMinusToken = new Token(TokenType.Sign, "-", new TokenPosition(17, 1, 17));
+            var xToken3 = new Token(TokenType.Identifier, "x", new TokenPosition(18, 1, 18));
+            var parenthesisToken3 = new Token(TokenType.EndParenthesis, ")", new TokenPosition(19, 1, 19));
+            var parenthesisToken4 = new Token(TokenType.EndParenthesis, ")", new TokenPosition(20, 1, 20));
+
+            var tokens = new []
+            {
+                new Token(TokenType.Start, null, new TokenPosition(0, 1, 0)),
+                xToken1,
+                powerToken,
+                constant2Token,
+                signPlusToken,
+                sinToken,
+                parenthesisToken1,
+                xToken2,
+                multiplicationToken1,
+                cosToken,
+                parenthesisToken2,
+                constant3Token,
+                multiplicationToken2,
+                piToken,
+                signMinusToken,
+                xToken3,
+                parenthesisToken3,
+                parenthesisToken4,
+                new Token(TokenType.End, null, new TokenPosition(21, 1, 21))
+            };
+
+            // act
+            var actual = parser.ParseTree(tokens);
+
+            // assert
+            actual.ShouldBeOfType<BinaryNode>();
+            actual.Token.ShouldBe(signPlusToken);
+            var left = ((BinaryNode)actual).Left as BinaryNode;
+            var right = ((BinaryNode)actual).Right as UnaryNode;
+            left.Token.ShouldBe(powerToken);
+            right.Token.ShouldBe(sinToken);
+
+            left.Left.Token.ShouldBe(xToken1);
+            left.Right.Token.ShouldBe(constant2Token);
+
+            right.Inner.Token.ShouldBe(multiplicationToken1);
+
+            var rightInner = (BinaryNode)right.Inner;
+            rightInner.Left.Token.ShouldBe(xToken2);
+            rightInner.Right.Token.ShouldBe(cosToken);
+
+            var cosInner = ((UnaryNode)rightInner.Right).Inner as BinaryNode;
+            cosInner.Token.ShouldBe(signMinusToken);
+            cosInner.Left.Token.ShouldBe(multiplicationToken2);
+            cosInner.Right.Token.ShouldBe(xToken3);
+
+            var cosInnerLeft = (BinaryNode)cosInner.Left;
+            cosInnerLeft.Left.Token.ShouldBe(constant3Token);
+            cosInnerLeft.Right.Token.ShouldBe(piToken);
+        }
     }
 }

@@ -86,5 +86,24 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             // assert
             actual.Message.ShouldBe($"Invalid transition from Start to {tokenType}");
         }
+
+        [Fact]
+        public void Should_reject_invalid_transition()
+        {
+            // arrange
+            var sfsm = new SyntaxStateMachine();
+            sfsm.GetNext(new Token(TokenType.Start, "dummy", new TokenPosition(0, 1, 0)));
+            sfsm.GetNext(new Token(TokenType.Identifier, "dummy", new TokenPosition(0, 1, 0)));
+            sfsm.GetNext(new Token(TokenType.Sign, "dummy", new TokenPosition(0, 1, 0)));
+            sfsm.GetNext(new Token(TokenType.Number, "dummy", new TokenPosition(0, 1, 0)));
+
+            var token = new Token(TokenType.StartParenthesis, "dummy", new TokenPosition(0, 1, 0));
+
+            // act
+            var actual = Should.Throw<Exception>(() => sfsm.GetNext(token));
+
+            // assert
+            actual.Message.ShouldBe($"Invalid transition from Number to StartParenthesis");
+        }
     }
 }
