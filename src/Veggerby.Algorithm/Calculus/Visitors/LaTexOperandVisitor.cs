@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
-    public class LaTexOperandVisitor : IOperandVisitor
+    public class LaTeXOperandVisitor : IOperandVisitor
     {
         private readonly StringBuilder _result = new StringBuilder();
 
@@ -81,7 +81,15 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public void Visit(LogarithmBase operand)
         {
-            _result.Append($@"\log_{operand.Base}\left(");
+            if (operand.Base != 10)
+            {
+                _result.Append($@"\log_{operand.Base}\left(");
+            }
+            else
+            {
+                _result.Append($@"\log\left(");
+            }
+
             operand.Inner.Accept(this);
             _result.Append(@"\right)");
         }

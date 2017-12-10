@@ -183,8 +183,13 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public void Visit(Constant operand)
         {
-            var result = operand.Value.ToString(CultureInfo.InvariantCulture).TrimEnd('0', '.');
-            _result.Append(result);
+            var result = operand.Value.ToString(CultureInfo.InvariantCulture);
+            if (result.Contains("."))
+            {
+                result = result.TrimEnd('0');
+            }
+
+            _result.Append(result.TrimEnd('.'));
         }
 
         public void Visit(Fraction operand)

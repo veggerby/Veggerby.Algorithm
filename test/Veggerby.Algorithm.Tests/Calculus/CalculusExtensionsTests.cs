@@ -215,7 +215,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
             actual.ShouldBe(expected);
         }
 
-
         [Fact]
         public void Should_return_simple_mj()
         {
@@ -223,7 +222,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             var operand = Sine.Create(Variable.x);
 
             // act
-            var actual = operand.ToMathJaxString();
+            var actual = operand.ToLaTeXString();
 
             // assert
             actual.ShouldBe(@"\sin\left(x\right)");

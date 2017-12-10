@@ -97,9 +97,9 @@ namespace Veggerby.Algorithm.Calculus
             return set;
         }
 
-        public static string ToMathJaxString(this Operand operand)
+        public static string ToLaTeXString(this Operand operand)
         {
-            var visitor = new LaTexOperandVisitor();
+            var visitor = new LaTeXOperandVisitor();
             operand.Accept(visitor);
             return visitor.Result;
         }
