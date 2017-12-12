@@ -18,13 +18,12 @@ namespace Veggerby.Algorithm.Calculus
             Operand = operand;
 
             var visitor = new VariablesOperandVisitor();
-            operand.Accept(visitor);
-            Variables = visitor.Result.OrderBy(x => x.Identifier).ToList();
+            Variables = operand.Accept(visitor).OrderBy(x => x.Identifier).ToList();
         }
 
-        public override void Accept(IOperandVisitor visitor)
+        public override T Accept<T>(IOperandVisitor<T> visitor)
         {
-            visitor.Visit(this);
+            return visitor.Visit(this);
         }
 
         protected bool Equals(Function other)

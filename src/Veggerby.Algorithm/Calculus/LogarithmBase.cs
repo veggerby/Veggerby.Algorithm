@@ -10,9 +10,9 @@ namespace Veggerby.Algorithm.Calculus
             Base = @base;
         }
 
-        public override void Accept(IOperandVisitor visitor)
+        public override T Accept<T>(IOperandVisitor<T> visitor)
         {
-            visitor.Visit(this);
+            return visitor.Visit(this);
         }
 
         protected bool Equals(LogarithmBase other)

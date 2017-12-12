@@ -11,42 +11,42 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_tostring_function()
         {
             // arrange
-            var operation = Function.Create("f", Sine.Create(Variable.x));
+            var operand = Function.Create("f", Sine.Create(Variable.x));
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("f(x)=sin(x)");
+            actual.ShouldBe("f(x)=sin(x)");
         }
 
         [Fact]
         public void Should_return_tostring_function_reference()
         {
             // arrange
-            var operation = FunctionReference.Create("f", Sine.Create(Variable.x), Power.Create(Variable.y, 2));
+            var operand = FunctionReference.Create("f", Sine.Create(Variable.x), Power.Create(Variable.y, 2));
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("f(sin(x), y^2)");
+            actual.ShouldBe("f(sin(x), y^2)");
         }
 
         [Fact]
         public void Should_return_tostring_addition()
         {
             // arrange
-            var operation = Addition.Create(Variable.x, Constant.Create(3));
+            var operand = Addition.Create(Variable.x, Constant.Create(3));
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("x+3");
+            actual.ShouldBe("x+3");
         }
 
         [Theory]
@@ -57,280 +57,280 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_correct_constant_string(double value, string expected)
         {
             // arrange
-            var operation = Constant.Create(value);
+            var operand = Constant.Create(value);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_return_tostring_cosine()
         {
             // arrange
-            var operation = Cosine.Create(Variable.x);
+            var operand = Cosine.Create(Variable.x);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("cos(x)");
+            actual.ShouldBe("cos(x)");
         }
 
         [Fact]
         public void Should_return_tostring_division()
         {
             // arrange
-            var operation = Division.Create(Variable.x, Constant.Create(2));
+            var operand = Division.Create(Variable.x, Constant.Create(2));
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("x/2");
+            actual.ShouldBe("x/2");
         }
 
         [Fact]
         public void Should_return_tostring_exponential()
         {
             // arrange
-            var operation = Exponential.Create(Variable.x);
+            var operand = Exponential.Create(Variable.x);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("exp(x)");
+            actual.ShouldBe("exp(x)");
         }
 
         [Fact]
         public void Should_return_tostring_factorial()
         {
             // arrange
-            var operation = Factorial.Create(Variable.x);
+            var operand = Factorial.Create(Variable.x);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("x!");
+            actual.ShouldBe("x!");
         }
 
         [Fact]
         public void Should_return_tostring_log_base10()
         {
             // arrange
-            var operation = LogarithmBase.Create(10, Variable.x);
+            var operand = LogarithmBase.Create(10, Variable.x);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("log(x)");
+            actual.ShouldBe("log(x)");
         }
 
         [Fact]
         public void Should_return_tostring_log_base2()
         {
             // arrange
-            var operation = LogarithmBase.Create(2, Variable.x);
+            var operand = LogarithmBase.Create(2, Variable.x);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("log2(x)");
+            actual.ShouldBe("log2(x)");
         }
 
         [Fact]
         public void Should_return_tostring_ln()
         {
             // arrange
-            var operation = Logarithm.Create(Variable.x);
+            var operand = Logarithm.Create(Variable.x);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("ln(x)");
+            actual.ShouldBe("ln(x)");
         }
 
         [Fact]
         public void Should_return_tostring_multiplication()
         {
             // arrange
-            var operation = Multiplication.Create(Variable.x, Constant.Create(2));
+            var operand = Multiplication.Create(Variable.x, Constant.Create(2));
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("2*x");
+            actual.ShouldBe("x*2");
         }
 
         [Fact]
         public void Should_return_tostring_named_constant()
         {
             // arrange
-            var operation = NamedConstant.Create("a", 3);
+            var operand = NamedConstant.Create("a", 3);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("a");
+            actual.ShouldBe("a");
         }
 
         [Fact]
         public void Should_return_tostring_power()
         {
             // arrange
-            var operation = Power.Create(Variable.x, Constant.Create(2));
+            var operand = Power.Create(Variable.x, Constant.Create(2));
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("x^2");
+            actual.ShouldBe("x^2");
         }
 
         [Fact]
         public void Should_return_tostring_sqrt()
         {
             // arrange
-            var operation = Root.Create(2, Variable.x);
+            var operand = Root.Create(2, Variable.x);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("sqrt(x)");
+            actual.ShouldBe("sqrt(x)");
         }
 
         [Fact]
         public void Should_return_tostring_cubic_root()
         {
             // arrange
-            var operation = Root.Create(3, Variable.x);
+            var operand = Root.Create(3, Variable.x);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("root(3, x)");
+            actual.ShouldBe("root(3, x)");
         }
 
         [Fact]
         public void Should_return_tostring_sine()
         {
             // arrange
-            var operation = Sine.Create(Variable.x);
+            var operand = Sine.Create(Variable.x);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("sin(x)");
+            actual.ShouldBe("sin(x)");
         }
 
         [Fact]
         public void Should_return_tostring_subtraction()
         {
             // arrange
-            var operation = Subtraction.Create(Variable.x, Constant.One);
+            var operand = Subtraction.Create(Variable.x, Constant.One);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("x-1");
+            actual.ShouldBe("x-1");
         }
 
         [Fact]
         public void Should_return_tostring_tangent()
         {
             // arrange
-            var operation = Tangent.Create(Variable.x);
+            var operand = Tangent.Create(Variable.x);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("tan(x)");
+            actual.ShouldBe("tan(x)");
         }
 
         [Fact]
         public void Should_return_tostring_variable()
         {
             // arrange
-            var operation = Variable.Create("x");
+            var operand = Variable.Create("x");
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("x");
+            actual.ShouldBe("x");
         }
 
         [Fact]
         public void Should_return_tostring_fraction()
         {
             // arrange
-            var operation = Fraction.Create(1, 4);
+            var operand = Fraction.Create(1, 4);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("1/4");
+            actual.ShouldBe("1/4");
         }
 
         [Fact]
         public void Should_return_tostring_minimum()
         {
             // arrange
-            var operation = Minimum.Create(Variable.x, 4);
+            var operand = Minimum.Create(Variable.x, 4);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("min(x, 4)");
+            actual.ShouldBe("min(x, 4)");
         }
 
         [Fact]
         public void Should_return_tostring_maximum()
         {
             // arrange
-            var operation = Maximum.Create(Variable.x, 4);
+            var operand = Maximum.Create(Variable.x, 4);
             var visitor = new ToStringOperandVisitor();
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe("max(x, 4)");
+            actual.ShouldBe("max(x, 4)");
         }
     }
 }

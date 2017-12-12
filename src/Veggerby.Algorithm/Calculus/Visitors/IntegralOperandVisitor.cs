@@ -2,13 +2,11 @@ using System;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
-    public class IntegralOperandVisitor : IOperandVisitor
+    public class IntegralOperandVisitor : IOperandVisitor<Operand>
     {
         private readonly Variable _variable;
 
         private static readonly Variable _constant = Variable.Create("c");
-
-        public Operand Result { get; private set; }
 
         public IntegralOperandVisitor(Variable variable)
         {
@@ -17,16 +15,13 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         private Operand GetIntegral(Operand operand)
         {
-            var visitor = new IntegralOperandVisitor(_variable);
-            operand.Accept(visitor);
-            return visitor.Result;
+            return operand.Reduce().Accept(this).Reduce();
         }
 
         private Operand GetDerivative(Operand operand)
         {
             var visitor = new DerivativeOperandVisitor(_variable);
-            operand.Accept(visitor);
-            return visitor.Result;
+            return operand.Reduce().Accept(visitor).Reduce();
         }
 
         private Operand ConstantRule(Operand constant)
@@ -82,39 +77,39 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             }
         }
 
-        public void Visit(Function operand)
+        public Operand Visit(Function operand)
         {
             var innerOperand = GetIntegral(operand.Operand);
-            Result = Function.Create(operand.Identifier.ToUpperInvariant(), innerOperand);
+            return Function.Create(operand.Identifier.ToUpperInvariant(), innerOperand);
         }
 
-        public void Visit(FunctionReference operand)
+        public Operand Visit(FunctionReference operand)
         {
-            Result = null;
+            return null;
         }
 
-        public void Visit(Variable operand)
+        public Operand Visit(Variable operand)
         {
-            Result = operand.Equals(_variable)
+            return operand.Equals(_variable)
                 ? PowerRule(1)
                 : ConstantRule(operand);
         }
 
-        public void Visit(Subtraction operand)
+        public Operand Visit(Subtraction operand)
         {
             var left = GetIntegral(operand.Left);
             var right = GetIntegral(operand.Right);
 
-            Result = left != null && right != null
+            return left != null && right != null
                 ? Subtraction.Create(left, right)
                 : null;
         }
 
-        public void Visit(Division operand)
+        public Operand Visit(Division operand)
         {
             if (operand.Left.IsConstant() && operand.Right.Equals(_variable))
             {
-                Result = Multiplication.Create(
+                return Multiplication.Create(
                     operand.Left,
                     Addition.Create(
                         Logarithm.Create(_variable),
@@ -128,16 +123,16 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             }
         }
 
-        public void Visit(Factorial operand)
+        public Operand Visit(Factorial operand)
         {
-            Result = null;
+            return null;
         }
 
-        public void Visit(Cosine operand)
+        public Operand Visit(Cosine operand)
         {
             if (operand.Inner.Equals(_variable))
             {
-                Result = Addition.Create(
+                return Addition.Create(
                     Sine.Create(_variable),
                     _constant
                 );
@@ -148,11 +143,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             }
         }
 
-        public void Visit(Exponential operand)
+        public Operand Visit(Exponential operand)
         {
             if (operand.Inner.Equals(_variable))
             {
-                Result = Addition.Create(
+                return Addition.Create(
                     Exponential.Create(_variable),
                     _constant
                 );
@@ -163,30 +158,28 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             }
         }
 
-        public void Visit(LogarithmBase operand)
+        public Operand Visit(LogarithmBase operand)
         {
             throw new NotImplementedException();
         }
 
-        public void Visit(Negative operand)
+        public Operand Visit(Negative operand)
         {
             var inner = GetIntegral(operand.Inner);
 
             if (inner == null)
             {
-                Result = null;
+                return null;
             }
-            else
-            {
-                Result = Negative.Create(inner);
-            }
+
+            return Negative.Create(inner);
         }
 
-        public void Visit(Logarithm operand)
+        public Operand Visit(Logarithm operand)
         {
             if (operand.Inner.Equals(_variable))
             {
-                Result = Addition.Create(
+                return Addition.Create(
                     Subtraction.Create(
                         Multiplication.Create(_variable, Logarithm.Create(_variable)),
                         _variable),
@@ -198,16 +191,16 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             }
         }
 
-        public void Visit(Tangent operand)
+        public Operand Visit(Tangent operand)
         {
             throw new NotImplementedException();
         }
 
-        public void Visit(Sine operand)
+        public Operand Visit(Sine operand)
         {
             if (operand.Inner.Equals(_variable))
             {
-                Result = Addition.Create(
+                return Addition.Create(
                     Negative.Create(Cosine.Create(_variable)),
                     _constant
                 );
@@ -218,11 +211,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             }
         }
 
-        public void Visit(Power operand)
+        public Operand Visit(Power operand)
         {
             if (operand.Left.Equals(_variable) && operand.Right.IsConstant() && operand.Right != Constant.MinusOne)
             {
-                Result = PowerRule(((Constant)operand.Right).Value);
+                return PowerRule(((Constant)operand.Right).Value);
             }
             else
             {
@@ -230,11 +223,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             }
         }
 
-        public void Visit(Root operand)
+        public Operand Visit(Root operand)
         {
             if (operand.Inner.Equals(_variable))
             {
-                Result = PowerRule(1D / operand.Exponent);
+                return PowerRule(1D / operand.Exponent);
             }
             else
             {
@@ -242,45 +235,45 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             }
         }
 
-        public void Visit(Multiplication operand)
+        public Operand Visit(Multiplication operand)
         {
-            Result = IntegrationByParts(operand.Left, operand.Right)
+            return IntegrationByParts(operand.Left, operand.Right)
                 ?? IntegrationByParts(operand.Right, operand.Left);
         }
 
-        public void Visit(Addition operand)
+        public Operand Visit(Addition operand)
         {
             var left = GetIntegral(operand.Left);
             var right = GetIntegral(operand.Right);
 
-            Result = left != null && right != null
+            return left != null && right != null
                 ? Addition.Create(left, right)
                 : null;
         }
 
-        public void Visit(NamedConstant operand)
+        public Operand Visit(NamedConstant operand)
         {
-            Result = ConstantRule(operand);
+            return ConstantRule(operand);
         }
 
-        public void Visit(Constant operand)
+        public Operand Visit(Constant operand)
         {
-            Result = ConstantRule(operand);
+            return ConstantRule(operand);
         }
 
-        public void Visit(Fraction operand)
+        public Operand Visit(Fraction operand)
         {
-            Result = ConstantRule(operand);
+            return ConstantRule(operand);
         }
 
-        public void Visit(Minimum operand)
+        public Operand Visit(Minimum operand)
         {
-            Result = null;
+            return null;
         }
 
-        public void Visit(Maximum operand)
+        public Operand Visit(Maximum operand)
         {
-            Result = null;
+            return null;
         }
     }
 }

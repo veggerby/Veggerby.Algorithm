@@ -4,11 +4,9 @@ using System.Linq;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
-    public class EvaluateOperandVisitor : IOperandVisitor
+    public class EvaluateOperandVisitor : IOperandVisitor<double>
     {
         private readonly OperationContext _context;
-
-        public double Result { get; private set; }
 
         public EvaluateOperandVisitor(OperationContext context)
         {
@@ -17,17 +15,21 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         private double Evaluate(Operand operand, OperationContext context = null)
         {
-            var visitor = new EvaluateOperandVisitor(context ?? _context);
-            operand.Accept(visitor);
-            return visitor.Result;
+            if (context != null)
+            {
+                var visitor = new EvaluateOperandVisitor(context);
+                return operand.Accept(visitor);
+            }
+
+            return operand.Accept(this);
         }
 
-        public void Visit(Function operand)
+        public double Visit(Function operand)
         {
-            Result = Evaluate(operand.Operand);
+            return Evaluate(operand.Operand);
         }
 
-        public void Visit(FunctionReference operand)
+        public double Visit(FunctionReference operand)
         {
             var f = _context.GetFunction(operand.Identifier);
             if (f == null)
@@ -49,25 +51,25 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
             var context = new OperationContext(variables, _context.Functions);
 
-            Result = Evaluate(f, context);
+            return Evaluate(f, context);
         }
 
-        public void Visit(Variable operand)
+        public double Visit(Variable operand)
         {
-            Result = _context.GetVariable(operand.Identifier);
+            return _context.GetVariable(operand.Identifier);
         }
 
-        public void Visit(Subtraction operand)
+        public double Visit(Subtraction operand)
         {
-            Result = Evaluate(operand.Left) - Evaluate(operand.Right);
+            return Evaluate(operand.Left) - Evaluate(operand.Right);
         }
 
-        public void Visit(Division operand)
+        public double Visit(Division operand)
         {
-            Result = Evaluate(operand.Left) / Evaluate(operand.Right);
+            return Evaluate(operand.Left) / Evaluate(operand.Right);
         }
 
-        public void Visit(Factorial operand)
+        public double Visit(Factorial operand)
         {
             var inner = Evaluate(operand.Inner);
             if (inner % 1 != 0)
@@ -82,94 +84,94 @@ namespace Veggerby.Algorithm.Calculus.Visitors
                 result = result * i;
             }
 
-            Result = result;
+            return result;
         }
 
-        public void Visit(Cosine operand)
+        public double Visit(Cosine operand)
         {
             var inner = Evaluate(operand.Inner);
-            Result = Math.Cos(inner);
+            return Math.Cos(inner);
         }
 
-        public void Visit(Exponential operand)
+        public double Visit(Exponential operand)
         {
             var inner = Evaluate(operand.Inner);
-            Result = Math.Exp(inner);
+            return Math.Exp(inner);
         }
 
-        public void Visit(LogarithmBase operand)
+        public double Visit(LogarithmBase operand)
         {
             var inner = Evaluate(operand.Inner);
-            Result = Math.Log(inner) / Math.Log(operand.Base);
+            return Math.Log(inner) / Math.Log(operand.Base);
         }
 
-        public void Visit(Negative operand)
+        public double Visit(Negative operand)
         {
             var inner = Evaluate(operand.Inner);
-            Result = -inner;
+            return -inner;
         }
 
-        public void Visit(Logarithm operand)
+        public double Visit(Logarithm operand)
         {
             var inner = Evaluate(operand.Inner);
-            Result = Math.Log(inner);
+            return Math.Log(inner);
         }
 
-        public void Visit(Tangent operand)
+        public double Visit(Tangent operand)
         {
             var inner = Evaluate(operand.Inner);
-            Result = Math.Tan(inner);
+            return Math.Tan(inner);
         }
 
-        public void Visit(Sine operand)
+        public double Visit(Sine operand)
         {
             var inner = Evaluate(operand.Inner);
-            Result = Math.Sin(inner);
+            return Math.Sin(inner);
         }
 
-        public void Visit(Power operand)
+        public double Visit(Power operand)
         {
-            Result = Math.Pow(Evaluate(operand.Left), Evaluate(operand.Right));
+            return Math.Pow(Evaluate(operand.Left), Evaluate(operand.Right));
         }
 
-        public void Visit(Root operand)
+        public double Visit(Root operand)
         {
-            Result = Math.Pow(Evaluate(operand.Inner), 1d / operand.Exponent);
+            return Math.Pow(Evaluate(operand.Inner), 1d / operand.Exponent);
         }
 
-        public void Visit(Multiplication operand)
+        public double Visit(Multiplication operand)
         {
-            Result = Evaluate(operand.Left) * Evaluate(operand.Right);
+            return Evaluate(operand.Left) * Evaluate(operand.Right);
         }
 
-        public void Visit(Addition operand)
+        public double Visit(Addition operand)
         {
-            Result = Evaluate(operand.Left) + Evaluate(operand.Right);
+            return Evaluate(operand.Left) + Evaluate(operand.Right);
         }
 
-        public void Visit(NamedConstant operand)
+        public double Visit(NamedConstant operand)
         {
-            Result = operand.Value;
+            return operand.Value;
         }
 
-        public void Visit(Constant operand)
+        public double Visit(Constant operand)
         {
-            Result = operand.Value;
+            return operand.Value;
         }
 
-        public void Visit(Fraction operand)
+        public double Visit(Fraction operand)
         {
-            Result = 1d * operand.Numerator / operand.Denominator;
+            return 1d * operand.Numerator / operand.Denominator;
         }
 
-        public void Visit(Minimum operand)
+        public double Visit(Minimum operand)
         {
-            Result = Math.Min(Evaluate(operand.Left), Evaluate(operand.Right));
+            return Math.Min(Evaluate(operand.Left), Evaluate(operand.Right));
         }
 
-        public void Visit(Maximum operand)
+        public double Visit(Maximum operand)
         {
-            Result = Math.Max(Evaluate(operand.Left), Evaluate(operand.Right));
+            return Math.Max(Evaluate(operand.Left), Evaluate(operand.Right));
         }
     }
 }

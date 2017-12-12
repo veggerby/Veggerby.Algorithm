@@ -100,35 +100,25 @@ namespace Veggerby.Algorithm.Calculus
         public static string ToLaTeXString(this Operand operand)
         {
             var visitor = new LaTeXOperandVisitor();
-            operand.Accept(visitor);
-            return visitor.Result;
+            return operand.Accept(visitor);
         }
 
         public static double Evaluate(this Operand operand, OperationContext context)
         {
             var visitor = new EvaluateOperandVisitor(context);
-            operand.Accept(visitor);
-            return visitor.Result;
+            return operand.Accept(visitor);
         }
 
         public static Operand GetDerivative(this Operand operand, Variable variable)
         {
             var visitor = new DerivativeOperandVisitor(variable);
-            operand.Accept(visitor);
-            return visitor.Result;
-        }
-
-        public static void PrintTree(this Operand operand, TextWriter writer)
-        {
-            var visitor = new PrintTreeOperandVisitor(writer);
-            operand.Accept(visitor);
+            return operand.Accept(visitor);
         }
 
         public static Operand Reduce(this Operand operand)
         {
             var visitor = new ReduceOperandVisitor();
-            operand.Accept(visitor);
-            return visitor.Result;
+            return operand.Accept(visitor);
         }
     }
 }

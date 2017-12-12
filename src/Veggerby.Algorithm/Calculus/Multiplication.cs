@@ -9,9 +9,9 @@ namespace Veggerby.Algorithm.Calculus
         {
         }
 
-        public override void Accept(IOperandVisitor visitor)
+        public override T Accept<T>(IOperandVisitor<T> visitor)
         {
-            visitor.Visit(this);
+            return visitor.Visit(this);
         }
 
         public static Operand Create(Operand left, Operand right)
@@ -26,7 +26,32 @@ namespace Veggerby.Algorithm.Calculus
                 throw new ArgumentNullException(nameof(right));
             }
 
-            return new Multiplication(left, right).Reduce();
+            if (left.Equals(Constant.Zero) || right.Equals(Constant.Zero))
+            {
+                return Constant.Zero;
+            }
+
+            if (right.Equals(Constant.One))
+            {
+                return left;
+            }
+
+            if (left.Equals(Constant.One))
+            {
+                return right;
+            }
+
+            if (right.Equals(Constant.MinusOne))
+            {
+                return Negative.Create(left);
+            }
+
+            if (left.Equals(Constant.MinusOne))
+            {
+                return Negative.Create(right);
+            }
+
+            return new Multiplication(left, right);
         }
     }
 }

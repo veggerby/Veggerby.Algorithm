@@ -16,9 +16,9 @@ namespace Veggerby.Algorithm.Calculus
             Exponent = exponent;
         }
 
-        public override void Accept(IOperandVisitor visitor)
+        public override T Accept<T>(IOperandVisitor<T> visitor)
         {
-            visitor.Visit(this);
+            return visitor.Visit(this);
         }
 
         protected bool Equals(Root other)
@@ -46,7 +46,7 @@ namespace Veggerby.Algorithm.Calculus
 
         public static Operand Create(int exponent, Operand inner)
         {
-            return new Root(exponent, inner).Reduce();
+            return new Root(exponent, inner);
         }
     }
 }

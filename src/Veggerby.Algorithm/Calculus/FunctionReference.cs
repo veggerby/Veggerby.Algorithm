@@ -16,9 +16,9 @@ namespace Veggerby.Algorithm.Calculus
             Parameters = parameters;
         }
 
-        public override void Accept(IOperandVisitor visitor)
+        public override T Accept<T>(IOperandVisitor<T> visitor)
         {
-            visitor.Visit(this);
+            return visitor.Visit(this);
         }
 
         protected bool Equals(FunctionReference other)

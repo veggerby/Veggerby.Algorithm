@@ -172,7 +172,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         {
             // arrange
             Operand f = "(2*pi*cos(x)*x)*2";
-            var expected = new Operand[] { Constant.Create(4), Constant.Pi, Cosine.Create(Variable.x), Variable.x };
+            var expected = new Operand[] { Constant.Create(2), Constant.Pi, Cosine.Create(Variable.x), Variable.x, Constant.Create(2) };
 
             // act
             var actual = ((IAssociativeBinaryOperation)f).FlattenAssociative();
@@ -216,7 +216,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         }
 
         [Fact]
-        public void Should_return_simple_mj()
+        public void Should_return_simple_latex()
         {
             // arrange
             var operand = Sine.Create(Variable.x);

@@ -3,74 +3,79 @@ using System.Linq;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
-    public class ReduceOperandVisitor : IOperandVisitor
+    public class ReduceOperandVisitor : IOperandVisitor<Operand>
     {
-        public Operand Result { get; private set; }
-
-        public void Visit(Function operand)
+        private Operand Reduce(Operand operand)
         {
-            Result = Function.Create(operand.Identifier, operand.Operand.Reduce());
+            var visitor = new ReduceOperandVisitor();
+            var result = operand.Accept(visitor);
+
+            if (!operand.Equals(result))
+            {
+                return result;
+            }
+
+            return operand;
         }
 
-        public void Visit(FunctionReference operand)
+        public Operand Visit(Function operand)
         {
-            Result = FunctionReference.Create(operand.Identifier, operand.Parameters.Select(x => x.Reduce()));
+            return Function.Create(operand.Identifier, Reduce(operand.Operand));
         }
 
-        public void Visit(Constant operand)
+        public Operand Visit(FunctionReference operand)
         {
-            Result = operand;
+            return FunctionReference.Create(operand.Identifier, operand.Parameters.Select(x => Reduce(x)));
         }
 
-        public void Visit(NamedConstant operand)
+        public Operand Visit(Constant operand)
         {
-            Result = operand;
+            return operand;
         }
 
-        public void Visit(Variable operand)
+        public Operand Visit(NamedConstant operand)
         {
-            Result = operand;
+            return operand;
         }
 
-        public void Visit(Addition operand)
+        public Operand Visit(Variable operand)
         {
-            var left = operand.Left;
-            var right = operand.Right;
+            return operand;
+        }
+
+        public Operand Visit(Addition operand)
+        {
+            var left = Reduce(operand.Left);
+            var right = Reduce(operand.Right);
 
             if (left.Equals(right))
             {
-                Result = Multiplication.Create(2, left);
-                return;
+                return Reduce(Multiplication.Create(2, left));
             }
 
             if (left.Equals(Constant.Zero))
             {
-                Result = right;
-                return;
+                return right;
             }
 
             if (right.Equals(Constant.Zero))
             {
-                Result = left;
-                return;
+                return left;
             }
 
             if (left.IsConstant() && right.IsConstant())
             {
-                Result = (Constant)left + (Constant)right;
-                return;
+                return Reduce((Constant)left + (Constant)right);
             }
 
             if (right.IsNegative())
             {
-                Result = Subtraction.Create(left, ((Negative)right).Inner);
-                return;
+                return Reduce(Subtraction.Create(left, ((Negative)right).Inner));
             }
 
             if (right.IsConstant() && ((Constant)right).Value < 0)
             {
-                Result = Subtraction.Create(left, -((Constant)right).Value);
-                return;
+                return Reduce(Subtraction.Create(left, -((Constant)right).Value));
             }
 
             var flat = operand.FlattenAssociative().ToList();
@@ -79,162 +84,141 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             {
                 var constants = flat.Where(x => x.IsConstant()).OfType<Constant>();
                 Operand @const = constants.Aggregate((seed, x) => (Constant)(seed + x));
-                Result = flat.Where(x => !x.IsConstant()).Aggregate(@const, (seed, x) => Addition.Create(seed, x));
-                return;
+                return Reduce(flat.Where(x => !x.IsConstant()).Aggregate(@const, (seed, x) => Addition.Create(seed, x)));
             }
 
             var groups = flat.GroupBy(x => x).ToList();
 
             if (groups.Any(x => x.Count() > 1))
             {
-                Result = groups.Aggregate((Operand)Constant.Zero, (seed, group) => Addition.Create(seed, Multiplication.Create(group.Count(), group.Key)));
-                return;
+                return Reduce(groups.Aggregate((Operand)Constant.Zero, (seed, group) => Addition.Create(seed, Multiplication.Create(group.Count(), group.Key))));
             }
 
-            Result = operand;
+            return Addition.Create(left, right);
         }
 
-        public void Visit(Subtraction operand)
+        public Operand Visit(Subtraction operand)
         {
-            var left = operand.Left;
-            var right = operand.Right;
+            var left = Reduce(operand.Left);
+            var right = Reduce(operand.Right);
 
             if (left.Equals(right))
             {
-                Result = 0;
-                return;
+                return Constant.Zero;
             }
 
             if (left.IsConstant() && right.IsConstant())
             {
-                Result = (Constant)left - (Constant)right;
-                return;
+                return Reduce((Constant)left - (Constant)right);
             }
 
             if (left.Equals(Constant.Zero))
             {
-                Result = Negative.Create(right);
-                return;
+                return Reduce(Negative.Create(right));
             }
 
             if (right.IsNegative())
             {
-                Result = Addition.Create(left, ((Negative)right).Inner);
-                return;
+                return Reduce(Addition.Create(left, ((Negative)right).Inner));
             }
 
             if (right.IsConstant() && ((Constant)right).Value < 0)
             {
-                Result = Addition.Create(left, -((Constant)right).Value);
-                return;
+                return Reduce(Addition.Create(left, -((Constant)right).Value));
             }
 
-            Result = operand;
+            return Subtraction.Create(left, right);
         }
 
-        public void Visit(Multiplication operand)
+        public Operand Visit(Multiplication operand)
         {
-            var left = operand.Left;
-            var right = operand.Right;
+            var left = Reduce(operand.Left);
+            var right = Reduce(operand.Right);
 
             if (left is Division && right is Division)
             {
                 var l = (Division)left;
                 var r = (Division)right;
 
-                Result = Division.Create(
+                return Reduce(Division.Create(
                     Multiplication.Create(l.Left, r.Left),
                     Multiplication.Create(l.Right, r.Right)
-                );
-                return;
+                ));
             }
 
             if (left is Division)
             {
                 var l = (Division)left;
 
-                Result = Division.Create(
+                return Reduce(Division.Create(
                     Multiplication.Create(l.Left, right),
                     l.Right
-                );
-                return;
+                ));
             }
 
             if (right is Division)
             {
                 var r = (Division)right;
 
-                Result = Division.Create(
+                return Reduce(Division.Create(
                     Multiplication.Create(left, r.Left),
                     r.Right
-                );
-                return;
+                ));
             }
 
             if (left.Equals(right))
             {
-                Result = Power.Create(left, 2);
-                return;
+                return Reduce(Power.Create(left, 2));
             }
 
             if (left.IsConstant() && right.IsConstant())
             {
-                Result = (Constant)left * (Constant)right;
-                return;
+                return Reduce((Constant)left * (Constant)right);
             }
 
             if (left.Equals(Constant.Zero) || right.Equals(Constant.Zero))
             {
-                Result = Constant.Zero;
-                return;
+                return Constant.Zero;
             }
 
             if (left.Equals(Constant.One))
             {
-                Result = right;
-                return;
+                return right;
             }
 
             if (right.Equals(Constant.One))
             {
-                Result = left;
-                return;
+                return left;
             }
 
             if (left.IsNegative() && right.IsNegative())
             {
-                Result = Multiplication.Create(((Negative)left).Inner, ((Negative)right).Inner);
-                return;
+                return Reduce(Multiplication.Create(((Negative)left).Inner, ((Negative)right).Inner));
             }
 
             if (left.IsNegative())
             {
-                Result = Negative.Create(Multiplication.Create(((Negative)left).Inner, right));
-                return;
+                return Reduce(Negative.Create(Multiplication.Create(((Negative)left).Inner, right)));
             }
 
             if (right.IsNegative())
             {
-                Result = Negative.Create(Multiplication.Create(left, ((Negative)right).Inner));
-                return;
+                return Reduce(Negative.Create(Multiplication.Create(left, ((Negative)right).Inner)));
             }
 
             if (left.Equals(Constant.MinusOne))
             {
-                Result = Negative.Create(right);
-                return;
+                return Reduce(Negative.Create(right));
             }
 
             if (right.Equals(Constant.MinusOne))
             {
-                Result = Negative.Create(left);
-                return;
+                return Reduce(Negative.Create(left));
             }
 
             if (!left.IsConstant() && right.IsConstant())
             {
-                Result = Multiplication.Create(right, left);
-                return;
+                return Reduce(Multiplication.Create(right, left));
             }
 
             var flat = operand.FlattenAssociative().ToList();
@@ -243,35 +227,31 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             {
                 var constants = flat.Where(x => x.IsConstant()).OfType<Constant>();
                 Operand @const = constants.Aggregate((seed, x) => (Constant)(seed + x));
-                Result = flat.Where(x => !x.IsConstant()).Aggregate(@const, (seed, x) => Multiplication.Create(seed, x));
-                return;
+                return Reduce(flat.Where(x => !x.IsConstant()).Aggregate(@const, (seed, x) => Multiplication.Create(seed, x)));
             }
 
             var groups = flat.GroupBy(x => x).ToList();
             if (groups.Any(x => x.Count() > 1))
             {
-                Result = groups.Aggregate((Operand)Constant.One, (seed, group) => Multiplication.Create(seed, Power.Create(group.Key, group.Count())));
-                return;
+                return Reduce(groups.Aggregate((Operand)Constant.One, (seed, group) => Multiplication.Create(seed, Power.Create(group.Key, group.Count()))));
             }
 
-            Result = operand;
+            return Multiplication.Create(left, right);
         }
 
-        public void Visit(Division operand)
+        public Operand Visit(Division operand)
         {
-            var left = operand.Left;
-            var right = operand.Right;
+            var left = Reduce(operand.Left);
+            var right = Reduce(operand.Right);
 
             if (left.Equals(right))
             {
-                Result = Constant.One;
-                return;
+                return Constant.One;
             }
 
             if (left is Fraction && right is Fraction)
             {
-                Result = ((Fraction)left) / ((Fraction)right);
-                return;
+                return Reduce(((Fraction)left) / ((Fraction)right));
             }
 
             if (left.IsConstant() && right.IsConstant())
@@ -281,227 +261,207 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
                 if (l.IsInteger() && r.IsInteger())
                 {
-                    Result = Fraction.Create(l, r);
-                    return;
+                    return Reduce(Fraction.Create(l, r));
                 }
 
-                Result = l.Value / r.Value;
-                return;
+                return Reduce(l.Value / r.Value);
             }
 
             if (left.IsConstant() && right is Fraction)
             {
-                Result = ((Constant)left).Value / (Fraction)right;
-                return;
+                return Reduce(((Constant)left).Value / (Fraction)right);
             }
 
             if (left is Fraction && right.IsConstant())
             {
-                Result = ((Fraction)left) / ((Constant)right).Value;
-                return;
+                return Reduce(((Fraction)left) / ((Constant)right).Value);
             }
 
             if (right.Equals(Constant.One))
             {
-                Result = left;
-                return;
+                return left;
             }
 
             if (left.IsNegative() && right.IsNegative())
             {
-                Result = Division.Create(((Negative)left).Inner, ((Negative)right).Inner);
-                return;
+                return Reduce(Division.Create(((Negative)left).Inner, ((Negative)right).Inner));
             }
 
             if (left.IsNegative())
             {
-                Result = Negative.Create(Division.Create(((Negative)left).Inner, right));
-                return;
+                return Reduce(Negative.Create(Division.Create(((Negative)left).Inner, right)));
             }
 
             if (right.IsNegative())
             {
-                Result = Negative.Create(Division.Create(left, ((Negative)right).Inner));
-                return;
+                return Reduce(Negative.Create(Division.Create(left, ((Negative)right).Inner)));
             }
 
             if (left is Division && right is Division)
             {
-                Result = Division.Create(
+                return Reduce(Division.Create(
                     Multiplication.Create(((Division)left).Left, ((Division)right).Right),
-                    Multiplication.Create(((Division)left).Right, ((Division)right).Left));
-                return;
+                    Multiplication.Create(((Division)left).Right, ((Division)right).Left)));
             }
 
             if (left is Division)
             {
-                Result = Division.Create(
+                return Reduce(Division.Create(
                     ((Division)left).Left,
-                    Multiplication.Create(((Division)left).Right, right));
-                return;
+                    Multiplication.Create(((Division)left).Right, right)));
             }
 
             if (right is Division)
             {
-                Result = Division.Create(
+                return Reduce(Division.Create(
                     Multiplication.Create(left, ((Division)right).Right),
-                    ((Division)right).Left);
-                return;
+                    ((Division)right).Left));
             }
 
-            Result = operand;
+            return Division.Create(left, right);
         }
 
-        public void Visit(Power operand)
+        public Operand Visit(Power operand)
         {
-            var left = operand.Left;
-            var right = operand.Right;
+            var left = Reduce(operand.Left);
+            var right = Reduce(operand.Right);
 
             if (left.Equals(Constant.One) || right.Equals(Constant.Zero))
             {
-                Result = 1;
-                return;
+                return Constant.One;
             }
 
             if (right.Equals(Constant.One))
             {
-                Result = left;
-                return;
+                return left;
             }
 
             if (left.IsConstant() && right.IsConstant())
             {
-                Result = (Constant)left ^ (Constant)right;
-                return;
+                return Reduce((Constant)left ^ (Constant)right);
             }
 
-            Result = operand;
+            return Power.Create(left, right);
         }
 
-        public void Visit(Root operand)
+        public Operand Visit(Root operand)
         {
+            var inner = Reduce(operand.Inner);
+
             if (operand.Exponent == 1)
             {
-                Result = operand.Inner;
-                return;
+                return inner;
             }
 
-            Result = operand;
+            return Root.Create(operand.Exponent, inner);
         }
 
-        public void Visit(Factorial operand)
+        public Operand Visit(Factorial operand)
         {
-            Result = operand;
+            return Factorial.Create(Reduce(operand.Inner));
         }
 
-        public void Visit(Sine operand)
+        public Operand Visit(Sine operand)
         {
-            Result = operand;
+            return Sine.Create(Reduce(operand.Inner));
         }
 
-        public void Visit(Cosine operand)
+        public Operand Visit(Cosine operand)
         {
-            Result = operand;
+            return Cosine.Create(Reduce(operand.Inner));
         }
 
-        public void Visit(Tangent operand)
+        public Operand Visit(Tangent operand)
         {
-            Result = operand;
+            return Tangent.Create(Reduce(operand.Inner));
         }
 
-        public void Visit(Exponential operand)
+        public Operand Visit(Exponential operand)
         {
-            Result = operand;
+            return Exponential.Create(Reduce(operand.Inner));
         }
 
-        public void Visit(Logarithm operand)
+        public Operand Visit(Logarithm operand)
         {
-            Result = operand;
+            return Logarithm.Create(Reduce(operand.Inner));
         }
 
-        public void Visit(LogarithmBase operand)
+        public Operand Visit(LogarithmBase operand)
         {
-            Result = operand;
+            return LogarithmBase.Create(operand.Base, Reduce(operand.Inner));
         }
 
-        public void Visit(Negative operand)
+        public Operand Visit(Negative operand)
         {
-            var inner = operand.Inner;
+            var inner = Reduce(operand.Inner);
 
             if (inner.IsConstant())
             {
-                Result = Constant.Create(-((Constant)inner).Value);
-                return;
+                return Constant.Create(-((Constant)inner).Value);
             }
 
-            Result = operand;
+            return Negative.Create(inner);
         }
 
-        public void Visit(Fraction operand)
+        public Operand Visit(Fraction operand)
         {
             var numerator = operand.Numerator;
             var denominator = operand.Denominator;
 
             if (denominator < 0)
             {
-                Result = Fraction.Create(-numerator, -denominator); // flip sign on both 1/-x -> -1/x and -1/-x -> 1/x
-                return;
+                return Reduce(Fraction.Create(-numerator, -denominator)); // flip sign on both 1/-x -> -1/x and -1/-x -> 1/x
             }
 
             var gcd = GreatestCommonDivisor.Euclid(Math.Abs(numerator), Math.Abs(denominator));
 
             if (gcd > 1)
             {
-                Result = Fraction.Create(numerator / gcd, denominator / gcd);
-                return;
+                return Reduce(Fraction.Create(numerator / gcd, denominator / gcd));
             }
 
             if (denominator == 1)
             {
-                Result = numerator;
-                return;
+                return numerator;
             }
 
-            Result = operand;
+            return operand;
         }
 
-        public void Visit(Minimum operand)
+        public Operand Visit(Minimum operand)
         {
-            var left = operand.Left;
-            var right = operand.Right;
+            var left = Reduce(operand.Left);
+            var right = Reduce(operand.Right);
 
             if (left.Equals(right))
             {
-                Result = left;
-                return;
+                return left;
             }
 
             if (left.IsConstant() && right.IsConstant())
             {
-                Result = Math.Min((Constant)left, (Constant)right);
-                return;
+                return Math.Min((Constant)left, (Constant)right);
             }
 
-            Result = operand;        }
+            return Minimum.Create(left, right);
+        }
 
-        public void Visit(Maximum operand)
+        public Operand Visit(Maximum operand)
         {
-            var left = operand.Left;
-            var right = operand.Right;
+            var left = Reduce(operand.Left);
+            var right = Reduce(operand.Right);
 
             if (left.Equals(right))
             {
-                Result = left;
-                return;
+                return left;
             }
 
             if (left.IsConstant() && right.IsConstant())
             {
-                Result = Math.Max((Constant)left, (Constant)right);
-                return;
+                return Math.Max((Constant)left, (Constant)right);
             }
 
-            Result = operand;
+            return Maximum.Create(left, right);
         }
     }
 }

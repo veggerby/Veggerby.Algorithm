@@ -12,16 +12,16 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_integrate_function()
         {
             // arrange
-            var operation = Function.Create("f", Constant.Create(3));
+            var operand = Function.Create("f", Constant.Create(3));
             var visitor = new IntegralOperandVisitor(Variable.x);
             var expected = "3*x+c";
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBeOfType<Function>();
-            Function result = (Function)visitor.Result;
+            actual.ShouldBeOfType<Function>();
+            Function result = (Function)actual;
             result.Identifier.ShouldBe("F");
             result.Variables.ShouldBe(new[] { Variable.Create("c"), Variable.x });
             result.Operand.ShouldBe(expected);
@@ -31,116 +31,116 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_null_integrate_function_reference()
         {
             // arrange
-            var operation = FunctionReference.Create("f", Variable.x);
+            var operand = FunctionReference.Create("f", Variable.x);
             var visitor = new IntegralOperandVisitor(Variable.x);
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBeNull();
+            actual.ShouldBeNull();
         }
 
         [Fact]
         public void Should_integrate_addition()
         {
             // arrange
-            var operation = Addition.Create(Variable.x, Constant.Create(3));
+            var operand = Addition.Create(Variable.x, Constant.Create(3));
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = "x^2/2+c+3*x+c";
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_integrate_constant()
         {
             // arrange
-            var operation = Constant.Create(3);
+            var operand = Constant.Create(3);
             var visitor = new IntegralOperandVisitor(Variable.x);
             var expected = "3*x+c";
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_integrate_cosine()
         {
             // arrange
-            var operation = Cosine.Create(Variable.x);
+            var operand = Cosine.Create(Variable.x);
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = "sin(x)+c";
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_integrate_division()
         {
             // arrange
-            var operation = Division.Create(Constant.One, Variable.x);
+            var operand = Division.Create(Constant.One, Variable.x);
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = "ln(x)+c";
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_integrate_exponential()
         {
             // arrange
-            var operation = Exponential.Create(Variable.x);
+            var operand = Exponential.Create(Variable.x);
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = "exp(x)+c";
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_return_null_for_integrate_factorial()
         {
             // arrange
-            var operation = Factorial.Create(Variable.x);
+            var operand = Factorial.Create(Variable.x);
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = null;
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_integrate_log_base10()
         {
             // arrange
-            var operation = LogarithmBase.Create(10, Variable.x);
+            var operand = LogarithmBase.Create(10, Variable.x);
             var visitor = new IntegralOperandVisitor(Variable.x);
             var expected = Division.Create(Constant.One, Multiplication.Create(Variable.x, Logarithm.Create(10)));
 
             // act
-            Should.Throw<NotImplementedException>(() => operation.Accept(visitor));
+            Should.Throw<NotImplementedException>(() => operand.Accept(visitor));
 
             // assert
         }
@@ -149,118 +149,118 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_integrate_logarithm()
         {
             // arrange
-            var operation = Logarithm.Create(Variable.x);
+            var operand = Logarithm.Create(Variable.x);
             var visitor = new IntegralOperandVisitor(Variable.x);
             var expected = "x*ln(x)-x+c";
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_integrate_multiplication()
         {
             // arrange
-            var operation = Multiplication.Create(Variable.x, Cosine.Create(Variable.x));
+            var operand = Multiplication.Create(Variable.x, Cosine.Create(Variable.x));
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = "x*(sin(x)+c)-(-cos(x)+2*c+c*x)";
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_integrate_named_constant()
         {
             // arrange
-            var operation = NamedConstant.Create("a", 3);
+            var operand = NamedConstant.Create("a", 3);
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = Addition.Create(
-                Multiplication.Create(operation, Variable.x),
+                Multiplication.Create(operand, Variable.x),
                 Variable.Create("c"));
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_integrate_power()
         {
             // arrange
-            var operation = Power.Create(Variable.x, Constant.Create(2));
+            var operand = Power.Create(Variable.x, Constant.Create(2));
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = "x^3/3+c";
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_integrate_sine()
         {
             // arrange
-            var operation = Sine.Create(Variable.x);
+            var operand = Sine.Create(Variable.x);
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = "-cos(x)+c";
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_integrate_root()
         {
             // arrange
-            var operation = Root.Create(2, Variable.x);
+            var operand = Root.Create(2, Variable.x);
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = "x^1.5/1.5+c";
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_integrate_subtraction()
         {
             // arrange
-            var operation = Subtraction.Create(Variable.x, Constant.One);
+            var operand = Subtraction.Create(Variable.x, Constant.One);
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = "(x^2/2+c)-(x+c)";
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_integrate_tangent()
         {
             // arrange
-            var operation = Tangent.Create(Variable.x);
+            var operand = Tangent.Create(Variable.x);
             var visitor = new IntegralOperandVisitor(Variable.x);
 
             // act
-            Should.Throw<NotImplementedException>(() => operation.Accept(visitor));
+            Should.Throw<NotImplementedException>(() => operand.Accept(visitor));
 
             // assert
         }
@@ -269,58 +269,58 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_integrate_variable()
         {
             // arrange
-            var operation = Variable.Create("x");
+            var operand = Variable.Create("x");
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = "x^2/2+c";
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_integrate_fraction()
         {
             // arrange
-            var operation = Fraction.Create(1, 4);
+            var operand = Fraction.Create(1, 4);
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = "(1/4)*x+c";
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBe(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
         public void Should_return_null_for_integrate_minimum()
         {
             // arrange
-            var operation = Minimum.Create(Variable.x, 4);
+            var operand = Minimum.Create(Variable.x, 4);
             var visitor = new IntegralOperandVisitor(Variable.x);
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBeNull();
+            actual.ShouldBeNull();
         }
 
         [Fact]
         public void Should_return_null_for_integrate_maximum()
         {
             // arrange
-            var operation = Maximum.Create(Variable.x, 4);
+            var operand = Maximum.Create(Variable.x, 4);
             var visitor = new IntegralOperandVisitor(Variable.x);
 
             // act
-            operation.Accept(visitor);
+            var actual = operand.Accept(visitor);
 
             // assert
-            visitor.Result.ShouldBeNull();
+            actual.ShouldBeNull();
         }
     }
 }

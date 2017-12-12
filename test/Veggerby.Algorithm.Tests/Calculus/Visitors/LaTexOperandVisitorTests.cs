@@ -35,8 +35,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var visitor = new LaTeXOperandVisitor();
 
             // act
-            operand.Accept(visitor);
-            var actual = visitor.Result;
+            var actual = operand.Accept(visitor);
 
             // assert
             actual.ShouldBe(expected);

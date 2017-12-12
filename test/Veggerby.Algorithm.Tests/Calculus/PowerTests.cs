@@ -17,18 +17,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
         }
 
         [Fact]
-        public void Should_collapse()
-        {
-            // arrange
-
-            // act
-            var actual = Power.Create(Constant.Create(6), Constant.Create(2));
-
-            // assert
-            actual.ShouldBe(Constant.Create(36));
-        }
-
-        [Fact]
         public void Should_equal_self()
         {
             // arrange

@@ -17,33 +17,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
         }
 
         [Fact]
-        public void Should_collapse()
-        {
-            // arrange
-
-            // act
-            var actual = Addition.Create(Constant.One, Constant.Create(3));
-
-            // assert
-            actual.ShouldBe(Constant.Create(4));
-        }
-
-        [Fact]
-        public void Should_collapse_flattened()
-        {
-            // arrange
-
-            // act
-            var actual = (Addition)Addition.Create(
-                Addition.Create(Constant.Create(7), Sine.Create(Variable.x)),
-                Addition.Create(Constant.Create(3), Sine.Create(Variable.x)));
-
-            // assert
-            actual.Left.ShouldBe(Constant.Create(10));
-            actual.Right.ShouldBe(Multiplication.Create(2, Sine.Create(Variable.x)));
-        }
-
-        [Fact]
         public void Should_equal_self()
         {
             // arrange

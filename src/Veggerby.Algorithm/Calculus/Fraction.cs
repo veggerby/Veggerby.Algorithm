@@ -14,9 +14,9 @@ namespace Veggerby.Algorithm.Calculus
             Denominator = denominator;
         }
 
-        public override void Accept(IOperandVisitor visitor)
+        public override T Accept<T>(IOperandVisitor<T> visitor)
         {
-            visitor.Visit(this);
+            return visitor.Visit(this);
         }
 
         protected bool Equals(Fraction other)
@@ -213,7 +213,12 @@ namespace Veggerby.Algorithm.Calculus
 
         public static Operand Create(int numerator, int denominator)
         {
-            return new Fraction(numerator, denominator).Reduce();
+            if (denominator == 1)
+            {
+                return Constant.Create(numerator);
+            }
+
+            return new Fraction(numerator, denominator);
         }
     }
 }

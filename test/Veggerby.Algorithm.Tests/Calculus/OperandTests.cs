@@ -37,22 +37,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
         }
 
         [Fact]
-        public void Should_return_self_times_2()
-        {
-            // arrange
-            var left = Variable.x;
-            var right = Variable.x;
-
-            // act
-            var actual = left + right;
-
-            // assert
-            actual.ShouldBeOfType<Multiplication>();
-            ((BinaryOperation)actual).Left.ShouldBe(Constant.Create(2));
-            ((BinaryOperation)actual).Right.ShouldBe(right);
-        }
-
-        [Fact]
         public void Should_return_subtraction()
         {
             // arrange
@@ -80,20 +64,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
 
             // assert
             actual.ShouldBe(Constant.Create(-3));
-        }
-
-        [Fact]
-        public void Should_return_zero_when_multiply_by_zero()
-        {
-            // arrange
-            var left = Variable.x;
-            var right = Variable.x;
-
-            // act
-            var actual = left - right;
-
-            // assert
-            actual.ShouldBe(Constant.Zero);
         }
 
         [Fact]
@@ -127,22 +97,6 @@ namespace Veggerby.Algorithm.Tests.Calculus
         }
 
         [Fact]
-        public void Should_return_self_squared()
-        {
-            // arrange
-            var left = Variable.x;
-            var right = Variable.x;
-
-            // act
-            var actual = left * right;
-
-            // assert
-            actual.ShouldBeOfType<Power>();
-            ((BinaryOperation)actual).Left.ShouldBe(right);
-            ((BinaryOperation)actual).Right.ShouldBe(Constant.Create(2));
-        }
-
-        [Fact]
         public void Should_return_division()
         {
             // arrange
@@ -159,31 +113,17 @@ namespace Veggerby.Algorithm.Tests.Calculus
         }
 
         [Fact]
-        public void Should_return_constant_from_division()
+        public void Should_return_fraction_from_constants_division()
         {
             // arrange
-            var left = Constant.Create(6);
+            var left = Constant.Create(1);
             var right = Constant.Create(3);
 
             // act
-            var actual = left / right;
+            var actual = Division.Create(left, right);
 
             // assert
-            actual.ShouldBe(Constant.Create(2));
-        }
-
-        [Fact]
-        public void Should_return_one_division_numerator_equal_denominator()
-        {
-            // arrange
-            var left = Variable.x;
-            var right = Variable.x;
-
-            // act
-            var actual = left / right;
-
-            // assert
-            actual.ShouldBe(Constant.One);
+            actual.ShouldBe(Fraction.Create(1, 3));
         }
 
         [Fact]

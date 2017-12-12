@@ -5,13 +5,12 @@ namespace Veggerby.Algorithm.Calculus
 {
     public abstract class Operand
     {
-        public abstract void Accept(IOperandVisitor visitor);
+        public abstract T Accept<T>(IOperandVisitor<T> visitor);
 
         public sealed override string ToString()
         {
             var visitor = new ToStringOperandVisitor();
-            this.Accept(visitor);
-            return visitor.Result;
+            return this.Accept(visitor);
         }
 
         public static Operand operator +(Operand left, Operand right)

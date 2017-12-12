@@ -3,213 +3,176 @@ using System.Text;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
-    public class LaTeXOperandVisitor : IOperandVisitor
+    public class LaTeXOperandVisitor : IOperandVisitor<string>
     {
-        private readonly StringBuilder _result = new StringBuilder();
-
-        public string Result => _result.ToString();
-
-        public void Visit(Function operand)
+        public string Visit(Function operand)
         {
-            _result.Append($@"{operand.Identifier}\left(");
             var variables = string.Join(", ", operand.Variables.Select(x => x.Identifier));
-            _result.Append(variables);
-            _result.Append("\right) = ");
-            operand.Operand.Accept(this);
+            var f = operand.Operand.Accept(this);
+            return $@"{operand.Identifier}\left({variables}\right) = {f}";
         }
 
-        public void Visit(FunctionReference operand)
+        public string Visit(FunctionReference operand)
         {
-            _result.Append($@"{operand.Identifier}\left(");
+            var parameters = string.Join(", ", operand.Parameters.Select(x => x.Accept(this)));
+            return $@"{operand.Identifier}\left({parameters}\right)";
+        }
 
-            var first = true;
-            foreach (var parameter in operand.Parameters)
+        public string Visit(Variable operand)
+        {
+            return operand.Identifier;
+        }
+
+        public string Visit(Subtraction operand)
+        {
+            var left = operand.Left.Accept(this);
+            var right = operand.Right.Accept(this);
+            return $"{{{left}}}-{{{right}}}";
+        }
+
+        public string Visit(Division operand)
+        {
+            var left = operand.Left.Accept(this);
+            var right = operand.Right.Accept(this);
+            return $@"\frac{{{left}}}{{{right}}}";
+        }
+
+        public string Visit(Factorial operand)
+        {
+            var inner = operand.Inner.Accept(this);
+            return $"{{{inner}}}!";
+        }
+
+        public string Visit(Cosine operand)
+        {
+            var inner = operand.Inner.Accept(this);
+            return $@"\cos\left({inner}\right)";
+        }
+
+        public string Visit(Exponential operand)
+        {
+            var inner = operand.Inner.Accept(this);
+            return $"e^{{{inner}}}";
+        }
+
+        public string Visit(LogarithmBase operand)
+        {
+            var inner = operand.Inner.Accept(this);
+
+            if (operand.Base == 10)
             {
-                if (!first)
-                {
-                    _result.Append(", ");
-                }
-
-                parameter.Accept(this);
-                first = false;
+                return $@"\log\left({inner}\right)";
             }
 
-            _result.Append("\right)");
+            return $@"\log_{operand.Base}\left({inner}\right)";
         }
 
-        public void Visit(Variable operand)
+        public string Visit(Negative operand)
         {
-            _result.Append(operand.Identifier);
+            var inner = operand.Inner.Accept(this);
+            return $"-{inner}";
         }
 
-        public void Visit(Subtraction operand)
+        public string Visit(Logarithm operand)
         {
-            _result.Append(@"{");
-            operand.Left.Accept(this);
-            _result.Append(@"}-{");
-            operand.Right.Accept(this);
-            _result.Append(@"}");
-
+            var inner = operand.Inner.Accept(this);
+            return $@"\ln\left({inner}\right)";
         }
 
-        public void Visit(Division operand)
+        public string Visit(Tangent operand)
         {
-            _result.Append(@"\frac{");
-            operand.Left.Accept(this);
-            _result.Append("}{");
-            operand.Right.Accept(this);
-            _result.Append("}");
+            var inner = operand.Inner.Accept(this);
+            return $@"\tan\left({inner}\right)";
         }
 
-        public void Visit(Factorial operand)
+        public string Visit(Sine operand)
         {
+            var inner = operand.Inner.Accept(this);
+            return $@"\sin\left({inner}\right)";
         }
 
-        public void Visit(Cosine operand)
+        public string Visit(Power operand)
         {
-            _result.Append(@"\cos\left(");
-            operand.Inner.Accept(this);
-            _result.Append(@"\right)");
+            var left = operand.Left.Accept(this);
+            var right = operand.Right.Accept(this);
+            return $"{{{left}}}^{{{right}}}";
         }
 
-        public void Visit(Exponential operand)
+        public string Visit(Root operand)
         {
-            _result.Append(@"e^{");
-            operand.Inner.Accept(this);
-            _result.Append("}");
-        }
+            var inner = operand.Inner.Accept(this);
 
-        public void Visit(LogarithmBase operand)
-        {
-            if (operand.Base != 10)
-            {
-                _result.Append($@"\log_{operand.Base}\left(");
-            }
-            else
-            {
-                _result.Append($@"\log\left(");
-            }
-
-            operand.Inner.Accept(this);
-            _result.Append(@"\right)");
-        }
-
-        public void Visit(Negative operand)
-        {
-            _result.Append("-");
-            operand.Inner.Accept(this);
-        }
-
-        public void Visit(Logarithm operand)
-        {
-            _result.Append($@"\ln\left(");
-            operand.Inner.Accept(this);
-            _result.Append(@"\right)");
-        }
-
-        public void Visit(Tangent operand)
-        {
-            _result.Append(@"\tan\left(");
-            operand.Inner.Accept(this);
-            _result.Append(@"\right)");
-        }
-
-        public void Visit(Sine operand)
-        {
-            _result.Append(@"\sin\left(");
-            operand.Inner.Accept(this);
-            _result.Append(@"\right)");
-        }
-
-        public void Visit(Power operand)
-        {
-            _result.Append(@"{");
-            operand.Left.Accept(this);
-            _result.Append(@"}^{");
-            operand.Right.Accept(this);
-            _result.Append(@"}");
-        }
-
-        public void Visit(Root operand)
-        {
             if (operand.Exponent == 2)
             {
-                _result.Append(@"\sqrt{");
-                operand.Inner.Accept(this);
-                _result.Append("}");
+                return $@"\sqrt{{{inner}}}";
             }
-            else{
-                _result.Append($@"\sqrt[{operand.Exponent}]{{");
-                operand.Inner.Accept(this);
-                _result.Append("}");
-            }
+
+            return $@"\sqrt[{operand.Exponent}]{{{inner}}}";
         }
 
-        public void Visit(Multiplication operand)
+        public string Visit(Multiplication operand)
         {
+            var result = new StringBuilder();
+
+            var left = operand.Left.Accept(this);
+            var right = operand.Right.Accept(this);
+
             if (operand.Left.IsConstant())
             {
-                operand.Left.Accept(this);
+                result.Append(left);
             }
             else
             {
-                _result.Append(@"{");
-                operand.Left.Accept(this);
-                _result.Append(@"}\cdot");
+                result.Append($@"{{{left}}}\cdot");
             }
 
             if (operand.Right.IsConstant())
             {
-                operand.Right.Accept(this);
+                result.Append(right);
             }
             else
             {
-                _result.Append(@"{");
-                operand.Right.Accept(this);
-                _result.Append(@"}");
+                result.Append($@"{{{right}}}");
             }
+
+            return result.ToString();
         }
 
-        public void Visit(Addition operand)
+        public string Visit(Addition operand)
         {
-            _result.Append(@"{");
-            operand.Left.Accept(this);
-            _result.Append(@"}+{");
-            operand.Right.Accept(this);
-            _result.Append(@"}");
+            var left = operand.Left.Accept(this);
+            var right = operand.Right.Accept(this);
+
+            return $"{{{left}}}+{{{right}}}";
         }
 
-        public void Visit(NamedConstant operand)
+        public string Visit(NamedConstant operand)
         {
-            _result.Append(operand.Symbol);
+            return operand.Symbol;
         }
 
-        public void Visit(Constant operand)
+        public string Visit(Constant operand)
         {
-            _result.Append(operand.ToString());
+            return operand.Value.ToString();
         }
 
-        public void Visit(Fraction operand)
+        public string Visit(Fraction operand)
         {
-            _result.Append($"{operand.Numerator}/{operand.Denominator}");
+            return $@"\frac{{{operand.Numerator}}}{{{operand.Denominator}}}";
         }
 
-        public void Visit(Minimum operand)
+        public string Visit(Minimum operand)
         {
-            _result.Append(@"\min\left({");
-            operand.Left.Accept(this);
-            _result.Append(@"}, {");
-            operand.Right.Accept(this);
-            _result.Append(@"}\right)");
+            var left = operand.Left.Accept(this);
+            var right = operand.Right.Accept(this);
+            return $@"\min\left({{{left}}}, {{{right}}}\right)";
         }
 
-        public void Visit(Maximum operand)
+        public string Visit(Maximum operand)
         {
-            _result.Append(@"\max\left({");
-            operand.Left.Accept(this);
-            _result.Append(@"}, {");
-            operand.Right.Accept(this);
-            _result.Append(@"}\right)");
+            var left = operand.Left.Accept(this);
+            var right = operand.Right.Accept(this);
+            return $@"\max\left({{{left}}}, {{{right}}}\right)";
         }
     }
 }

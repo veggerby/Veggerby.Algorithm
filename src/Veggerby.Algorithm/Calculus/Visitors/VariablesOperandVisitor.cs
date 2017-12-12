@@ -1,137 +1,118 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
-    public class VariablesOperandVisitor : IOperandVisitor
+    public class VariablesOperandVisitor : IOperandVisitor<IEnumerable<Variable>>
     {
-        private readonly IList<Variable> _result = new List<Variable>();
-
-        public IEnumerable<Variable> Result => _result;
-
-        public void Visit(Function operand)
+        public IEnumerable<Variable> Visit(Function operand)
         {
-            foreach (var variable in operand.Variables)
-            {
-                if (!_result.Contains(variable))
-                {
-                    _result.Add(variable);
-                }
-            }
+            return operand.Variables.Distinct();
         }
 
-        public void Visit(FunctionReference operand)
+        public IEnumerable<Variable> Visit(FunctionReference operand)
         {
-            foreach (var parameter in operand.Parameters)
-            {
-                parameter.Accept(this);
-            }
+            return operand.Parameters.SelectMany(x => x.Accept(this)).Distinct();
         }
 
-        public void Visit(Variable operand)
+        public IEnumerable<Variable> Visit(Variable operand)
         {
-            if (!_result.Contains(operand))
-            {
-                _result.Add(operand);
-            }
+            yield return operand;
         }
 
-        public void Visit(Subtraction operand)
+        public IEnumerable<Variable> Visit(Subtraction operand)
         {
-            operand.Left.Accept(this);
-            operand.Right.Accept(this);
+            return operand.Left.Accept(this).Concat(operand.Right.Accept(this)).Distinct();
         }
 
-        public void Visit(Division operand)
+        public IEnumerable<Variable> Visit(Division operand)
         {
-            operand.Left.Accept(this);
-            operand.Right.Accept(this);
+            return operand.Left.Accept(this).Concat(operand.Right.Accept(this)).Distinct();
         }
 
-        public void Visit(Root operand)
+        public IEnumerable<Variable> Visit(Root operand)
         {
-            operand.Inner.Accept(this);
+            return operand.Inner.Accept(this);
         }
 
-        public void Visit(Sine operand)
+        public IEnumerable<Variable> Visit(Sine operand)
         {
-            operand.Inner.Accept(this);
+            return operand.Inner.Accept(this);
         }
 
-        public void Visit(Tangent operand)
+        public IEnumerable<Variable> Visit(Tangent operand)
         {
-            operand.Inner.Accept(this);
+            return operand.Inner.Accept(this);
         }
 
-        public void Visit(Logarithm operand)
+        public IEnumerable<Variable> Visit(Logarithm operand)
         {
-            operand.Inner.Accept(this);
+            return operand.Inner.Accept(this);
         }
 
-        public void Visit(Negative operand)
+        public IEnumerable<Variable> Visit(Negative operand)
         {
-            operand.Inner.Accept(this);
+            return operand.Inner.Accept(this);
         }
 
-        public void Visit(Minimum operand)
+        public IEnumerable<Variable> Visit(Minimum operand)
         {
-            operand.Left.Accept(this);
-            operand.Right.Accept(this);
+            return operand.Left.Accept(this).Concat(operand.Right.Accept(this)).Distinct();
         }
 
-        public void Visit(Maximum operand)
+        public IEnumerable<Variable> Visit(Maximum operand)
         {
-            operand.Left.Accept(this);
-            operand.Right.Accept(this);
+            return operand.Left.Accept(this).Concat(operand.Right.Accept(this)).Distinct();
         }
 
-        public void Visit(Fraction operand)
+        public IEnumerable<Variable> Visit(Fraction operand)
         {
+            return Enumerable.Empty<Variable>();
         }
 
-        public void Visit(LogarithmBase operand)
+        public IEnumerable<Variable> Visit(LogarithmBase operand)
         {
-            operand.Inner.Accept(this);
+            return operand.Inner.Accept(this);
         }
 
-        public void Visit(Exponential operand)
+        public IEnumerable<Variable> Visit(Exponential operand)
         {
-            operand.Inner.Accept(this);
+            return operand.Inner.Accept(this);
         }
 
-        public void Visit(Cosine operand)
+        public IEnumerable<Variable> Visit(Cosine operand)
         {
-            operand.Inner.Accept(this);
+            return operand.Inner.Accept(this);
         }
 
-        public void Visit(Factorial operand)
+        public IEnumerable<Variable> Visit(Factorial operand)
         {
-            operand.Inner.Accept(this);
+            return operand.Inner.Accept(this);
         }
 
-        public void Visit(Power operand)
+        public IEnumerable<Variable> Visit(Power operand)
         {
-            operand.Left.Accept(this);
-            operand.Right.Accept(this);
+            return operand.Left.Accept(this).Concat(operand.Right.Accept(this)).Distinct();
         }
 
-        public void Visit(Multiplication operand)
+        public IEnumerable<Variable> Visit(Multiplication operand)
         {
-            operand.Left.Accept(this);
-            operand.Right.Accept(this);
+            return operand.Left.Accept(this).Concat(operand.Right.Accept(this)).Distinct();
         }
 
-        public void Visit(Addition operand)
+        public IEnumerable<Variable> Visit(Addition operand)
         {
-            operand.Left.Accept(this);
-            operand.Right.Accept(this);
+            return operand.Left.Accept(this).Concat(operand.Right.Accept(this)).Distinct();
         }
 
-        public void Visit(NamedConstant operand)
+        public IEnumerable<Variable> Visit(NamedConstant operand)
         {
+            return Enumerable.Empty<Variable>();
         }
 
-        public void Visit(Constant operand)
+        public IEnumerable<Variable> Visit(Constant operand)
         {
+            return Enumerable.Empty<Variable>();
         }
     }
 }

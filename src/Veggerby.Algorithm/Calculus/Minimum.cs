@@ -9,9 +9,9 @@ namespace Veggerby.Algorithm.Calculus
         {
         }
 
-        public override void Accept(IOperandVisitor visitor)
+        public override T Accept<T>(IOperandVisitor<T> visitor)
         {
-            visitor.Visit(this);
+            return visitor.Visit(this);
         }
 
         public static Operand Create(Operand left, Operand right)
@@ -26,7 +26,7 @@ namespace Veggerby.Algorithm.Calculus
                 throw new ArgumentNullException(nameof(right));
             }
 
-            return new Minimum(left, right).Reduce();
+            return new Minimum(left, right);
         }
     }
 }

@@ -76,20 +76,6 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
         }
 
         [Fact]
-        public void Should_parse_negative_constant()
-        {
-            // arrange
-
-            // act
-            var actual = FunctionParser.Parse("x+-3");
-
-            // assert
-            actual.ShouldBeOfType<Subtraction>();
-            ((Subtraction)actual).Left.ShouldBe(Variable.x);
-            ((Subtraction)actual).Right.ShouldBe(Constant.Create(3));
-        }
-
-        [Fact]
         public void Should_parse_subtraction_correct_order()
         {
             // arrange
@@ -176,18 +162,6 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
 
             // assert
             actual.ShouldBe(Constant.Pi);
-        }
-
-        [Fact]
-        public void Should_parse_simple_add_constant()
-        {
-            // arrange
-
-            // act
-            var actual = FunctionParser.Parse("1e2+3+(0-4-1.2e3)");
-
-            // assert
-            actual.ShouldBe(Constant.Create(-1101));
         }
 
         [Fact]
@@ -306,8 +280,8 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             Multiplication left = ((Subtraction)actual).Left as Multiplication;
             Root right = ((Subtraction)actual).Right as Root;
 
-            left.Left.ShouldBe(Constant.Create(4));
-            left.Right.ShouldBe(Variable.x);
+            left.Left.ShouldBe(Variable.x);
+            left.Right.ShouldBe(Constant.Create(4));
 
             right.Exponent.ShouldBe(3);
             right.Inner.ShouldBeOfType<Sine>();
@@ -323,12 +297,8 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
 
             // assert
             actual.ShouldBeOfType<Multiplication>();
-            ((Multiplication)actual).Left.ShouldBe(Constant.Create(2));
-            ((Multiplication)actual).Right.ShouldBeOfType<Addition>();
-
-            var right = ((Multiplication)actual).Right as Addition;
-            right.Left.ShouldBe(Variable.x);
-            right.Right.ShouldBe(Constant.Create(3));
+            ((Multiplication)actual).Left.ShouldBe(Addition.Create(Variable.x, Constant.Create(3)));
+            ((Multiplication)actual).Right.ShouldBe(Subtraction.Create(Constant.Create(4), Constant.Create(2)));
         }
 
         [Fact]
@@ -347,8 +317,8 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             var left = ((Subtraction)actual).Left as Multiplication; // (x+3)*(4-2) will be reduced to 2*(x+3)
             var right = ((Subtraction)actual).Right as Sine;
 
-            left.Left.ShouldBe(Constant.Create(2));
-            left.Right.ShouldBe(FunctionParser.Parse("x+3"));
+            left.Left.ShouldBe(Addition.Create(Variable.x, Constant.Create(3)));
+            left.Right.ShouldBe(Subtraction.Create(Constant.Create(4), Constant.Create(2)));
 
             right.Inner.ShouldBeOfType<Multiplication>();
 

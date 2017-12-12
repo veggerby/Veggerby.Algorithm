@@ -2,11 +2,9 @@ using System;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
-    public class DerivativeOperandVisitor : IOperandVisitor
+    public class DerivativeOperandVisitor : IOperandVisitor<Operand>
     {
         private readonly Variable _variable;
-
-        public Operand Result { get; private set; }
 
         public DerivativeOperandVisitor(Variable variable)
         {
@@ -15,43 +13,41 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         private Operand GetDerivative(Operand operand)
         {
-            var visitor = new DerivativeOperandVisitor(_variable);
-            operand.Accept(visitor);
-            return visitor.Result;
+            return operand.Accept(this);
         }
 
-        public void Visit(Function operand)
+        public Operand Visit(Function operand)
         {
             var innerOperand = GetDerivative(operand.Operand);
-            Result = Function.Create($"{operand.Identifier}'", innerOperand);
+            return Function.Create($"{operand.Identifier}'", innerOperand);
         }
 
-        public void Visit(FunctionReference operand)
+        public Operand Visit(FunctionReference operand)
         {
-            Result = null;
+            return null;
         }
 
-        public void Visit(Variable operand)
+        public Operand Visit(Variable operand)
         {
-            Result = operand.Equals(_variable) ? 1 : 0;
+            return operand.Equals(_variable) ? 1 : 0;
         }
 
-        public void Visit(Subtraction operand)
+        public Operand Visit(Subtraction operand)
         {
             var left = GetDerivative(operand.Left);
             var right = GetDerivative(operand.Right);
 
-            Result = left != null && right != null
+            return left != null && right != null
                 ? Subtraction.Create(left, right)
                 : null;
         }
 
-        public void Visit(Division operand)
+        public Operand Visit(Division operand)
         {
             var left = GetDerivative(operand.Left);
             var right = GetDerivative(operand.Right);
 
-            Result = left != null && right != null
+            return left != null && right != null
                 ? Division.Create(
                     Subtraction.Create(
                         Multiplication.Create(left, operand.Right),
@@ -60,187 +56,171 @@ namespace Veggerby.Algorithm.Calculus.Visitors
                 : null;
         }
 
-        public void Visit(Factorial operand)
+        public Operand Visit(Factorial operand)
         {
-            Result = null;
+            return null;
         }
 
-        public void Visit(Cosine operand)
+        public Operand Visit(Cosine operand)
         {
             var inner = GetDerivative(operand.Inner);
 
             if (inner == null)
             {
-                Result = null;
+                 return null;
             }
-            else
-            {
+
             // chain rule
-                Result = Multiplication.Create(Negative.Create(inner), Sine.Create(operand.Inner));
-            }
+            return Multiplication.Create(Negative.Create(inner), Sine.Create(operand.Inner));
         }
 
-        public void Visit(Exponential operand)
+        public Operand Visit(Exponential operand)
         {
             var inner = GetDerivative(operand.Inner);
 
             if (inner == null)
             {
-                Result = null;
+                return null;
             }
-            else
-            {
+
             // chain rule
-                Result = Multiplication.Create(inner, Exponential.Create(operand.Inner));
-            }
+            return Multiplication.Create(inner, Exponential.Create(operand.Inner));
         }
 
-        public void Visit(LogarithmBase operand)
+        public Operand Visit(LogarithmBase operand)
         {
             var inner = GetDerivative(operand.Inner);
 
             if (inner == null)
             {
-                Result = null;
+                return null;
             }
-            else
-            {
-                Result = Division.Create(
-                    inner,
-                    Multiplication.Create(Logarithm.Create(operand.Base), operand.Inner));
-            }
+
+            return Division.Create(
+                inner,
+                Multiplication.Create(Logarithm.Create(operand.Base), operand.Inner));
         }
 
-        public void Visit(Negative operand)
+        public Operand Visit(Negative operand)
         {
             var inner = GetDerivative(operand.Inner);
 
             if (inner == null)
             {
-                Result = null;
+                return null;
             }
-            else
-            {
-                Result = Negative.Create(inner);
-            }
+
+            return Negative.Create(inner);
         }
 
-        public void Visit(Logarithm operand)
+        public Operand Visit(Logarithm operand)
         {
             var inner = GetDerivative(operand.Inner);
 
             if (inner == null)
             {
-                Result = null;
+                return null;
             }
-            else
-            {
-                Result = Division.Create(inner, operand.Inner);
-            }
+
+            return Division.Create(inner, operand.Inner);
         }
 
-        public void Visit(Tangent operand)
+        public Operand Visit(Tangent operand)
         {
             throw new NotImplementedException();
         }
 
-        public void Visit(Sine operand)
+        public Operand Visit(Sine operand)
         {
             var inner = GetDerivative(operand.Inner);
 
             if (inner == null)
             {
-                Result = null;
+                return null;
             }
-            else
-            {
-                Result = Multiplication.Create(inner, Cosine.Create(operand.Inner));
-            }
+
+            return Multiplication.Create(inner, Cosine.Create(operand.Inner));
         }
 
-        public void Visit(Power operand)
+        public Operand Visit(Power operand)
         {
             if (operand.Right.IsConstant())
             {
-                Result = Multiplication.Create(
+                return Multiplication.Create(
                     operand.Right,
                     Power.Create(
                         operand.Left,
                         Subtraction.Create(operand.Right, 1)
                     ));
             }
-            else
-            {
-                // exponential rule
-                Result = Exponential.Create(
-                    Multiplication.Create(operand.Right, Logarithm.Create(operand.Left)));
-            }
+
+            // exponential rule
+            return Exponential.Create(
+                Multiplication.Create(operand.Right, Logarithm.Create(operand.Left)));
         }
 
-        public void Visit(Root operand)
+        public Operand Visit(Root operand)
         {
             var inner = GetDerivative(operand.Inner);
 
             if (inner == null)
             {
-                Result = null;
+                return null;
             }
-            else
-            {
-                Result = Multiplication.Create(
-                    Division.Create(
-                        Power.Create(operand.Inner, (Constant.One - operand.Exponent) / operand.Exponent),
-                        operand.Exponent),
-                    inner
-                );
-            }
+
+            return Multiplication.Create(
+                Division.Create(
+                    Power.Create(operand.Inner, (Constant.One - operand.Exponent) / operand.Exponent),
+                    operand.Exponent),
+                inner
+            );
         }
 
-        public void Visit(Multiplication operand)
+        public Operand Visit(Multiplication operand)
         {
             var left = GetDerivative(operand.Left);
             var right = GetDerivative(operand.Right);
 
-            Result = left != null && right != null
-                ?Addition.Create(
+            return left != null && right != null
+                ? Addition.Create(
                     Multiplication.Create(left, operand.Right),
                     Multiplication.Create(right, operand.Left))
                 : null;
         }
 
-        public void Visit(Addition operand)
+        public Operand Visit(Addition operand)
         {
             var left = GetDerivative(operand.Left);
             var right = GetDerivative(operand.Right);
 
-            Result = left != null && right != null
+            return left != null && right != null
                 ? Addition.Create(left, right)
                 : null;
         }
 
-        public void Visit(NamedConstant operand)
+        public Operand Visit(NamedConstant operand)
         {
-            Result = 0;
+            return Constant.Zero;
         }
 
-        public void Visit(Constant operand)
+        public Operand Visit(Constant operand)
         {
-            Result = 0;
+            return Constant.Zero;
         }
 
-        public void Visit(Fraction operand)
+        public Operand Visit(Fraction operand)
         {
-            Result = 0;
+            return Constant.Zero;
         }
 
-        public void Visit(Minimum operand)
+        public Operand Visit(Minimum operand)
         {
-            Result = null;
+            return null;
         }
 
-        public void Visit(Maximum operand)
+        public Operand Visit(Maximum operand)
         {
-            Result = null;
+            return null;
         }
     }
 }

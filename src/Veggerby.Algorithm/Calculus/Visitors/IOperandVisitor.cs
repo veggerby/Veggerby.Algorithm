@@ -1,28 +1,28 @@
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
-    public interface IOperandVisitor
+    public interface IOperandVisitor<T>
     {
-        void Visit(Function operand);
-        void Visit(FunctionReference operand);
-        void Visit(Constant operand);
-        void Visit(NamedConstant operand);
-        void Visit(Variable operand);
-        void Visit(Addition operand);
-        void Visit(Subtraction operand);
-        void Visit(Multiplication operand);
-        void Visit(Division operand);
-        void Visit(Power operand);
-        void Visit(Root operand);
-        void Visit(Factorial operand);
-        void Visit(Sine operand);
-        void Visit(Cosine operand);
-        void Visit(Tangent operand);
-        void Visit(Exponential operand);
-        void Visit(Logarithm operand);
-        void Visit(LogarithmBase operand);
-        void Visit(Negative operand);
-        void Visit(Fraction operand);
-        void Visit(Minimum operand);
-        void Visit(Maximum operand);
+        T Visit(Function operand);
+        T Visit(FunctionReference operand);
+        T Visit(Constant operand);
+        T Visit(NamedConstant operand);
+        T Visit(Variable operand);
+        T Visit(Addition operand);
+        T Visit(Subtraction operand);
+        T Visit(Multiplication operand);
+        T Visit(Division operand);
+        T Visit(Power operand);
+        T Visit(Root operand);
+        T Visit(Factorial operand);
+        T Visit(Sine operand);
+        T Visit(Cosine operand);
+        T Visit(Tangent operand);
+        T Visit(Exponential operand);
+        T Visit(Logarithm operand);
+        T Visit(LogarithmBase operand);
+        T Visit(Negative operand);
+        T Visit(Fraction operand);
+        T Visit(Minimum operand);
+        T Visit(Maximum operand);
     }
 }
