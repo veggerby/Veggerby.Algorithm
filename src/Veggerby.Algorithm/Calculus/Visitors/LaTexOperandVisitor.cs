@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -153,7 +154,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public string Visit(Constant operand)
         {
-            return operand.Value.ToString();
+            return operand.Value.ToString(CultureInfo.InvariantCulture);
         }
 
         public string Visit(Fraction operand)
