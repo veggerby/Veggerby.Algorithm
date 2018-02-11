@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
@@ -178,20 +179,26 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public Operand Visit(Multiplication operand)
         {
-            var left = GetDerivative(operand.Left);
-            var right = GetDerivative(operand.Right);
+            var operandLeft = operand.Operands.First();
+            var operandRight = Multiplication.Create(operand.Operands.Skip(1));
+
+            var left = GetDerivative(operandLeft);
+            var right = GetDerivative(operandRight);
 
             return left != null && right != null
                 ? Addition.Create(
-                    Multiplication.Create(left, operand.Right),
-                    Multiplication.Create(right, operand.Left))
+                    Multiplication.Create(left, operandRight),
+                    Multiplication.Create(right, operandLeft))
                 : null;
         }
 
         public Operand Visit(Addition operand)
         {
-            var left = GetDerivative(operand.Left);
-            var right = GetDerivative(operand.Right);
+            var operandLeft = operand.Operands.First();
+            var operandRight = Addition.Create(operand.Operands.Skip(1));
+
+            var left = GetDerivative(operandLeft);
+            var right = GetDerivative(operandRight);
 
             return left != null && right != null
                 ? Addition.Create(left, right)

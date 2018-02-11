@@ -57,12 +57,12 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public IEnumerable<Variable> Visit(Minimum operand)
         {
-            return operand.Left.Accept(this).Concat(operand.Right.Accept(this)).Distinct();
+            return operand.Operands.SelectMany(x => x.Accept(this)).Distinct();
         }
 
         public IEnumerable<Variable> Visit(Maximum operand)
         {
-            return operand.Left.Accept(this).Concat(operand.Right.Accept(this)).Distinct();
+            return operand.Operands.SelectMany(x => x.Accept(this)).Distinct();
         }
 
         public IEnumerable<Variable> Visit(Fraction operand)
@@ -97,12 +97,12 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public IEnumerable<Variable> Visit(Multiplication operand)
         {
-            return operand.Left.Accept(this).Concat(operand.Right.Accept(this)).Distinct();
+            return operand.Operands.SelectMany(x => x.Accept(this)).Distinct();
         }
 
         public IEnumerable<Variable> Visit(Addition operand)
         {
-            return operand.Left.Accept(this).Concat(operand.Right.Accept(this)).Distinct();
+            return operand.Operands.SelectMany(x => x.Accept(this)).Distinct();
         }
 
         public IEnumerable<Variable> Visit(NamedConstant operand)

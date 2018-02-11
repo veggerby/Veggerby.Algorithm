@@ -27,7 +27,7 @@ namespace Veggerby.Algorithm.Calculus
 
         public static bool CouldUseParenthesis(this Operand operand)
         {
-            if (operand is BinaryOperation || operand is Factorial)
+            if (operand is BinaryOperation || operand is Factorial || operand is MultiOperation)
             {
                 return true;
             }
@@ -65,7 +65,7 @@ namespace Veggerby.Algorithm.Calculus
             return (constant % 1 == 0);
         }
 
-        public static IEnumerable<Operand> FlattenAssociative(this IAssociativeBinaryOperation operand, IList<Operand> set = null)
+ /*       public static IEnumerable<Operand> FlattenAssociative(this IAssociativeBinaryOperation operand, IList<Operand> set = null)
         {
             var type = operand.GetType();
 
@@ -95,7 +95,7 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             return set;
-        }
+        }*/
 
         public static string ToLaTeXString(this Operand operand)
         {

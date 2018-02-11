@@ -1,29 +1,21 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
     public class ReorderOperandVisitor : IOperandVisitor<Operand>
     {
-        private Operand ReorderCommutativeBinaryOperation<TOperand>(TOperand operand, Func<Operand, Operand, Operand> factory) where TOperand : Operand, ICommutativeBinaryOperation
+        private Operand ReorderCommutativeBinaryOperation<TOperand>(TOperand operand, Func<IEnumerable<Operand>, Operand> factory) where TOperand : Operand, ICommutativeOperation
         {
-            var comparer = new CommutativeOperationComparer();
-            if (comparer.Compare(operand.Left, operand.Right) == 1) // wrong order
-            {
-                return factory(operand.Right, operand.Left);
-            }
-
-            return operand;
+            var ordered = operand.Operands.OrderBy(x => x, new CommutativeOperationComparer());
+            return factory(ordered);
         }
 
-        private Operand ReorderAssociativeBinaryOperation<TOperand>(TOperand operand, Func<Operand, Operand, Operand> factory) where TOperand : Operand, IAssociativeBinaryOperation
+        private Operand ReorderAssociativeBinaryOperation<TOperand>(TOperand operand, Func<IEnumerable<Operand>, Operand> factory) where TOperand : Operand, IAssociativeOperation
         {
-            var comparer = new AssociativeOperationComparer();
-            if (comparer.Compare(operand.Left, operand.Right) == 1) // wrong order
-            {
-                return factory(operand.Right, operand.Left);
-            }
-
-            return operand;
+            var ordered = operand.Operands.OrderBy(x => x, new AssociativeOperationComparer());
+            return factory(ordered);
         }
 
         public Operand Visit(Function operand)
@@ -129,12 +121,12 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public Operand Visit(Minimum operand)
         {
-            return Minimum.Create(operand.Left.Accept(this), operand.Right.Accept(this));
+            return Minimum.Create(operand.Operands.Select(x => x.Accept(this)));
         }
 
         public Operand Visit(Maximum operand)
         {
-            return Maximum.Create(operand.Left.Accept(this), operand.Right.Accept(this));
+            return Maximum.Create(operand.Operands.Select(x => x.Accept(this)));
         }
     }
 }

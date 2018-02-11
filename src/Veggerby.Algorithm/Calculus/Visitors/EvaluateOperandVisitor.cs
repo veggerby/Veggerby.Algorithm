@@ -141,12 +141,14 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public double Visit(Multiplication operand)
         {
-            return Evaluate(operand.Left) * Evaluate(operand.Right);
+            var first = Evaluate(operand.Operands.First());
+            return operand.Operands.Skip(1).Aggregate(first, (seed, next) => seed * Evaluate(next));
         }
 
         public double Visit(Addition operand)
         {
-            return Evaluate(operand.Left) + Evaluate(operand.Right);
+            var first = Evaluate(operand.Operands.First());
+            return operand.Operands.Skip(1).Aggregate(first, (seed, next) => seed + Evaluate(next));
         }
 
         public double Visit(NamedConstant operand)
@@ -166,12 +168,14 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public double Visit(Minimum operand)
         {
-            return Math.Min(Evaluate(operand.Left), Evaluate(operand.Right));
+            var first = Evaluate(operand.Operands.First());
+            return operand.Operands.Skip(1).Aggregate(first, (seed, next) => Math.Min(seed, Evaluate(next)));
         }
 
         public double Visit(Maximum operand)
         {
-            return Math.Max(Evaluate(operand.Left), Evaluate(operand.Right));
+            var first = Evaluate(operand.Operands.First());
+            return operand.Operands.Skip(1).Aggregate(first, (seed, next) => Math.Max(seed, Evaluate(next)));
         }
     }
 }

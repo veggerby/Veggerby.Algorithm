@@ -1,3 +1,4 @@
+using System.Linq;
 using Shouldly;
 using Veggerby.Algorithm.Calculus;
 using Xunit;
@@ -18,8 +19,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
 
             // assert
             actual.ShouldBeOfType<Addition>();
-            ((BinaryOperation)actual).Left.ShouldBe(left);
-            ((BinaryOperation)actual).Right.ShouldBe(right);
+            ((Addition)actual).Operands.ShouldBe(new Operand[] { left, right });
         }
 
         [Fact]
@@ -78,8 +78,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
 
             // assert
             actual.ShouldBeOfType<Multiplication>();
-            ((BinaryOperation)actual).Left.ShouldBe(left);
-            ((BinaryOperation)actual).Right.ShouldBe(right);
+            ((Multiplication)actual).Operands.ShouldBe(new Operand[] { left, right });
         }
 
         [Fact]

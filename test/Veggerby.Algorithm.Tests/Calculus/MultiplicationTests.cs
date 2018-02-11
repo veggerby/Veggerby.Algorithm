@@ -12,8 +12,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             var actual = (Multiplication)Multiplication.Create(Constant.Create(3), Variable.x);
 
             // assert
-            actual.Left.ShouldBe(Constant.Create(3));
-            actual.Right.ShouldBe(Variable.x);
+            actual.Operands.ShouldBe(new Operand[] { Constant.Create(3), Variable.x });
         }
 
         [Fact]

@@ -149,10 +149,10 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
 
             var visitor = new DerivativeOperandVisitor(Variable.x);
 
-            Operand expected = "(2*sin((2*π)/x)+(2*π)/x^2*cos((2*π)/x)*2*x)/sin((2*π)/x)^2*exp((2*x)/sin((2*π)/x))";
+            Operand expected = "(exp((2*x)/sin((2*π)/x))*(2*sin((2*π)/x)+(4*x*cos((2*π)/x)*π)/x^2))/sin((2*π)/x)^2";
 
             // act
-            var actual = operand.Accept(visitor);
+            var actual = operand.Accept(visitor).Reduce();
 
             // assert
             actual.ShouldBe(expected);

@@ -26,36 +26,8 @@ namespace Veggerby.Algorithm.Calculus
 
         protected bool Equals(BinaryOperation other)
         {
-            if (this is IAssociativeBinaryOperation && this is ICommutativeBinaryOperation)
-            {
-                var thisSet = ((IAssociativeBinaryOperation)this).FlattenAssociative().ToList();
-                var otherSet = ((IAssociativeBinaryOperation)other).FlattenAssociative().ToList();
-
-                // simple case -> different items in list
-                if (thisSet.Count() != otherSet.Count())
-                {
-                    return false;
-                }
-
-                // if either set contains items not in the other
-                if (thisSet.Except(otherSet).Any() || otherSet.Except(thisSet).Any())
-                {
-                    return false;
-                }
-
-                // compare the number of item count to ensure 2*x*2 != x*2*x
-                return thisSet.GroupBy(x => x)
-                    .Join(otherSet.GroupBy(x => x), x => x.Key, x => x.Key, (a, b) => a.Count() - b.Count())
-                    .All(x => x == 0);
-            }
-
-            if (this is ICommutativeBinaryOperation)
-            {
-                return (Left.Equals(other.Left) && Right.Equals(other.Right))
-                    || (Left.Equals(other.Right) && Right.Equals(other.Left));
-            }
-
-            return Left.Equals(other.Left) && Right.Equals(other.Right);
+            return (Left.Equals(other.Left) && Right.Equals(other.Right)) ||
+                (this is ICommutativeOperation && Left.Equals(other.Right) && Right.Equals(other.Left));
         }
 
         public override bool Equals(object obj)
@@ -68,13 +40,6 @@ namespace Veggerby.Algorithm.Calculus
 
         public override int GetHashCode()
         {
-            if (this is IAssociativeBinaryOperation)
-            {
-                var thisSet = ((IAssociativeBinaryOperation)this).FlattenAssociative();
-
-                return thisSet.Aggregate(GetType().Name.GetHashCode(), (seed, x) => seed ^ x.GetHashCode());
-            }
-
             return GetType().Name.GetHashCode() ^ Left.GetHashCode() ^ Right.GetHashCode();
         }
     }

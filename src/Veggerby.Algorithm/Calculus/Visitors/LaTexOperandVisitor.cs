@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -113,38 +114,22 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public string Visit(Multiplication operand)
         {
-            var result = new StringBuilder();
+            var values = operand
+                .Operands
+                .Select(x => x.Accept(this))
+                .Select(x => $"{{{x}}}");
 
-            var left = operand.Left.Accept(this);
-            var right = operand.Right.Accept(this);
-
-            if (operand.Left.IsConstant())
-            {
-                result.Append(left);
-            }
-            else
-            {
-                result.Append($@"{{{left}}}\cdot");
-            }
-
-            if (operand.Right.IsConstant())
-            {
-                result.Append(right);
-            }
-            else
-            {
-                result.Append($@"{{{right}}}");
-            }
-
-            return result.ToString();
+            return string.Join(@"\cdot", values);
         }
 
         public string Visit(Addition operand)
         {
-            var left = operand.Left.Accept(this);
-            var right = operand.Right.Accept(this);
+            var values = operand
+                .Operands
+                .Select(x => x.Accept(this))
+                .Select(x => $"{{{x}}}");
 
-            return $"{{{left}}}+{{{right}}}";
+            return string.Join(@"+", values);
         }
 
         public string Visit(NamedConstant operand)
@@ -164,16 +149,26 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public string Visit(Minimum operand)
         {
-            var left = operand.Left.Accept(this);
-            var right = operand.Right.Accept(this);
-            return $@"\min\left({{{left}}}, {{{right}}}\right)";
+             var values = operand
+                .Operands
+                .Select(x => x.Accept(this))
+                .Select(x => $"{{{x}}}");
+
+            var parameters = string.Join(", ", values);
+
+            return $@"\min\left({parameters}\right)";
         }
 
         public string Visit(Maximum operand)
         {
-            var left = operand.Left.Accept(this);
-            var right = operand.Right.Accept(this);
-            return $@"\max\left({{{left}}}, {{{right}}}\right)";
+            var values = operand
+                .Operands
+                .Select(x => x.Accept(this))
+                .Select(x => $"{{{x}}}");
+
+            var parameters = string.Join(", ", values);
+
+            return $@"\max\left({parameters}\right)";
         }
     }
 }

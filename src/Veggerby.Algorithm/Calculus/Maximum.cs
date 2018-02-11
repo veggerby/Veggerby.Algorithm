@@ -1,17 +1,40 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class Maximum : BinaryOperation, ICommutativeBinaryOperation, IAssociativeBinaryOperation
+    public class Maximum : MultiOperation, ICommutativeOperation, IAssociativeOperation
     {
-        public Maximum(Operand left, Operand right) : base(left, right)
+        public Maximum(params Operand[] operands) : base(operands)
         {
         }
 
         public override T Accept<T>(IOperandVisitor<T> visitor)
         {
             return visitor.Visit(this);
+        }
+
+        public static Operand Create(IEnumerable<Operand> operands)
+        {
+            if (operands == null)
+            {
+                throw new ArgumentNullException(nameof(operands));
+            }
+
+            if (operands.Count() == 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(operands));
+            }
+
+            if (operands.Count() == 1)
+            {
+                return operands.Single();
+            }
+
+            var first = operands.First();
+            return operands.Skip(1).Aggregate(first, (seed, next) => Create(seed, next));
         }
 
         public static Operand Create(Operand left, Operand right)

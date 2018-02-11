@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
@@ -237,18 +238,24 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public Operand Visit(Multiplication operand)
         {
-            return IntegrationByParts(operand.Left, operand.Right)
-                ?? IntegrationByParts(operand.Right, operand.Left);
+            return operand.Operands.Select(
+                x => IntegrationByParts(x, Multiplication.Create(operand.Operands.Where(y => !object.ReferenceEquals(x, y))))
+            ).FirstOrDefault();
         }
 
         public Operand Visit(Addition operand)
         {
-            var left = GetIntegral(operand.Left);
-            var right = GetIntegral(operand.Right);
+            var operands = operand
+                .Operands
+                .Select(x => GetIntegral(x))
+                .ToList();
 
-            return left != null && right != null
-                ? Addition.Create(left, right)
-                : null;
+            if (operands.Any(x => x == null))
+            {
+                return null;
+            }
+
+            return Addition.Create(operands);
         }
 
         public Operand Visit(NamedConstant operand)

@@ -166,10 +166,10 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             // arrange
             var operand = Multiplication.Create(Variable.x, Cosine.Create(Variable.x));
             var visitor = new IntegralOperandVisitor(Variable.x);
-            Operand expected = "x*(sin(x)+c)-(-cos(x)+2*c+c*x)";
+            Operand expected = "x*(sin(x)+c)-(-cos(x)+c+c+c*x)";
 
             // act
-            var actual = operand.Accept(visitor);
+            var actual = operand.Accept(visitor).Reduce();
 
             // assert
             actual.ShouldBe(expected);

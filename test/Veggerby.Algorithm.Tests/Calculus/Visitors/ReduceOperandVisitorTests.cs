@@ -51,8 +51,8 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = (Addition)operand.Accept(visitor);
 
             // assert
-            actual.Left.ShouldBe(Constant.Create(10));
-            actual.Right.ShouldBe(Multiplication.Create(2, Sine.Create(Variable.x)));
+            actual.Operands.ShouldBe(new[] {
+                Constant.Create(10), Multiplication.Create(2, Sine.Create(Variable.x)) });
         }
 
         [Fact]
@@ -81,8 +81,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
 
             // assert
             actual.ShouldBeOfType<Multiplication>();
-            ((BinaryOperation)actual).Left.ShouldBe(Constant.Create(2));
-            ((BinaryOperation)actual).Right.ShouldBe(Variable.x);
+            ((Multiplication)actual).Operands.ShouldBe(new Operand[] { Constant.Create(2), Variable.x });
         }
 
         [Fact]
@@ -140,8 +139,8 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = (Multiplication)operand.Accept(visitor);
 
             // assert
-            actual.Left.ShouldBe(Constant.Create(6));
-            actual.Right.ShouldBe(Power.Create(Sine.Create(Variable.x), 2));
+            actual.Operands.ShouldBe(new [] {
+                Constant.Create(6), Power.Create(Sine.Create(Variable.x), 2) });
         }
 
         [Fact]

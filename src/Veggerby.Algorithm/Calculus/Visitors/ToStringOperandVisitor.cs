@@ -136,16 +136,14 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public string Visit(Multiplication operand)
         {
-            var left = VisitOperand(operand, operand.Left);
-            var right = VisitOperand(operand, operand.Right);
-            return $"{left}*{right}";
+            var values = operand.Operands.Select(x => VisitOperand(operand, x)).ToList();
+            return string.Join("*", values);
         }
 
         public string Visit(Addition operand)
         {
-            var left = VisitOperand(operand, operand.Left);
-            var right = VisitOperand(operand, operand.Right);
-            return $"{left}+{right}";
+            var values = operand.Operands.Select(x => VisitOperand(operand, x)).ToList();
+            return string.Join("+", values);
         }
 
         public string Visit(NamedConstant operand)
@@ -165,16 +163,16 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public string Visit(Minimum operand)
         {
-            var left = operand.Left.Accept(this);
-            var right = operand.Right.Accept(this);
-            return $"min({left}, {right})";
+            var values = operand.Operands.Select(x => VisitOperand(operand, x)).ToList();
+            var parameters = string.Join(", ", values);
+            return $"min({parameters})";
         }
 
         public string Visit(Maximum operand)
         {
-            var left = operand.Left.Accept(this);
-            var right = operand.Right.Accept(this);
-            return $"max({left}, {right})";
+            var values = operand.Operands.Select(x => VisitOperand(operand, x)).ToList();
+            var parameters = string.Join(", ", values);
+            return $"max({parameters})";
         }
     }
 }

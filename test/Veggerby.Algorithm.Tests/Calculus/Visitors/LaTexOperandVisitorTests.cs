@@ -14,7 +14,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         [InlineData("pi", "π")]
         [InlineData("2+x", "{2}+{x}")]
         [InlineData("2-x", "{2}-{x}")]
-        [InlineData("2*x", @"2{x}")]
+        [InlineData("2*x", @"{2}\cdot{x}")]
         [InlineData("2/x", @"\frac{2}{x}")]
         [InlineData("2^x", "{2}^{x}")]
         [InlineData("sin(x)", @"\sin\left(x\right)")]

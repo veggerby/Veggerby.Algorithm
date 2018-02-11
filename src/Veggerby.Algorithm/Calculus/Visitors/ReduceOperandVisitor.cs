@@ -45,56 +45,40 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public Operand Visit(Addition operand)
         {
-            var left = Reduce(operand.Left);
-            var right = Reduce(operand.Right);
+            var operands = operand
+                .Operands
+                .Select(x => Reduce(x))
+                .Where(x => !x.Equals(Constant.Zero))
+                .GroupBy(x => x)
+                .Select(x => x.Count() > 1 ? Multiplication.Create(x.Count(), x.Key) : x.Key)
+                .OrderBy(x => x, new CommutativeOperationComparer())
+                .ToList();
 
-            if (left.Equals(right))
+            // combine constants into one operand
+            if (operands.Count(x => x.IsConstant()) > 1)
             {
-                return Reduce(Multiplication.Create(2, left));
+                var constants = operands.Where(x => x.IsConstant()).Cast<Constant>();
+                var constant = constants.Aggregate((seed, next) => (Constant)(seed + next));
+                operands = new Operand[] { constant }.Concat(operands.Where(x => !x.IsConstant())).ToList();
             }
 
-            if (left.Equals(Constant.Zero))
+            if (operands.Any(x => x.IsNegative()))
             {
-                return right;
+                return Reduce(Subtraction.Create(
+                    Addition.Create(operands.Where(x => !x.IsNegative())),
+                    Addition.Create(operands.OfType<Negative>().Select(x => x.Inner))
+                ));
             }
 
-            if (right.Equals(Constant.Zero))
+            // consolidate addition and move substraction "out", e.g. c + (c - cos(x)) = (c + c) - cos(x)
+            if (operands.Any(x => x is Subtraction))
             {
-                return left;
+                var addition = Addition.Create(operands.Select(x => x is Subtraction ? ((Subtraction)x).Left : x));
+                var substractions = operands.OfType<Subtraction>().Aggregate(addition, (seed, next) => Subtraction.Create(seed, next.Right));
+                return Reduce(substractions);
             }
 
-            if (left.IsConstant() && right.IsConstant())
-            {
-                return Reduce((Constant)left + (Constant)right);
-            }
-
-            if (right.IsNegative())
-            {
-                return Reduce(Subtraction.Create(left, ((Negative)right).Inner));
-            }
-
-            if (right.IsConstant() && ((Constant)right).Value < 0)
-            {
-                return Reduce(Subtraction.Create(left, -((Constant)right).Value));
-            }
-
-            var flat = operand.FlattenAssociative().ToList();
-
-            if (flat.Where(x => x.IsConstant()).Count() > 1)
-            {
-                var constants = flat.Where(x => x.IsConstant()).OfType<Constant>();
-                Operand @const = constants.Aggregate((seed, x) => (Constant)(seed + x));
-                return Reduce(flat.Where(x => !x.IsConstant()).Aggregate(@const, (seed, x) => Addition.Create(seed, x)));
-            }
-
-            var groups = flat.GroupBy(x => x).ToList();
-
-            if (groups.Any(x => x.Count() > 1))
-            {
-                return Reduce(groups.Aggregate((Operand)Constant.Zero, (seed, group) => Addition.Create(seed, Multiplication.Create(group.Count(), group.Key))));
-            }
-
-            return Addition.Create(left, right);
+            return Addition.Create(operands);
         }
 
         public Operand Visit(Subtraction operand)
@@ -132,111 +116,48 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public Operand Visit(Multiplication operand)
         {
-            var left = Reduce(operand.Left);
-            var right = Reduce(operand.Right);
+            var operands = operand
+                .Operands
+                .Select(x => Reduce(x))
+                .Where(x => !x.Equals(Constant.One))
+                .GroupBy(x => x)
+                .Select(x => x.Count() > 1 ? Power.Create(x.Key, x.Count()) : x.Key)
+                .OrderBy(x => x, new CommutativeOperationComparer())
+                .ToList();
 
-            if (left is Division && right is Division)
-            {
-                var l = (Division)left;
-                var r = (Division)right;
-
-                return Reduce(Division.Create(
-                    Multiplication.Create(l.Left, r.Left),
-                    Multiplication.Create(l.Right, r.Right)
-                ));
-            }
-
-            if (left is Division)
-            {
-                var l = (Division)left;
-
-                return Reduce(Division.Create(
-                    Multiplication.Create(l.Left, right),
-                    l.Right
-                ));
-            }
-
-            if (right is Division)
-            {
-                var r = (Division)right;
-
-                return Reduce(Division.Create(
-                    Multiplication.Create(left, r.Left),
-                    r.Right
-                ));
-            }
-
-            if (left.Equals(right))
-            {
-                return Reduce(Power.Create(left, 2));
-            }
-
-            if (left.IsConstant() && right.IsConstant())
-            {
-                return Reduce((Constant)left * (Constant)right);
-            }
-
-            if (left.Equals(Constant.Zero) || right.Equals(Constant.Zero))
+            if (operands.Any(x => x.Equals(Constant.Zero)))
             {
                 return Constant.Zero;
             }
 
-            if (left.Equals(Constant.One))
+            // combine constants into one operand
+            if (operands.Count(x => x.IsConstant()) > 1)
             {
-                return right;
+                var constants = operands.Where(x => x.IsConstant()).Cast<Constant>();
+                var constant = constants.Aggregate((seed, next) => (Constant)(seed * next));
+                operands = new Operand[] { constant }.Concat(operands.Where(x => !x.IsConstant())).ToList();
             }
 
-            if (right.Equals(Constant.One))
+            var negativeCount = operands.Count(x => x.IsNegative());
+            if (negativeCount > 0)
             {
-                return left;
+                operands = operands.Select(x => x.IsNegative() ? ((Negative)x).Inner : x).ToList();
             }
 
-            if (left.IsNegative() && right.IsNegative())
+            if (negativeCount % 2 == 1)
             {
-                return Reduce(Multiplication.Create(((Negative)left).Inner, ((Negative)right).Inner));
+                return Reduce(Negative.Create(Multiplication.Create(operands)));
             }
 
-            if (left.IsNegative())
+             // consolidate addition and move substraction "out", e.g. c + (c - cos(x)) = (c + c) - cos(x)
+            if (operands.Any(x => x is Division))
             {
-                return Reduce(Negative.Create(Multiplication.Create(((Negative)left).Inner, right)));
+                var multiplication = Multiplication.Create(operands.Select(x => x is Division ? ((Division)x).Left : x));
+                var divisions = operands.OfType<Division>().Aggregate(multiplication, (seed, next) => Division.Create(seed, next.Right));
+                return Reduce(divisions);
             }
 
-            if (right.IsNegative())
-            {
-                return Reduce(Negative.Create(Multiplication.Create(left, ((Negative)right).Inner)));
-            }
-
-            if (left.Equals(Constant.MinusOne))
-            {
-                return Reduce(Negative.Create(right));
-            }
-
-            if (right.Equals(Constant.MinusOne))
-            {
-                return Reduce(Negative.Create(left));
-            }
-
-            if (!left.IsConstant() && right.IsConstant())
-            {
-                return Reduce(Multiplication.Create(right, left));
-            }
-
-            var flat = operand.FlattenAssociative().ToList();
-
-            if (flat.Where(x => x.IsConstant()).Count() > 1)
-            {
-                var constants = flat.Where(x => x.IsConstant()).OfType<Constant>();
-                Operand @const = constants.Aggregate((seed, x) => (Constant)(seed + x));
-                return Reduce(flat.Where(x => !x.IsConstant()).Aggregate(@const, (seed, x) => Multiplication.Create(seed, x)));
-            }
-
-            var groups = flat.GroupBy(x => x).ToList();
-            if (groups.Any(x => x.Count() > 1))
-            {
-                return Reduce(groups.Aggregate((Operand)Constant.One, (seed, group) => Multiplication.Create(seed, Power.Create(group.Key, group.Count()))));
-            }
-
-            return Multiplication.Create(left, right);
+            return Multiplication.Create(operands);
         }
 
         public Operand Visit(Division operand)
@@ -430,38 +351,46 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public Operand Visit(Minimum operand)
         {
-            var left = Reduce(operand.Left);
-            var right = Reduce(operand.Right);
+            var reduced = operand
+                .Operands
+                .Select(x => Reduce(x))
+                .GroupBy(x => x)
+                .Select(x => x.Key)
+                .ToList();
 
-            if (left.Equals(right))
+            if (reduced.Count() == 1)
             {
-                return left;
+                return reduced.Single();
             }
 
-            if (left.IsConstant() && right.IsConstant())
+            if (reduced.All(x => x.IsConstant()))
             {
-                return Math.Min((Constant)left, (Constant)right);
+                return reduced.Aggregate(double.MaxValue, (seed, next) => Math.Min(seed, (Constant)next));
             }
 
-            return Minimum.Create(left, right);
+            return Minimum.Create(reduced);
         }
 
         public Operand Visit(Maximum operand)
         {
-            var left = Reduce(operand.Left);
-            var right = Reduce(operand.Right);
+            var reduced = operand
+                .Operands
+                .Select(x => Reduce(x))
+                .GroupBy(x => x)
+                .Select(x => x.Key)
+                .ToList();
 
-            if (left.Equals(right))
+            if (reduced.Count() == 1)
             {
-                return left;
+                return reduced.Single();
             }
 
-            if (left.IsConstant() && right.IsConstant())
+            if (reduced.All(x => x.IsConstant()))
             {
-                return Math.Max((Constant)left, (Constant)right);
+                return reduced.Aggregate(double.MinValue, (seed, next) => Math.Max(seed, (Constant)next));
             }
 
-            return Maximum.Create(left, right);
+            return Maximum.Create(reduced);
         }
     }
 }

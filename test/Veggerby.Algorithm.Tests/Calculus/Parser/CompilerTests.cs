@@ -91,11 +91,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
         }
 
         [Theory]
-        [InlineData(TokenType.Function, "min", typeof(Minimum))]
-        [InlineData(TokenType.Function, "max", typeof(Maximum))]
-        [InlineData(TokenType.Sign, "+", typeof(Addition))]
         [InlineData(TokenType.Sign, "-", typeof(Subtraction))]
-        [InlineData(TokenType.OperatorPriority1, "*", typeof(Multiplication))]
         [InlineData(TokenType.OperatorPriority1, "/", typeof(Division))]
         [InlineData(TokenType.OperatorPriority1, "^", typeof(Power))]
         public void Should_compile_token_binary_function(TokenType type, string value, Type expectedOperandType)
@@ -115,6 +111,30 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             actual.ShouldBeOfType(expectedOperandType);
             ((BinaryOperation)actual).Left.ShouldBe(Constant.Create(2));
             ((BinaryOperation)actual).Right.ShouldBe(Variable.x);
+        }
+
+
+        [Theory]
+        [InlineData(TokenType.Function, "min", typeof(Minimum))]
+        [InlineData(TokenType.Function, "max", typeof(Maximum))]
+        [InlineData(TokenType.Sign, "+", typeof(Addition))]
+        [InlineData(TokenType.OperatorPriority1, "*", typeof(Multiplication))]
+        public void Should_compile_token_multi_function(TokenType type, string value, Type expectedOperandType)
+        {
+            // arrange
+            var compiler = new Compiler();
+
+            var node = new BinaryNode(
+                new Node(new Token(TokenType.Number, "2", null)),
+                new Token(type, value, null),
+                new Node(new Token(TokenType.Identifier, "x", null)));
+
+            // act
+            var actual = compiler.Compile(node);
+
+            // assert
+            actual.ShouldBeOfType(expectedOperandType);
+            ((MultiOperation)actual).Operands.ShouldBe(new Operand[] { Constant.Create(2), Variable.x });
         }
 
         [Fact]

@@ -12,8 +12,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             var actual = (Maximum)Maximum.Create(Constant.One, Variable.x);
 
             // assert
-            actual.Left.ShouldBe(Constant.One);
-            actual.Right.ShouldBe(Variable.x);
+            actual.Operands.ShouldBe(new Operand[] { Constant.One, Variable.x });
         }
 
         [Fact]

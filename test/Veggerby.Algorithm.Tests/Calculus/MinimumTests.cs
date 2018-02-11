@@ -12,8 +12,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             var actual = (Minimum)Minimum.Create(Constant.One, Variable.x);
 
             // assert
-            actual.Left.ShouldBe(Constant.One);
-            actual.Right.ShouldBe(Variable.x);
+            actual.Operands.ShouldBe(new Operand[] { Constant.One, Variable.x });
         }
 
         [Fact]
