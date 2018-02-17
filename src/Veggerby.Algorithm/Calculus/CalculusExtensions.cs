@@ -65,37 +65,35 @@ namespace Veggerby.Algorithm.Calculus
             return (constant % 1 == 0);
         }
 
- /*       public static IEnumerable<Operand> FlattenAssociative(this IAssociativeBinaryOperation operand, IList<Operand> set = null)
+        public static bool EqualsCommutative<T>(this T t1, T t2) where T : ICommutativeOperation
         {
-            var type = operand.GetType();
-
-            if (set == null)
+            if (t1 == null && t2 == null)
             {
-                set = new List<Operand>();
+                return true;
             }
 
-            if (operand.Left.GetType() == type)
+            if (t1 == null || t2 == null)
             {
-                var left = (IAssociativeBinaryOperation)operand.Left;
-                left.FlattenAssociative(set);
-            }
-            else
-            {
-                set.Add(operand.Left);
+                return false;
             }
 
-            if (operand.Right.GetType() == type)
+            return t1.Operands.OrderBy(x => x.ToString()).SequenceEqual(t2.Operands.OrderBy(x => x.ToString()));
+        }
+
+        public static bool EqualsBinary<T>(this T t1, T t2) where T : IBinaryOperation
+        {
+            if (t1 == null && t2 == null)
             {
-                var right = (IAssociativeBinaryOperation)operand.Right;
-                right.FlattenAssociative(set);
-            }
-            else
-            {
-                set.Add(operand.Right);
+                return true;
             }
 
-            return set;
-        }*/
+            if (t1 == null || t2 == null)
+            {
+                return false;
+            }
+
+            return t1.Left.Equals(t2.Left) && t1.Right.Equals(t2.Right);
+        }
 
         public static string ToLaTeXString(this Operand operand)
         {

@@ -3,7 +3,7 @@ using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class Fraction : Operand
+    public class Fraction : Operand, IEquatable<Fraction>
     {
         public int Numerator { get; }
         public int Denominator { get; }
@@ -17,29 +17,6 @@ namespace Veggerby.Algorithm.Calculus
         public override T Accept<T>(IOperandVisitor<T> visitor)
         {
             return visitor.Visit(this);
-        }
-
-        protected bool Equals(Fraction other)
-        {
-            return Numerator == other.Numerator && Denominator == other.Denominator;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Fraction)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = Numerator.GetHashCode();
-                hashCode = (hashCode*397) ^ Denominator.GetHashCode();
-                return hashCode;
-            }
         }
 
         public static Operand operator +(Fraction left, Fraction right)
@@ -219,6 +196,36 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             return new Fraction(numerator, denominator);
+        }
+
+        public override bool Equals(object obj) 
+        {
+            return Equals(obj as Fraction);
+        }
+
+        public override bool Equals(Operand other)
+        {
+            return Equals(other as Fraction);
+        }
+
+        public bool Equals(Fraction other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return Numerator == other.Numerator && Denominator == other.Denominator;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = Numerator.GetHashCode();
+                hashCode = (hashCode*397) ^ Denominator.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

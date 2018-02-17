@@ -5,7 +5,7 @@ using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class Minimum : MultiOperation, ICommutativeOperation, IAssociativeOperation
+    public class Minimum : MultiOperation, ICommutativeOperation, IAssociativeOperation, IEquatable<Minimum>
     {
        public Minimum(params Operand[] operands) : base(operands)
         {
@@ -50,6 +50,31 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             return new Minimum(left, right);
+        }
+
+        public override bool Equals(object obj) 
+        {
+            return Equals(obj as Minimum);
+        }
+
+        public override bool Equals(Operand other)
+        {
+            return Equals(other as Minimum);
+        }
+
+        public bool Equals(Minimum other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return this.EqualsCommutative(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

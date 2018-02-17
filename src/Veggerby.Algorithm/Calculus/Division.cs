@@ -3,7 +3,7 @@ using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class Division : BinaryOperation
+    public class Division : BinaryOperation, IEquatable<Division>
     {
         private Division(Operand left, Operand right) : base(left, right)
         {
@@ -60,6 +60,31 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             return new Division(left, right);
+        }
+
+        public override bool Equals(object obj) 
+        {
+            return Equals(obj as Division);
+        }
+
+        public override bool Equals(Operand other)
+        {
+            return Equals(other as Division);
+        }
+
+        public bool Equals(Division other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return this.EqualsBinary(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

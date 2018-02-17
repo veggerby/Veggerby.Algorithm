@@ -3,7 +3,7 @@ using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class Power : BinaryOperation
+    public class Power : BinaryOperation, IEquatable<Power>
     {
         public Power(Operand left, Operand right) : base(left, right)
         {
@@ -37,6 +37,31 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             return new Power(left, right);
+        }
+
+        public override bool Equals(object obj) 
+        {
+            return Equals(obj as Power);
+        }
+
+        public override bool Equals(Operand other)
+        {
+            return Equals(other as Power);
+        }
+
+        public bool Equals(Power other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return this.EqualsBinary(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

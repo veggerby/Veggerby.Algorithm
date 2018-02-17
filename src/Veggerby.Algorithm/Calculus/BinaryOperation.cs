@@ -24,23 +24,9 @@ namespace Veggerby.Algorithm.Calculus
             Right = right;
         }
 
-        protected bool Equals(BinaryOperation other)
-        {
-            return (Left.Equals(other.Left) && Right.Equals(other.Right)) ||
-                (this is ICommutativeOperation && Left.Equals(other.Right) && Right.Equals(other.Left));
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((BinaryOperation)obj);
-        }
-
         public override int GetHashCode()
         {
-            return GetType().Name.GetHashCode() ^ Left.GetHashCode() ^ Right.GetHashCode();
+            return GetType().GetHashCode() ^ Left.GetHashCode() ^ Right.GetHashCode();
         }
     }
 }

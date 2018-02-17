@@ -9,22 +9,9 @@ namespace Veggerby.Algorithm.Calculus
             Inner = inner;
         }
 
-        protected bool Equals(UnaryOperation other)
-        {
-            return Inner.Equals(other.Inner);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((UnaryOperation)obj);
-        }
-
         public override int GetHashCode()
         {
-            return Inner.GetHashCode();
+            return GetType().GetHashCode() ^ Inner.GetHashCode();
         }
     }
 }

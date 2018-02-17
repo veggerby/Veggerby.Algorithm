@@ -3,7 +3,7 @@ using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class Constant : Operand
+    public class Constant : Operand, IEquatable<Constant>
     {
         public static readonly Constant Zero = Constant.Create(0);
         public static readonly Constant One = Constant.Create(1);
@@ -21,24 +21,6 @@ namespace Veggerby.Algorithm.Calculus
         public override T Accept<T>(IOperandVisitor<T> visitor)
         {
             return visitor.Visit(this);
-        }
-
-        protected bool Equals(Constant other)
-        {
-            return Value == other.Value;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Constant)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return Value.GetHashCode();
         }
 
         public static Operand operator +(Constant left, Constant right)
@@ -134,6 +116,31 @@ namespace Veggerby.Algorithm.Calculus
         public static Constant Create(double value)
         {
             return new Constant(value);
+        }
+
+        public override bool Equals(object obj) 
+        {
+            return Equals(obj as Constant);
+        }
+
+        public override bool Equals(Operand other)
+        {
+            return Equals(other as Constant);
+        }
+
+        public bool Equals(Constant other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return Value == other.Value;
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
         }
     }
 }

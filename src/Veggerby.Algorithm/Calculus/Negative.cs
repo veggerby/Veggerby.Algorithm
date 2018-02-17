@@ -1,8 +1,9 @@
+using System;
 using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class Negative : UnaryOperation
+    public class Negative : UnaryOperation, IEquatable<Negative>
     {
         private Negative(Operand inner) : base(inner)
         {
@@ -21,6 +22,31 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             return new Negative(inner);
+        }
+
+        public override bool Equals(object obj) 
+        {
+            return Equals(obj as Negative);
+        }
+
+        public override bool Equals(Operand other)
+        {
+            return Equals(other as Negative);
+        }
+
+        public bool Equals(Negative other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return Inner.Equals(other.Inner);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

@@ -1,8 +1,9 @@
+using System;
 using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class Variable : Operand
+    public class Variable : Operand, IEquatable<Variable>
     {
         public readonly static Variable x = Variable.Create("x");
         public readonly static Variable y = Variable.Create("y");
@@ -19,27 +20,34 @@ namespace Veggerby.Algorithm.Calculus
             return visitor.Visit(this);
         }
 
-        protected bool Equals(Variable other)
+        public static Variable Create(string identifier)
         {
-            return string.Equals(Identifier, other.Identifier);
+            return new Variable(identifier);
+        }        
+        
+        public override bool Equals(object obj) 
+        {
+            return Equals(obj as Variable);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(Operand other)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Variable)obj);
+            return Equals(other as Variable);
+        }
+
+        public bool Equals(Variable other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return string.Equals(Identifier, other.Identifier);
         }
 
         public override int GetHashCode()
         {
             return Identifier.GetHashCode();
-        }
-
-        public static Variable Create(string identifier)
-        {
-            return new Variable(identifier);
         }
     }
 }

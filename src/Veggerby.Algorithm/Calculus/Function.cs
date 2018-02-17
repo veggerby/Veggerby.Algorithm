@@ -6,7 +6,7 @@ using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class Function : Operand
+    public class Function : Operand, IEquatable<Function>
     {
         public string Identifier { get; }
         public IEnumerable<Variable> Variables { get; }
@@ -24,24 +24,6 @@ namespace Veggerby.Algorithm.Calculus
         public override T Accept<T>(IOperandVisitor<T> visitor)
         {
             return visitor.Visit(this);
-        }
-
-        protected bool Equals(Function other)
-        {
-            return Operand.Equals(other.Operand);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Function)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return Operand.GetHashCode();
         }
 
         public static Function Create(string identifier, Operand operand)
@@ -65,5 +47,31 @@ namespace Veggerby.Algorithm.Calculus
                 "f",
                 FunctionParser.Parse(value));
         }
+
+        public override bool Equals(object obj) 
+        {
+            return Equals(obj as Function);
+        }
+
+        public override bool Equals(Operand other)
+        {
+            return Equals(other as Function);
+        }
+
+        public bool Equals(Function other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return Operand.Equals(other.Operand);
+        }
+
+        public override int GetHashCode()
+        {
+            return Operand.GetHashCode();
+        }
+
     }
 }

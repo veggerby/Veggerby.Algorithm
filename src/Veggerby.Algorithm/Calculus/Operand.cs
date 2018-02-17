@@ -1,11 +1,14 @@
+using System;
 using Veggerby.Algorithm.Calculus.Parser;
 using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public abstract class Operand
+    public abstract class Operand : IEquatable<Operand>
     {
         public abstract T Accept<T>(IOperandVisitor<T> visitor);
+
+        public abstract bool Equals(Operand other);
 
         public sealed override string ToString()
         {

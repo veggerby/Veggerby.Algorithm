@@ -5,7 +5,7 @@ using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class FunctionReference : Operand
+    public class FunctionReference : Operand, IEquatable<FunctionReference>
     {
         public string Identifier { get; }
         public IEnumerable<Operand> Parameters { get; }
@@ -19,24 +19,6 @@ namespace Veggerby.Algorithm.Calculus
         public override T Accept<T>(IOperandVisitor<T> visitor)
         {
             return visitor.Visit(this);
-        }
-
-        protected bool Equals(FunctionReference other)
-        {
-            return string.Equals(Identifier, other.Identifier) && Parameters.SequenceEqual(other.Parameters);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((FunctionReference)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return Parameters.Aggregate(Identifier.GetHashCode(), (seed, operand) => seed ^ operand.GetHashCode());
         }
 
         public static Operand Create(string identifier, params Operand[] parameters)
@@ -58,5 +40,31 @@ namespace Veggerby.Algorithm.Calculus
 
             return new FunctionReference(identifier, parameters);
         }
+
+        public override bool Equals(object obj) 
+        {
+            return Equals(obj as FunctionReference);
+        }
+
+        public override bool Equals(Operand other)
+        {
+            return Equals(other as FunctionReference);
+        }
+
+        public bool Equals(FunctionReference other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return string.Equals(Identifier, other.Identifier) && Parameters.SequenceEqual(other.Parameters);
+        }
+
+        public override int GetHashCode()
+        {
+            return Parameters.Aggregate(Identifier.GetHashCode(), (seed, operand) => seed ^ operand.GetHashCode());
+        }
+
     }
 }

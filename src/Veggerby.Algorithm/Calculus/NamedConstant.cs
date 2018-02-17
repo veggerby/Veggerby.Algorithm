@@ -1,8 +1,9 @@
+using System;
 using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class NamedConstant : Constant
+    public class NamedConstant : Constant, IEquatable<NamedConstant>
     {
         public string Symbol { get; }
 
@@ -16,17 +17,29 @@ namespace Veggerby.Algorithm.Calculus
             return visitor.Visit(this);
         }
 
-        protected bool Equals(NamedConstant other)
+        public static NamedConstant Create(string symbol, double value)
         {
-            return Symbol.Equals(other.Symbol) && Value.Equals(other.Value);
+            return new NamedConstant(symbol, value);
+        }
+                
+        public override bool Equals(object obj) 
+        {
+            return Equals(obj as NamedConstant);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(Operand other)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((NamedConstant)obj);
+            return Equals(other as NamedConstant);
+        }
+
+        public bool Equals(NamedConstant other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return Symbol.Equals(other.Symbol) && Value.Equals(other.Value);
         }
 
         public override int GetHashCode()
@@ -37,11 +50,6 @@ namespace Veggerby.Algorithm.Calculus
                 hashCode = (hashCode*397) ^ Value.GetHashCode();
                 return hashCode;
             }
-        }
-
-        public static NamedConstant Create(string symbol, double value)
-        {
-            return new NamedConstant(symbol, value);
         }
     }
 }

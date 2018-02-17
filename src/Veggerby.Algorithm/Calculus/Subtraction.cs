@@ -3,7 +3,7 @@ using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class Subtraction : BinaryOperation
+    public class Subtraction : BinaryOperation, IEquatable<Subtraction>
     {
         private Subtraction(Operand left, Operand right) : base(left, right)
         {
@@ -37,6 +37,31 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             return new Subtraction(left, right);
+        }
+        
+        public override bool Equals(object obj) 
+        {
+            return Equals(obj as Subtraction);
+        }
+
+        public override bool Equals(Operand other)
+        {
+            return Equals(other as Subtraction);
+        }
+
+        public bool Equals(Subtraction other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return this.EqualsBinary(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

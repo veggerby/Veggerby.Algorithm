@@ -3,7 +3,7 @@ using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class Root : UnaryOperation
+    public class Root : UnaryOperation, IEquatable<Root>
     {
         public int Exponent { get; }
         private Root(int exponent, Operand inner) : base(inner)
@@ -21,17 +21,29 @@ namespace Veggerby.Algorithm.Calculus
             return visitor.Visit(this);
         }
 
-        protected bool Equals(Root other)
+        public static Operand Create(int exponent, Operand inner)
         {
-            return Exponent.Equals(other.Exponent) && base.Equals(other);
+            return new Root(exponent, inner);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object obj) 
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Root)obj);
+            return Equals(obj as Root);
+        }
+
+        public override bool Equals(Operand other)
+        {
+            return Equals(other as Root);
+        }
+
+        public bool Equals(Root other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return Exponent.Equals(other.Exponent) && Inner.Equals(other.Inner);
         }
 
         public override int GetHashCode()
@@ -42,11 +54,6 @@ namespace Veggerby.Algorithm.Calculus
                 hashCode = (hashCode*397) ^ Inner.GetHashCode();
                 return hashCode;
             }
-        }
-
-        public static Operand Create(int exponent, Operand inner)
-        {
-            return new Root(exponent, inner);
         }
     }
 }

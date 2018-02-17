@@ -5,7 +5,7 @@ using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class Maximum : MultiOperation, ICommutativeOperation, IAssociativeOperation
+    public class Maximum : MultiOperation, ICommutativeOperation, IAssociativeOperation, IEquatable<Maximum>
     {
         public Maximum(params Operand[] operands) : base(operands)
         {
@@ -50,6 +50,31 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             return new Maximum(left, right);
+        }
+        
+        public override bool Equals(object obj) 
+        {
+            return Equals(obj as Maximum);
+        }
+
+        public override bool Equals(Operand other)
+        {
+            return Equals(other as Maximum);
+        }
+
+        public bool Equals(Maximum other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return this.EqualsCommutative(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

@@ -5,7 +5,7 @@ using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class Multiplication : MultiOperation, ICommutativeOperation, IAssociativeOperation
+    public class Multiplication : MultiOperation, ICommutativeOperation, IAssociativeOperation, IEquatable<Multiplication>
     {
         private Multiplication(params Operand[] operands) : base(operands)
         {
@@ -106,6 +106,31 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             return new Multiplication(operands.ToArray());
+        }
+
+        public override bool Equals(object obj) 
+        {
+            return Equals(obj as Multiplication);
+        }
+
+        public override bool Equals(Operand other)
+        {
+            return Equals(other as Multiplication);
+        }
+
+        public bool Equals(Multiplication other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return this.EqualsCommutative(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }
