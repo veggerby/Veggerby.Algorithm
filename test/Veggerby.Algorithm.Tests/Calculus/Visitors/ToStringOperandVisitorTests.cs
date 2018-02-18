@@ -206,6 +206,28 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             actual.ShouldBe("x*2");
         }
 
+
+        [Fact]
+        public void Should_return_tostring_multiplication_with_addition()
+        {
+            // arrange
+            var operand = Multiplication.Create(new [] 
+            {
+                Variable.x, 
+                Addition.Create(new[] { Variable.x, Sine.Create(Variable.x), Constant.One }), 
+                Constant.Create(2) 
+            });
+            
+            var visitor = new ToStringOperandVisitor();
+
+            // act
+            var actual = operand.Accept(visitor);
+
+            // assert
+            actual.ShouldBe("x*(x+sin(x)+1)*2");
+        }
+
+
         [Fact]
         public void Should_return_tostring_named_constant()
         {
