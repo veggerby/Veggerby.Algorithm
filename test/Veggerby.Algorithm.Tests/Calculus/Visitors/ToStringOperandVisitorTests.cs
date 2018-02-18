@@ -96,6 +96,33 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         }
 
         [Fact]
+        public void Should_return_tostring_division_with_parenthesis()
+        {
+            // arrange
+            var operand = Division.Create(Sine.Create(Variable.x), Division.Create(Variable.x, Constant.Create(2)));
+            var visitor = new ToStringOperandVisitor();
+
+            // act
+            var actual = operand.Accept(visitor);
+
+            // assert
+            actual.ShouldBe("sin(x)/(x/2)");
+        }
+
+        [Fact]
+        public void Should_return_tostring_division_without_parenthesis()
+        {
+            // arrange
+            var operand = Division.Create(Division.Create(Sine.Create(Variable.x), Variable.x), Constant.Create(2));
+            var visitor = new ToStringOperandVisitor();
+
+            // act
+            var actual = operand.Accept(visitor);
+
+            // assert
+            actual.ShouldBe("sin(x)/x/2");
+        }
+        [Fact]
         public void Should_return_tostring_exponential()
         {
             // arrange
@@ -261,6 +288,35 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
 
             // assert
             actual.ShouldBe("x-1");
+        }
+
+        [Fact]
+        public void Should_return_tostring_subtraction_with_parenthesis()
+        {
+            // arrange
+            var operand = Subtraction.Create(Sine.Create(Variable.x), Subtraction.Create(Variable.x, Constant.One));
+            var visitor = new ToStringOperandVisitor();
+
+            // act
+            var actual = operand.Accept(visitor);
+
+            // assert
+            actual.ShouldBe("sin(x)-(x-1)");
+        }
+
+
+        [Fact]
+        public void Should_return_tostring_subtraction_without_parenthesis()
+        {
+            // arrange
+            var operand = Subtraction.Create(Subtraction.Create(Sine.Create(Variable.x), Variable.x), Constant.One);
+            var visitor = new ToStringOperandVisitor();
+
+            // act
+            var actual = operand.Accept(visitor);
+
+            // assert
+            actual.ShouldBe("sin(x)-x-1");
         }
 
         [Fact]

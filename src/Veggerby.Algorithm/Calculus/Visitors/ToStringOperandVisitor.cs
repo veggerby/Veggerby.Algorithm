@@ -6,20 +6,26 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 {
     public class ToStringOperandVisitor : IOperandVisitor<string>
     {
-        private string VisitOperand(Operand operation, Operand operand)
+        private string VisitOperand(Operand parent, Operand child, bool checkAssociative = false)
         {
             var result = new StringBuilder();
-            var operandPriority = operand.GetPriority();
-            var operaitonPriority = operation.GetPriority();
 
-            var useParenthesis = operand.CouldUseParenthesis() && (operandPriority != null && operandPriority > operaitonPriority);
+            var childPriority = child.GetPriority();
+            var parentPriority = parent.GetPriority();
+
+            var useParenthesis = child.CouldUseParenthesis() && (childPriority != null && childPriority > parentPriority);
+
+            if (checkAssociative && !useParenthesis && parent.GetType() == child.GetType() && !(child is IAssociativeOperation))
+            {
+                useParenthesis = true;
+            }
 
             if (useParenthesis)
             {
                 result.Append("(");
             }
 
-            result.Append(operand.Accept(this));
+            result.Append(child.Accept(this));
 
             if (useParenthesis)
             {
@@ -50,14 +56,14 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         public string Visit(Subtraction operand)
         {
             var left = VisitOperand(operand, operand.Left);
-            var right = VisitOperand(operand, operand.Right);
+            var right = VisitOperand(operand, operand.Right, true);
             return $"{left}-{right}";
         }
 
         public string Visit(Division operand)
         {
             var left = VisitOperand(operand, operand.Left);
-            var right = VisitOperand(operand, operand.Right);
+            var right = VisitOperand(operand, operand.Right, true);
             return $"{left}/{right}";
         }
 
