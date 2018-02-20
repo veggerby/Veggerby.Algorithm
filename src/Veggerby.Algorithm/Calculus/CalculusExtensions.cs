@@ -115,8 +115,11 @@ namespace Veggerby.Algorithm.Calculus
 
         public static Operand Reduce(this Operand operand)
         {
-            var visitor = new ReduceOperandVisitor();
-            return operand.Accept(visitor);
+            var reduceVisitor = new ReduceOperandVisitor();
+            var reorderVisitor = new ReorderOperandVisitor();
+            return operand
+                .Accept(reduceVisitor)
+                .Accept(reorderVisitor);
         }
     }
 }

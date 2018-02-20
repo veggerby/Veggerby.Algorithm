@@ -112,7 +112,7 @@ namespace Veggerby.Algorithm.Calculus
             return new Addition(operands.ToArray());
         }
 
-        public override bool Equals(object obj) 
+        public override bool Equals(object obj)
         {
             return Equals(obj as Addition);
         }

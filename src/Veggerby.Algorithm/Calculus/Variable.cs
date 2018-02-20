@@ -7,6 +7,7 @@ namespace Veggerby.Algorithm.Calculus
     {
         public readonly static Variable x = Variable.Create("x");
         public readonly static Variable y = Variable.Create("y");
+        public override int MaxDepth => 1;
 
         public string Identifier { get; }
 
@@ -23,9 +24,9 @@ namespace Veggerby.Algorithm.Calculus
         public static Variable Create(string identifier)
         {
             return new Variable(identifier);
-        }        
-        
-        public override bool Equals(object obj) 
+        }
+
+        public override bool Equals(object obj)
         {
             return Equals(obj as Variable);
         }

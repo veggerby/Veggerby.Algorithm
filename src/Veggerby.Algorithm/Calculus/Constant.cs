@@ -13,6 +13,8 @@ namespace Veggerby.Algorithm.Calculus
 
         public double Value { get; }
 
+        public override int MaxDepth => 1;
+
         protected Constant(double value)
         {
             Value = value;
@@ -118,7 +120,7 @@ namespace Veggerby.Algorithm.Calculus
             return new Constant(value);
         }
 
-        public override bool Equals(object obj) 
+        public override bool Equals(object obj)
         {
             return Equals(obj as Constant);
         }

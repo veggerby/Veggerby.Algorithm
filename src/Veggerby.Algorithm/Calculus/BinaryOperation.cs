@@ -8,6 +8,8 @@ namespace Veggerby.Algorithm.Calculus
         public Operand Left { get; }
         public Operand Right { get; }
 
+        public override int MaxDepth => Math.Max(Left.MaxDepth, Right.MaxDepth) + 1;
+
         protected BinaryOperation(Operand left, Operand right)
         {
             if (left == null)

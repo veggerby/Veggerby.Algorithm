@@ -9,6 +9,7 @@ namespace Veggerby.Algorithm.Calculus
     {
         public string Identifier { get; }
         public IEnumerable<Operand> Parameters { get; }
+        public override int MaxDepth => 1;
 
         protected FunctionReference(string identifier, IEnumerable<Operand> parameters)
         {
@@ -41,7 +42,7 @@ namespace Veggerby.Algorithm.Calculus
             return new FunctionReference(identifier, parameters);
         }
 
-        public override bool Equals(object obj) 
+        public override bool Equals(object obj)
         {
             return Equals(obj as FunctionReference);
         }

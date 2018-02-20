@@ -101,6 +101,14 @@ namespace Veggerby.Algorithm.Calculus.Visitors
                 return Reduce(Negative.Create(right));
             }
 
+            if (right is Subtraction) // x-(y-z) = (x+z)-y
+            {
+                var rightSubstraction = (Subtraction)right;
+                return Reduce(Subtraction.Create(
+                    Addition.Create(left, rightSubstraction.Right),
+                    rightSubstraction.Left));
+            }
+
             if (right.IsNegative())
             {
                 return Reduce(Addition.Create(left, ((Negative)right).Inner));
@@ -149,7 +157,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
                 return Reduce(Negative.Create(Multiplication.Create(operands)));
             }
 
-             // consolidate addition and move substraction "out", e.g. c + (c - cos(x)) = (c + c) - cos(x)
+            // consolidate addition and move substraction "out", e.g. c + (c - cos(x)) = (c + c) - cos(x)
             if (operands.Any(x => x is Division))
             {
                 var multiplication = Multiplication.Create(operands.Select(x => x is Division ? ((Division)x).Left : x));

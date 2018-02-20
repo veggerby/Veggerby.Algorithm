@@ -12,12 +12,6 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return factory(ordered);
         }
 
-        private Operand ReorderAssociativeBinaryOperation<TOperand>(TOperand operand, Func<IEnumerable<Operand>, Operand> factory) where TOperand : Operand, IAssociativeOperation
-        {
-            var ordered = operand.Operands.OrderBy(x => x, new AssociativeOperationComparer());
-            return factory(ordered);
-        }
-
         public Operand Visit(Function operand)
         {
             var innerOperand = operand.Operand.Accept(this);
@@ -121,12 +115,12 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public Operand Visit(Minimum operand)
         {
-            return Minimum.Create(operand.Operands.Select(x => x.Accept(this)));
+            return ReorderCommutativeBinaryOperation(operand, Minimum.Create);
         }
 
         public Operand Visit(Maximum operand)
         {
-            return Maximum.Create(operand.Operands.Select(x => x.Accept(this)));
+            return ReorderCommutativeBinaryOperation(operand, Maximum.Create);
         }
     }
 }

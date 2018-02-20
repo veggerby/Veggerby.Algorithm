@@ -110,7 +110,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
                 Factorial.Create(Variable.x),
                 Division.Create(Constant.One, Variable.x),
                 Subtraction.Create(Variable.x, Constant.One),
-                Multiplication.Create(Constant.Pi, Variable.x),
+                Multiplication.Create(Constant.Create(2), Variable.x),
                 Power.Create(Constant.Create(2), Variable.x),
                 Addition.Create(Constant.Create(10), Variable.x)
             };
@@ -120,8 +120,8 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
 
             // assert
             actual[0].ShouldBeOfType<Addition>();
-            actual[1].ShouldBeOfType<Subtraction>();
-            actual[2].ShouldBeOfType<Multiplication>();
+            actual[1].ShouldBeOfType<Multiplication>(); // due to complexity is lower than subtraction
+            actual[2].ShouldBeOfType<Subtraction>();
             actual[3].ShouldBeOfType<Division>();
             actual[4].ShouldBeOfType<Power>();
             actual[5].ShouldBeOfType<Factorial>();
@@ -154,13 +154,13 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             actual[0].ShouldBeOfType<Constant>();
             actual[1].ShouldBeOfType<Variable>();
             actual[2].ShouldBeOfType<Addition>();
-            actual[3].ShouldBeOfType<Subtraction>();
-            actual[4].ShouldBeOfType<Multiplication>();
-            actual[5].ShouldBeOfType<Division>();
-            actual[6].ShouldBeOfType<Power>();
-            actual[7].ShouldBeOfType<Factorial>();
-            actual[8].ShouldBeOfType<Minimum>();
-            actual[9].ShouldBeOfType<Sine>();
+            actual[3].ShouldBeOfType<Multiplication>();
+            actual[4].ShouldBeOfType<Sine>();
+            actual[5].ShouldBeOfType<Subtraction>();
+            actual[6].ShouldBeOfType<Division>();
+            actual[7].ShouldBeOfType<Power>();
+            actual[8].ShouldBeOfType<Factorial>();
+            actual[9].ShouldBeOfType<Minimum>();
         }
 /*
         public int Compare(Operand x, Operand y)

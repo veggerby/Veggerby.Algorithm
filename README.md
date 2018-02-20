@@ -53,3 +53,41 @@ The following grammar is used for defining functions
     operand 	= number | identifier | expression | "(" operand ")" | sign operand
 
     equation 	= expression "=" expression
+
+## Function Complexity
+
+Constant and NamedConstant will add 1
+Variable and Fraction will add 2
+Addition and Multiplication will add 1, i.e. x+y will yield Complexity(x) + Complexity(y) + 1
+Subtraction and Negative will add 2, i.e. x-y will yield Complexity(x) + Complexity(y) + 2
+Division and Power will add 3, i.e. x/y will yield Complexity(x) + Complexity(y) + 3
+Sine, Cosine, Logarithm and Exponential functions will add 2, i.e. f(x), Complexity(x) + 2
+LogarithmBase, Tangent and Root will add 3
+Factorial, Maximum and Minimum will add 4
+Function will add 2
+FunctionReference will add 2 and sum of parameter, i.e. f(x, y) = Complexity(x) + Complexity(y) + 2
+
+## Ordering
+
+Constant 1
+Fraction 2
+Named Constant 3
+Variable 4
+Negative 5
+Addition 6
+Subtraction 7
+Multiplication 8
+Division 9
+Power 10
+Function 11
+FunctionReference 12
+Factorial 13
+Exponential 14
+Logarithm 15
+Sine 16
+Cosine 17
+Tangent 18
+Root 19
+LogarithmBase 20
+Minimum 21
+Maximum 22
