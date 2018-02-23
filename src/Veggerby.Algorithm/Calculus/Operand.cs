@@ -55,8 +55,5 @@ namespace Veggerby.Algorithm.Calculus
         {
             return FunctionParser.Parse(value);
         }
-
-        public abstract int MaxDepth { get; }
-
     }
 }

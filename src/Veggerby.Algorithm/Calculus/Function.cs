@@ -12,8 +12,6 @@ namespace Veggerby.Algorithm.Calculus
         public IEnumerable<Variable> Variables { get; }
         public Operand Operand { get; }
 
-        public override int MaxDepth => Operand.MaxDepth + 1;
-
         protected Function(string identifier, Operand operand)
         {
             Identifier = identifier;

@@ -13,8 +13,6 @@ namespace Veggerby.Algorithm.Calculus
 
         public double Value { get; }
 
-        public override int MaxDepth => 1;
-
         protected Constant(double value)
         {
             Value = value;

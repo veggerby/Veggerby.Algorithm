@@ -7,7 +7,6 @@ namespace Veggerby.Algorithm.Calculus
     {
         public int Numerator { get; }
         public int Denominator { get; }
-        public override int MaxDepth => 1;
 
         protected Fraction(int numerator, int denominator)
         {
