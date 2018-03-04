@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Veggerby.Algorithm.Calculus.Visitors
@@ -7,22 +8,35 @@ namespace Veggerby.Algorithm.Calculus.Visitors
     {
         private readonly Variable _variable;
 
+        private readonly IEnumerable<Operand> _stack;
+
         private static readonly Variable _constant = Variable.Create("c");
 
-        public IntegralOperandVisitor(Variable variable)
+        public IntegralOperandVisitor(Variable variable, IEnumerable<Operand> stack = null)
         {
             _variable = variable;
+            _stack = stack?.ToList() ?? new List<Operand>();
         }
 
         private Operand GetIntegral(Operand operand)
         {
-            return operand.Reduce().Accept(this).Reduce();
+            if (_stack.Contains(operand))
+            {
+                throw new ArgumentException("Circular call", nameof(operand));
+            }
+
+            var visitor = new IntegralOperandVisitor(_variable, _stack.Concat(new [] { operand }));
+
+            return operand
+                .Reduce()?
+                .Accept(visitor)?
+                .Reduce();
         }
 
         private Operand GetDerivative(Operand operand)
         {
             var visitor = new DerivativeOperandVisitor(_variable);
-            return operand.Reduce().Accept(visitor).Reduce();
+            return operand.Reduce()?.Accept(visitor)?.Reduce();
         }
 
         private Operand ConstantRule(Operand constant)
@@ -44,6 +58,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         private Operand IntegrationByParts(Operand left, Operand right)
         {
+            if (!right.CanIntegrate(_variable))
+            {
+                return null;
+            }
+
             try
             {
                 var leftDerivative = GetDerivative(left);
@@ -54,9 +73,14 @@ namespace Veggerby.Algorithm.Calculus.Visitors
                     return null;
                 }
 
-                var rightPart = GetIntegral(
-                    Multiplication.Create(leftDerivative, rightIntegral)
-                );
+                var rightOperation = Multiplication.Create(leftDerivative, rightIntegral);
+
+                if (!rightOperation.CanIntegrate(_variable))
+                {
+                    return null;
+                }
+
+                var rightPart = GetIntegral(rightOperation);
 
                 if (rightPart == null)
                 {
@@ -67,6 +91,10 @@ namespace Veggerby.Algorithm.Calculus.Visitors
                     Multiplication.Create(left, rightIntegral),
                     rightPart
                 );
+            }
+            catch (ArgumentException)
+            {
+                return null;
             }
             catch (NotImplementedException)
             {
@@ -238,9 +266,13 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public Operand Visit(Multiplication operand)
         {
-            return operand.Operands.Select(
-                x => IntegrationByParts(x, Multiplication.Create(operand.Operands.Where(y => !object.ReferenceEquals(x, y))))
-            ).FirstOrDefault();
+            return operand
+                .Operands
+                .Select(x => new { Left = Multiplication.Create(operand.Operands.Where(y => !object.ReferenceEquals(x, y))), Right = x })
+                .Select(x => IntegrationByParts(x.Left, x.Right))
+                .Where(x => x != null)
+                .OrderBy(x => x.GetComplexity())
+                .FirstOrDefault();
         }
 
         public Operand Visit(Addition operand)

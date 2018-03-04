@@ -169,10 +169,24 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             Operand expected = "(c+x*(c-sin(x)))-(c+sin(x)+c*x)";
 
             // act
-            var actual = operand.Accept(visitor).Reduce();
+            var actual = operand.Accept(visitor)?.Reduce();
 
             // assert
             actual.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void Should_integrate_multiplication_complex()
+        {
+            // arrange
+            var operand = Multiplication.Create(new [] { Variable.x, Exponential.Create(Variable.x), Logarithm.Create(Variable.x) });
+            var visitor = new IntegralOperandVisitor(Variable.x);
+
+            // act
+            var actual = operand.Accept(visitor);
+
+            // assert
+            actual.ShouldNotBeNull();
         }
 
         [Fact]

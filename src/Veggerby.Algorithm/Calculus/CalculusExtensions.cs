@@ -97,24 +97,98 @@ namespace Veggerby.Algorithm.Calculus
 
         public static string ToLaTeXString(this Operand operand)
         {
+            if (operand == null)
+            {
+                throw new ArgumentNullException(nameof(operand));
+            }
+
             var visitor = new LaTeXOperandVisitor();
             return operand.Accept(visitor);
         }
 
         public static double Evaluate(this Operand operand, OperationContext context)
         {
+            if (operand == null)
+            {
+                throw new ArgumentNullException(nameof(operand));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+
             var visitor = new EvaluateOperandVisitor(context);
             return operand.Accept(visitor);
         }
 
         public static Operand GetDerivative(this Operand operand, Variable variable)
         {
+            if (operand == null)
+            {
+                throw new ArgumentNullException(nameof(operand));
+            }
+
+            if (variable == null)
+            {
+                throw new ArgumentNullException(nameof(variable));
+            }
+
             var visitor = new DerivativeOperandVisitor(variable);
+            return operand.Accept(visitor);
+        }
+
+        public static bool CanIntegrate(this Operand operand, Variable variable)
+        {
+            if (operand == null)
+            {
+                throw new ArgumentNullException(nameof(operand));
+            }
+
+            if (variable == null)
+            {
+                throw new ArgumentNullException(nameof(variable));
+            }
+
+            var visitor = new CanIntegrateOperandVisitor(variable);
+            return operand.Accept(visitor);
+        }
+
+        public static Operand GetIntegral(this Operand operand, Variable variable)
+        {
+            if (operand == null)
+            {
+                throw new ArgumentNullException(nameof(operand));
+            }
+
+            if (variable == null)
+            {
+                throw new ArgumentNullException(nameof(variable));
+            }
+
+            var visitor = new IntegralOperandVisitor(variable);
+            return operand.Accept(visitor);
+        }
+
+        public static int GetComplexity(this Operand operand)
+        {
+            if (operand == null)
+            {
+                throw new ArgumentNullException(nameof(operand));
+            }
+
+            var visitor = new ComplexityOperandVisitor();
             return operand.Accept(visitor);
         }
 
         public static Operand Reduce(this Operand operand)
         {
+            if (operand == null)
+            {
+                throw new ArgumentNullException(nameof(operand));
+            }
+
             var reduceVisitor = new ReduceOperandVisitor();
             var reorderVisitor = new ReorderOperandVisitor();
             return operand
