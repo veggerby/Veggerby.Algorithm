@@ -14,13 +14,18 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public IntegralOperandVisitor(Variable variable, IEnumerable<Operand> stack = null)
         {
+            if (stack != null && stack.Count() > 25) // abort when too deep
+            {
+                throw new ArgumentOutOfRangeException(nameof(stack), "Too many iterations");
+            }
+
             _variable = variable;
             _stack = stack?.ToList() ?? new List<Operand>();
         }
 
         private Operand GetIntegral(Operand operand)
         {
-            if (_stack.Contains(operand))
+            if (_stack.Contains(operand)) // abort when too deep
             {
                 throw new ArgumentException("Circular call", nameof(operand));
             }
@@ -58,11 +63,6 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         private Operand IntegrationByParts(Operand left, Operand right)
         {
-            if (!right.CanIntegrate(_variable))
-            {
-                return null;
-            }
-
             try
             {
                 var leftDerivative = GetDerivative(left);
@@ -74,11 +74,6 @@ namespace Veggerby.Algorithm.Calculus.Visitors
                 }
 
                 var rightOperation = Multiplication.Create(leftDerivative, rightIntegral);
-
-                if (!rightOperation.CanIntegrate(_variable))
-                {
-                    return null;
-                }
 
                 var rightPart = GetIntegral(rightOperation);
 
@@ -266,13 +261,33 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public Operand Visit(Multiplication operand)
         {
-            return operand
+            var parts = operand
                 .Operands
                 .Select(x => new { Left = Multiplication.Create(operand.Operands.Where(y => !object.ReferenceEquals(x, y))), Right = x })
-                .Select(x => IntegrationByParts(x.Left, x.Right))
-                .Where(x => x != null)
-                .OrderBy(x => x.GetComplexity())
-                .FirstOrDefault();
+                .Distinct()
+                .ToList();
+
+            Operand simplest = null;
+            int complexity = int.MaxValue;
+
+            foreach (var part in parts)
+            {
+                var result = IntegrationByParts(part.Left, part.Right);
+                if (result == null)
+                {
+                    continue;
+                }
+
+                var c = result.GetComplexity();
+
+                if (c < complexity)
+                {
+                    complexity = c;
+                    simplest = result;
+                }
+            }
+
+            return simplest;
         }
 
         public Operand Visit(Addition operand)

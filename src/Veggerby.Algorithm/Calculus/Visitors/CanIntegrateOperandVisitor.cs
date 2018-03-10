@@ -14,13 +14,18 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public CanIntegrateOperandVisitor(Variable variable, IEnumerable<Operand> stack = null)
         {
+            if (stack != null && stack.Count() > 25) // abort when too deep
+            {
+                throw new ArgumentOutOfRangeException(nameof(stack), "Too many iterations");
+            }
+
             _variable = variable;
             _stack = stack?.ToList() ?? new List<Operand>();
         }
 
         private bool CanIntegrate(Operand operand)
         {
-            if (_stack.Contains(operand) && _stack.Count() < 25) // abort when too deep
+            if (_stack.Contains(operand)) // abort when too deep
             {
                 throw new ArgumentException("Circular call", nameof(operand));
             }
