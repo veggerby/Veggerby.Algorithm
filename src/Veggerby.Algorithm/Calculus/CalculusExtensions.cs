@@ -139,22 +139,6 @@ namespace Veggerby.Algorithm.Calculus
             return operand.Accept(visitor);
         }
 
-        public static bool CanIntegrate(this Operand operand, Variable variable)
-        {
-            if (operand == null)
-            {
-                throw new ArgumentNullException(nameof(operand));
-            }
-
-            if (variable == null)
-            {
-                throw new ArgumentNullException(nameof(variable));
-            }
-
-            var visitor = new CanIntegrateOperandVisitor(variable);
-            return operand.Accept(visitor);
-        }
-
         public static Operand GetIntegral(this Operand operand, Variable variable)
         {
             if (operand == null)
