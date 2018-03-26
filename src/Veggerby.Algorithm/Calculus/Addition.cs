@@ -53,9 +53,9 @@ namespace Veggerby.Algorithm.Calculus
                 return Subtraction.Create(left, ((Negative)right).Inner);
             }
 
-            if (right.IsConstant() && ((Constant)right).Value < 0)
+            if (right.IsConstant() && ((ValueConstant)right).Value < 0)
             {
-                return Subtraction.Create(left, -((Constant)right).Value);
+                return Subtraction.Create(left, -((ValueConstant)right).Value);
             }
 
             if (left.IsNegative())
@@ -63,9 +63,9 @@ namespace Veggerby.Algorithm.Calculus
                 return Subtraction.Create(right, ((Negative)left).Inner);
             }
 
-            if (left.IsConstant() && ((Constant)left).Value < 0)
+            if (left.IsConstant() && ((ValueConstant)left).Value < 0)
             {
-                return Subtraction.Create(right, -((Constant)left).Value);
+                return Subtraction.Create(right, -((ValueConstant)left).Value);
             }
 
             var operands = new List<Operand>();
@@ -88,19 +88,19 @@ namespace Veggerby.Algorithm.Calculus
                 operands.Add(right);
             }
 
-            if (operands.All(x => x.Equals(Constant.Zero)))
+            if (operands.All(x => x.Equals(ValueConstant.Zero)))
             {
-                return Constant.Zero;
+                return ValueConstant.Zero;
             }
 
             // remove zeros
-            operands = operands.Where(x => !x.Equals(Constant.Zero)).ToList();
+            operands = operands.Where(x => !x.Equals(ValueConstant.Zero)).ToList();
 
             // combine constants into one operand
             if (operands.Count(x => x.IsConstant()) > 1)
             {
-                var constants = operands.Where(x => x.IsConstant()).Cast<Constant>();
-                var constant = constants.Aggregate((seed, next) => (Constant)(seed + next));
+                var constants = operands.Where(x => x.IsConstant()).Cast<ValueConstant>();
+                var constant = constants.Aggregate((seed, next) => (ValueConstant)(seed + next));
                 operands = new Operand[] { constant }.Concat(operands.Where(x => !x.IsConstant())).ToList();
             }
 

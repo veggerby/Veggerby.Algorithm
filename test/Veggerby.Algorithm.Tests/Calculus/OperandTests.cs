@@ -11,7 +11,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_return_addition()
         {
             // arrange
-            var left = Constant.Create(3);
+            var left = ValueConstant.Create(3);
             var right = Variable.x;
 
             // act
@@ -26,21 +26,21 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_return_constant_from_addition()
         {
             // arrange
-            var left = Constant.Create(3);
-            var right = Constant.Create(6);
+            var left = ValueConstant.Create(3);
+            var right = ValueConstant.Create(6);
 
             // act
             var actual = left + right;
 
             // assert
-            actual.ShouldBe(Constant.Create(9));
+            actual.ShouldBe(ValueConstant.Create(9));
         }
 
         [Fact]
         public void Should_return_subtraction()
         {
             // arrange
-            var left = Constant.Create(3);
+            var left = ValueConstant.Create(3);
             var right = Variable.x;
 
             // act
@@ -56,21 +56,21 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_return_constant_from_subtraction()
         {
             // arrange
-            var left = Constant.Create(3);
-            var right = Constant.Create(6);
+            var left = ValueConstant.Create(3);
+            var right = ValueConstant.Create(6);
 
             // act
             var actual = left - right;
 
             // assert
-            actual.ShouldBe(Constant.Create(-3));
+            actual.ShouldBe(ValueConstant.Create(-3));
         }
 
         [Fact]
         public void Should_return_multiplication()
         {
             // arrange
-            var left = Constant.Create(3);
+            var left = ValueConstant.Create(3);
             var right = Variable.x;
 
             // act
@@ -85,21 +85,21 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_return_constant_from_multiplication()
         {
             // arrange
-            var left = Constant.Create(3);
-            var right = Constant.Create(6);
+            var left = ValueConstant.Create(3);
+            var right = ValueConstant.Create(6);
 
             // act
             var actual = left * right;
 
             // assert
-            actual.ShouldBe(Constant.Create(18));
+            actual.ShouldBe(ValueConstant.Create(18));
         }
 
         [Fact]
         public void Should_return_division()
         {
             // arrange
-            var left = Constant.Create(3);
+            var left = ValueConstant.Create(3);
             var right = Variable.x;
 
             // act
@@ -115,8 +115,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_return_fraction_from_constants_division()
         {
             // arrange
-            var left = Constant.Create(1);
-            var right = Constant.Create(3);
+            var left = ValueConstant.Create(1);
+            var right = ValueConstant.Create(3);
 
             // act
             var actual = Division.Create(left, right);
@@ -129,7 +129,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_return_power()
         {
             // arrange
-            var left = Constant.Create(3);
+            var left = ValueConstant.Create(3);
             var right = Variable.x;
 
             // act
@@ -145,28 +145,28 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_return_constant_from_power()
         {
             // arrange
-            var left = Constant.Create(2);
-            var right = Constant.Create(3);
+            var left = ValueConstant.Create(2);
+            var right = ValueConstant.Create(3);
 
             // act
             var actual = left ^ right;
 
             // assert
-            actual.ShouldBe(Constant.Create(8));
+            actual.ShouldBe(ValueConstant.Create(8));
         }
 
         [Fact]
         public void Should_return_one_for_one_as_base()
         {
             // arrange
-            var left = Constant.One;
+            var left = ValueConstant.One;
             var right = Variable.x;
 
             // act
             var actual = left ^ right;
 
             // assert
-            actual.ShouldBe(Constant.One);
+            actual.ShouldBe(ValueConstant.One);
         }
 
         [Fact]
@@ -174,13 +174,13 @@ namespace Veggerby.Algorithm.Tests.Calculus
         {
             // arrange
             var left = Variable.x;
-            var right = Constant.Zero;
+            var right = ValueConstant.Zero;
 
             // act
             var actual = left ^ right;
 
             // assert
-            actual.ShouldBe(Constant.One);
+            actual.ShouldBe(ValueConstant.One);
         }
 
 
@@ -189,7 +189,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         {
             // arrange
             var left = Variable.x;
-            var right = Constant.One;
+            var right = ValueConstant.One;
 
             // act
             var actual = left ^ right;
@@ -204,7 +204,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             // arrange
 
             // act
-            var actual = (Constant)3;
+            var actual = (ValueConstant)3;
 
             // assert
             actual.Value.ShouldBe(3);
@@ -216,7 +216,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             // arrange
 
             // act
-            var actual = (Constant)3.4;
+            var actual = (ValueConstant)3.4;
 
             // assert
             actual.Value.ShouldBe(3.4);

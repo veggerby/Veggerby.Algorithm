@@ -12,21 +12,21 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_reduce_addition()
         {
             // arrange
-            var operand = Addition.Create(Constant.One, Constant.Create(3));
+            var operand = Addition.Create(ValueConstant.One, ValueConstant.Create(3));
             var visitor = new ReduceOperandVisitor();
 
             // act
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(Constant.Create(4));
+            actual.ShouldBe(ValueConstant.Create(4));
         }
 
         [Fact]
         public void Should_reduce_negative_constant()
         {
             // arrange
-            var operand = Addition.Create(Variable.x, Negative.Create(Constant.Create(3)));
+            var operand = Addition.Create(Variable.x, Negative.Create(ValueConstant.Create(3)));
             var visitor = new ReduceOperandVisitor();
 
             // act
@@ -35,7 +35,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             // assert
             actual.ShouldBeOfType<Subtraction>();
             ((Subtraction)actual).Left.ShouldBe(Variable.x);
-            ((Subtraction)actual).Right.ShouldBe(Constant.Create(3));
+            ((Subtraction)actual).Right.ShouldBe(ValueConstant.Create(3));
         }
 
         [Fact]
@@ -43,8 +43,8 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         {
             // arrange
             var operand = Addition.Create(
-                Addition.Create(Constant.Create(7), Sine.Create(Variable.x)),
-                Addition.Create(Constant.Create(3), Sine.Create(Variable.x)));
+                Addition.Create(ValueConstant.Create(7), Sine.Create(Variable.x)),
+                Addition.Create(ValueConstant.Create(3), Sine.Create(Variable.x)));
             var visitor = new ReduceOperandVisitor();
 
             // act
@@ -52,7 +52,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
 
             // assert
             actual.Operands.ShouldBe(new[] {
-                Constant.Create(10), Multiplication.Create(2, Sine.Create(Variable.x)) });
+                ValueConstant.Create(10), Multiplication.Create(2, Sine.Create(Variable.x)) });
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(Constant.Create(-1101));
+            actual.ShouldBe(ValueConstant.Create(-1101));
         }
 
         [Fact]
@@ -81,35 +81,35 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
 
             // assert
             actual.ShouldBeOfType<Multiplication>();
-            ((Multiplication)actual).Operands.ShouldBe(new Operand[] { Constant.Create(2), Variable.x });
+            ((Multiplication)actual).Operands.ShouldBe(new Operand[] { ValueConstant.Create(2), Variable.x });
         }
 
         [Fact]
         public void Should_reduce_subtraction()
         {
             // arrange
-            var operand = Subtraction.Create(Constant.Create(6), Constant.Create(2));
+            var operand = Subtraction.Create(ValueConstant.Create(6), ValueConstant.Create(2));
             var visitor = new ReduceOperandVisitor();
 
             // act
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(Constant.Create(4));
+            actual.ShouldBe(ValueConstant.Create(4));
         }
 
         [Fact]
         public void Should_reduce_multiplication()
         {
             // arrange
-            var operand = Multiplication.Create(Constant.Create(6), Constant.Create(2));
+            var operand = Multiplication.Create(ValueConstant.Create(6), ValueConstant.Create(2));
             var visitor = new ReduceOperandVisitor();
 
             // act
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(Constant.Create(12));
+            actual.ShouldBe(ValueConstant.Create(12));
         }
 
         [Fact]
@@ -125,14 +125,14 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             // assert
             actual.ShouldBeOfType<Power>();
             ((BinaryOperation)actual).Left.ShouldBe(Variable.x);
-            ((BinaryOperation)actual).Right.ShouldBe(Constant.Create(2));
+            ((BinaryOperation)actual).Right.ShouldBe(ValueConstant.Create(2));
         }
 
         [Fact]
         public void Should_reduce_multiplication_flattened()
         {
             // arrange
-            var operand = Multiplication.Create(Sine.Create(Variable.x), Multiplication.Create(Constant.Create(6), Sine.Create(Variable.x)));
+            var operand = Multiplication.Create(Sine.Create(Variable.x), Multiplication.Create(ValueConstant.Create(6), Sine.Create(Variable.x)));
             var visitor = new ReduceOperandVisitor();
 
             // act
@@ -140,7 +140,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
 
             // assert
             actual.Operands.ShouldBe(new [] {
-                Constant.Create(6), Power.Create(Sine.Create(Variable.x), 2) });
+                ValueConstant.Create(6), Power.Create(Sine.Create(Variable.x), 2) });
         }
 
         [Fact]
@@ -154,35 +154,35 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(Constant.Zero);
+            actual.ShouldBe(ValueConstant.Zero);
         }
 
         [Fact]
         public void Should_reduce_division()
         {
             // arrange
-            var operand = Division.Create(Constant.Create(6), Constant.Create(2));
+            var operand = Division.Create(ValueConstant.Create(6), ValueConstant.Create(2));
             var visitor = new ReduceOperandVisitor();
 
             // act
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(Constant.Create(3));
+            actual.ShouldBe(ValueConstant.Create(3));
         }
 
         [Fact]
         public void Should_reduce_division_to_constant()
         {
             // arrange
-            var operand = Division.Create(Constant.Create(6), Constant.Create(2));
+            var operand = Division.Create(ValueConstant.Create(6), ValueConstant.Create(2));
             var visitor = new ReduceOperandVisitor();
 
             // act
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(Constant.Create(3));
+            actual.ShouldBe(ValueConstant.Create(3));
         }
 
         [Fact]
@@ -196,49 +196,49 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(Constant.One);
+            actual.ShouldBe(ValueConstant.One);
         }
 
         [Fact]
         public void Should_reduce_power()
         {
             // arrange
-            var operand = Power.Create(Constant.Create(6), Constant.Create(2));
+            var operand = Power.Create(ValueConstant.Create(6), ValueConstant.Create(2));
             var visitor = new ReduceOperandVisitor();
 
             // act
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(Constant.Create(36));
+            actual.ShouldBe(ValueConstant.Create(36));
         }
 
         [Fact]
         public void Should_reduce_minimum()
         {
             // arrange
-            var operand = Minimum.Create(Constant.Create(6), Constant.Create(2));
+            var operand = Minimum.Create(ValueConstant.Create(6), ValueConstant.Create(2));
             var visitor = new ReduceOperandVisitor();
 
             // act
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(Constant.Create(2));
+            actual.ShouldBe(ValueConstant.Create(2));
         }
 
         [Fact]
         public void Should_reduce_maximum()
         {
             // arrange
-            var operand = Maximum.Create(Constant.Create(6), Constant.Create(2));
+            var operand = Maximum.Create(ValueConstant.Create(6), ValueConstant.Create(2));
             var visitor = new ReduceOperandVisitor();
 
             // act
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(Constant.Create(6));
+            actual.ShouldBe(ValueConstant.Create(6));
         }
 
         [Fact]

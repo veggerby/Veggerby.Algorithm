@@ -171,7 +171,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
             return Multiplication.Create(
                 Division.Create(
-                    Power.Create(operand.Inner, (Constant.One - operand.Exponent) / operand.Exponent),
+                    Power.Create(operand.Inner, (ValueConstant.One - operand.Exponent) / operand.Exponent),
                     operand.Exponent),
                 inner
             );
@@ -210,7 +210,12 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return Constant.Zero;
         }
 
-        public Operand Visit(Constant operand)
+        public Operand Visit(ValueConstant operand)
+        {
+            return Constant.Zero;
+        }
+
+        public Operand Visit(UnspecifiedConstant operand)
         {
             return Constant.Zero;
         }

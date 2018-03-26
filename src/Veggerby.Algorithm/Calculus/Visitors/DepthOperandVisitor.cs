@@ -16,10 +16,15 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return 1;
         }
 
-        public int Visit(Constant operand)
+        public int Visit(ValueConstant operand)
         {
             return 1;
         }
+
+        public int Visit(UnspecifiedConstant operand)
+        {
+            return 1;
+        }        
 
         public int Visit(NamedConstant operand)
         {

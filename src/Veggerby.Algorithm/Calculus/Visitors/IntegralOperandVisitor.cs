@@ -237,9 +237,9 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
         public Operand Visit(Power operand)
         {
-            if (operand.Left.Equals(_variable) && operand.Right.IsConstant() && operand.Right != Constant.MinusOne)
+            if (operand.Left.Equals(_variable) && operand.Right.IsConstant() && operand.Right != ValueConstant.MinusOne)
             {
-                return PowerRule(((Constant)operand.Right).Value);
+                return PowerRule(((ValueConstant)operand.Right).Value);
             }
             else
             {
@@ -310,7 +310,12 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return ConstantRule(operand);
         }
 
-        public Operand Visit(Constant operand)
+        public Operand Visit(ValueConstant operand)
+        {
+            return ConstantRule(operand);
+        }
+
+        public Operand Visit(UnspecifiedConstant operand)
         {
             return ConstantRule(operand);
         }

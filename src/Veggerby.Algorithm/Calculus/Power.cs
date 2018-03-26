@@ -26,12 +26,12 @@ namespace Veggerby.Algorithm.Calculus
                 throw new ArgumentNullException(nameof(right));
             }
 
-            if (left.Equals(Constant.One) || right.Equals(Constant.Zero))
+            if (left.Equals(ValueConstant.One) || right.Equals(ValueConstant.Zero))
             {
-                return Constant.One;
+                return ValueConstant.One;
             }
 
-            if (right.Equals(Constant.One))
+            if (right.Equals(ValueConstant.One))
             {
                 return left;
             }

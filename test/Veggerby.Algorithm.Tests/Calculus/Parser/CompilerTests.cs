@@ -24,8 +24,8 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             var actual = compiler.Compile(node);
 
             // assert
-            actual.ShouldBeOfType<Constant>();
-            ((Constant)actual).Value.ShouldBe(expected);
+            actual.ShouldBeOfType<ValueConstant>();
+            ((ValueConstant)actual).Value.ShouldBe(expected);
         }
 
         [Fact]
@@ -109,7 +109,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
 
             // assert
             actual.ShouldBeOfType(expectedOperandType);
-            ((BinaryOperation)actual).Left.ShouldBe(Constant.Create(2));
+            ((BinaryOperation)actual).Left.ShouldBe(ValueConstant.Create(2));
             ((BinaryOperation)actual).Right.ShouldBe(Variable.x);
         }
 
@@ -134,7 +134,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
 
             // assert
             actual.ShouldBeOfType(expectedOperandType);
-            ((MultiOperation)actual).Operands.ShouldBe(new Operand[] { Constant.Create(2), Variable.x });
+            ((MultiOperation)actual).Operands.ShouldBe(new Operand[] { ValueConstant.Create(2), Variable.x });
         }
 
         [Fact]

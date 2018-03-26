@@ -39,7 +39,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_tostring_addition()
         {
             // arrange
-            var operand = Addition.Create(Variable.x, Constant.Create(3));
+            var operand = Addition.Create(Variable.x, ValueConstant.Create(3));
             var visitor = new ToStringOperandVisitor();
 
             // act
@@ -57,7 +57,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_correct_constant_string(double value, string expected)
         {
             // arrange
-            var operand = Constant.Create(value);
+            var operand = ValueConstant.Create(value);
             var visitor = new ToStringOperandVisitor();
 
             // act
@@ -85,7 +85,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_tostring_division()
         {
             // arrange
-            var operand = Division.Create(Variable.x, Constant.Create(2));
+            var operand = Division.Create(Variable.x, ValueConstant.Create(2));
             var visitor = new ToStringOperandVisitor();
 
             // act
@@ -99,7 +99,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_tostring_division_with_parenthesis()
         {
             // arrange
-            var operand = Division.Create(Sine.Create(Variable.x), Division.Create(Variable.x, Constant.Create(2)));
+            var operand = Division.Create(Sine.Create(Variable.x), Division.Create(Variable.x, ValueConstant.Create(2)));
             var visitor = new ToStringOperandVisitor();
 
             // act
@@ -113,7 +113,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_tostring_division_without_parenthesis()
         {
             // arrange
-            var operand = Division.Create(Division.Create(Sine.Create(Variable.x), Variable.x), Constant.Create(2));
+            var operand = Division.Create(Division.Create(Sine.Create(Variable.x), Variable.x), ValueConstant.Create(2));
             var visitor = new ToStringOperandVisitor();
 
             // act
@@ -196,7 +196,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_tostring_multiplication()
         {
             // arrange
-            var operand = Multiplication.Create(Variable.x, Constant.Create(2));
+            var operand = Multiplication.Create(Variable.x, ValueConstant.Create(2));
             var visitor = new ToStringOperandVisitor();
 
             // act
@@ -214,8 +214,8 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var operand = Multiplication.Create(new [] 
             {
                 Variable.x, 
-                Addition.Create(new[] { Variable.x, Sine.Create(Variable.x), Constant.One }), 
-                Constant.Create(2) 
+                Addition.Create(new[] { Variable.x, Sine.Create(Variable.x), ValueConstant.One }), 
+                ValueConstant.Create(2) 
             });
             
             var visitor = new ToStringOperandVisitor();
@@ -226,7 +226,6 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             // assert
             actual.ShouldBe("x*(x+sin(x)+1)*2");
         }
-
 
         [Fact]
         public void Should_return_tostring_named_constant()
@@ -243,10 +242,29 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         }
 
         [Fact]
+        public void Should_return_tostring_undefined_constant()
+        {
+            // arrange
+            var operand = UnspecifiedConstant.Create();
+            var operandOther = UnspecifiedConstant.Create();
+            var visitor = new ToStringOperandVisitor();
+
+            // act
+            var actual = operand.Accept(visitor);
+            var actualNext = operand.Accept(visitor);
+            var actualOther = operandOther.Accept(visitor);
+
+            // assert
+            actual.ShouldBe("C");
+            actualNext.ShouldBe("C");
+            actualOther.ShouldBe("A");
+        }
+
+        [Fact]
         public void Should_return_tostring_power()
         {
             // arrange
-            var operand = Power.Create(Variable.x, Constant.Create(2));
+            var operand = Power.Create(Variable.x, ValueConstant.Create(2));
             var visitor = new ToStringOperandVisitor();
 
             // act
@@ -302,7 +320,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_tostring_subtraction()
         {
             // arrange
-            var operand = Subtraction.Create(Variable.x, Constant.One);
+            var operand = Subtraction.Create(Variable.x, ValueConstant.One);
             var visitor = new ToStringOperandVisitor();
 
             // act
@@ -316,7 +334,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_tostring_subtraction_with_parenthesis()
         {
             // arrange
-            var operand = Subtraction.Create(Sine.Create(Variable.x), Subtraction.Create(Variable.x, Constant.One));
+            var operand = Subtraction.Create(Sine.Create(Variable.x), Subtraction.Create(Variable.x, ValueConstant.One));
             var visitor = new ToStringOperandVisitor();
 
             // act
@@ -331,7 +349,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_tostring_subtraction_without_parenthesis()
         {
             // arrange
-            var operand = Subtraction.Create(Subtraction.Create(Sine.Create(Variable.x), Variable.x), Constant.One);
+            var operand = Subtraction.Create(Subtraction.Create(Sine.Create(Variable.x), Variable.x), ValueConstant.One);
             var visitor = new ToStringOperandVisitor();
 
             // act

@@ -69,7 +69,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
                 case "*": return Multiplication.Create(left, right);
                 case "/": return Division.Create(left, right);
                 case "^": return Power.Create(left, right);
-                case "root": return Root.Create((int)(left as Constant).Value, right);
+                case "root": return Root.Create((int)(left as ValueConstant).Value, right);
                 case "max": return Maximum.Create(left, right);
                 case "min": return Minimum.Create(left, right);
             }
@@ -81,12 +81,12 @@ namespace Veggerby.Algorithm.Calculus.Parser
         {
             if (token.Value == "π" || token.Value == "pi")
             {
-                return Constant.Pi;
+                return ValueConstant.Pi;
             }
 
             if (token.Value == "e")
             {
-                return Constant.e;
+                return ValueConstant.e;
             }
 
             return Variable.Create(token.Value);
@@ -97,7 +97,7 @@ namespace Veggerby.Algorithm.Calculus.Parser
             double result;
             if (double.TryParse(token.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out result))
             {
-                return Constant.Create(result);
+                return ValueConstant.Create(result);
             }
 
             return null;

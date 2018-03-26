@@ -12,7 +12,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_evaluate_function()
         {
             // arrange
-            var operand =Function.Create("f", Constant.Create(3));
+            var operand =Function.Create("f", ValueConstant.Create(3));
             var visitor = new EvaluateOperandVisitor(new OperationContext());
 
             // act
@@ -26,7 +26,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_evaluate_function_reference()
         {
             // arrange
-            var operand =FunctionReference.Create("f", Constant.Create(3));
+            var operand =FunctionReference.Create("f", ValueConstant.Create(3));
             var ctx = new OperationContext();
             ctx.Add(Function.Create("f", "z+1"));
             var visitor = new EvaluateOperandVisitor(ctx);
@@ -42,7 +42,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_evaluate_addition()
         {
             // arrange
-            var operand =Addition.Create(Constant.One, Constant.Create(3));
+            var operand =Addition.Create(ValueConstant.One, ValueConstant.Create(3));
             var visitor = new EvaluateOperandVisitor(new OperationContext());
 
             // act
@@ -56,7 +56,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_evaluate_constant()
         {
             // arrange
-            var operand =Constant.Create(3);
+            var operand =ValueConstant.Create(3);
             var visitor = new EvaluateOperandVisitor(new OperationContext());
 
             // act
@@ -70,7 +70,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_evaluate_cosine()
         {
             // arrange
-            var operand =Cosine.Create(Constant.Pi);
+            var operand =Cosine.Create(ValueConstant.Pi);
             var visitor = new EvaluateOperandVisitor(new OperationContext());
 
             // act
@@ -84,7 +84,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_evaluate_division()
         {
             // arrange
-            var operand =Division.Create(Constant.Create(4), Constant.Create(2));
+            var operand =Division.Create(ValueConstant.Create(4), ValueConstant.Create(2));
             var visitor = new EvaluateOperandVisitor(new OperationContext());
 
             // act
@@ -112,7 +112,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_evaluate_factorial()
         {
             // arrange
-            var operand =Factorial.Create(Constant.Create(4));
+            var operand =Factorial.Create(ValueConstant.Create(4));
             var visitor = new EvaluateOperandVisitor(new OperationContext());
 
             // act
@@ -154,7 +154,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_evaluate_ln()
         {
             // arrange
-            var operand =Logarithm.Create(Constant.e);
+            var operand =Logarithm.Create(ValueConstant.e);
             var visitor = new EvaluateOperandVisitor(new OperationContext());
 
             // act
@@ -168,7 +168,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_evaluate_multiplication()
         {
             // arrange
-            var operand =Multiplication.Create(Constant.Create(4), Constant.Create(2));
+            var operand =Multiplication.Create(ValueConstant.Create(4), ValueConstant.Create(2));
             var visitor = new EvaluateOperandVisitor(new OperationContext());
 
             // act
@@ -196,7 +196,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_evaluate_power()
         {
             // arrange
-            var operand =Power.Create(Constant.Create(3), Constant.Create(2));
+            var operand =Power.Create(ValueConstant.Create(3), ValueConstant.Create(2));
             var visitor = new EvaluateOperandVisitor(new OperationContext());
 
             // act
@@ -210,7 +210,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_evaluate_root()
         {
             // arrange
-            var operand =Root.Create(2, Constant.Create(16));
+            var operand =Root.Create(2, ValueConstant.Create(16));
             var visitor = new EvaluateOperandVisitor(new OperationContext());
 
             // act
@@ -224,7 +224,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_evaluate_sine()
         {
             // arrange
-            var operand =Sine.Create(Constant.Pi / 2);
+            var operand =Sine.Create(ValueConstant.Pi / 2);
             var visitor = new EvaluateOperandVisitor(new OperationContext());
 
             // act
@@ -238,7 +238,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_evaluate_subtraction()
         {
             // arrange
-            var operand =Subtraction.Create(Constant.Create(3), Constant.One);
+            var operand =Subtraction.Create(ValueConstant.Create(3), ValueConstant.One);
             var visitor = new EvaluateOperandVisitor(new OperationContext());
 
             // act
@@ -252,7 +252,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_evaluate_tangent()
         {
             // arrange
-            var operand =Tangent.Create(Constant.Pi);
+            var operand =Tangent.Create(ValueConstant.Pi);
             var visitor = new EvaluateOperandVisitor(new OperationContext());
 
             // act

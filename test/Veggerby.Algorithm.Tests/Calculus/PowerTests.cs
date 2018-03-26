@@ -9,10 +9,10 @@ namespace Veggerby.Algorithm.Tests.Calculus
         [Fact]
         public void Should_initialize()
         {
-            var actual = (Power)Power.Create(Constant.Create(2), Variable.x);
+            var actual = (Power)Power.Create(ValueConstant.Create(2), Variable.x);
 
             // assert
-            actual.Left.ShouldBe(Constant.Create(2));
+            actual.Left.ShouldBe(ValueConstant.Create(2));
             actual.Right.ShouldBe(Variable.x);
         }
 
@@ -20,7 +20,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_equal_self()
         {
             // arrange
-            var v = Power.Create(Constant.One, Variable.x);
+            var v = Power.Create(ValueConstant.One, Variable.x);
 
             // act
             var actual = v.Equals(v);
@@ -33,7 +33,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_not_equal_null()
         {
             // arrange
-            var v = Power.Create(Constant.One, Variable.x);
+            var v = Power.Create(ValueConstant.One, Variable.x);
 
             // act
             var actual = v.Equals(null);
@@ -46,8 +46,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_equal_same_operands()
         {
             // arrange
-            var v1 = Power.Create(Constant.One, Variable.x);
-            var v2 = Power.Create(Constant.One, Variable.x);
+            var v1 = Power.Create(ValueConstant.One, Variable.x);
+            var v2 = Power.Create(ValueConstant.One, Variable.x);
 
             // act
             var actual = v1.Equals(v2);
@@ -60,8 +60,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_not_equal_different_operands()
         {
             // arrange
-            var v1 = Power.Create(Constant.One, Variable.x);
-            var v2 = Power.Create(Variable.y, Constant.Create(2));
+            var v1 = Power.Create(ValueConstant.One, Variable.x);
+            var v2 = Power.Create(Variable.y, ValueConstant.Create(2));
 
             // act
             var actual = v1.Equals(v2);
@@ -74,8 +74,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_not_equal_mirrored_operands()
         {
             // arrange
-            var v1 = Power.Create(Constant.One, Variable.x);
-            var v2 = Power.Create(Variable.x, Constant.One);
+            var v1 = Power.Create(ValueConstant.One, Variable.x);
+            var v2 = Power.Create(Variable.x, ValueConstant.One);
 
             // act
             var actual = v1.Equals(v2);
@@ -88,8 +88,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_not_equal_different_operation_identical_operands()
         {
             // arrange
-            var v1 = Power.Create(Constant.One, Variable.x);
-            var v2 = Subtraction.Create(Constant.One, Variable.x);
+            var v1 = Power.Create(ValueConstant.One, Variable.x);
+            var v2 = Subtraction.Create(ValueConstant.One, Variable.x);
 
             // act
             var actual = v1.Equals(v2);
@@ -107,7 +107,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
                     Division.Create(
                         Multiplication.Create(
                             2,
-                            Constant.Pi
+                            ValueConstant.Pi
                         ),
                         Variable.x
                     )

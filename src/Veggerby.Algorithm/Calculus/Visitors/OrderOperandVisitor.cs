@@ -15,7 +15,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return 12;
         }
 
-        public int Visit(Constant operand)
+        public int Visit(ValueConstant operand)
         {
             return 1;
         }
@@ -23,6 +23,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
         public int Visit(NamedConstant operand)
         {
             return 3;
+        }
+
+        public int Visit(UnspecifiedConstant operand)
+        {
+            throw new System.NotImplementedException();
         }
 
         public int Visit(Variable operand)

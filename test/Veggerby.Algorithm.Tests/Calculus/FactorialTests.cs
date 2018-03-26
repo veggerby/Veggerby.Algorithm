@@ -22,7 +22,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_equal_self()
         {
             // arrange
-            var v = Factorial.Create(Constant.Create(4));
+            var v = Factorial.Create(ValueConstant.Create(4));
 
             // act
             var actual = v.Equals(v);
@@ -35,7 +35,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_not_equal_null()
         {
             // arrange
-            var v = Factorial.Create(Constant.Create(4));
+            var v = Factorial.Create(ValueConstant.Create(4));
 
             // act
             var actual = v.Equals(null);
@@ -48,8 +48,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_equal_same_operands()
         {
             // arrange
-            var v1 = Factorial.Create(Constant.Create(4));
-            var v2 = Factorial.Create(Constant.Create(4));
+            var v1 = Factorial.Create(ValueConstant.Create(4));
+            var v2 = Factorial.Create(ValueConstant.Create(4));
 
             // act
             var actual = v1.Equals(v2);
@@ -62,7 +62,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_not_equal_different_operands()
         {
             // arrange
-            var v1 = Factorial.Create(Constant.Create(4));
+            var v1 = Factorial.Create(ValueConstant.Create(4));
             var v2 = Factorial.Create(Variable.x);
 
             // act

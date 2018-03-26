@@ -6,6 +6,13 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 {
     public class ToStringOperandVisitor : IOperandVisitor<string>
     {
+        private readonly OperationContext _context;
+
+        public ToStringOperandVisitor(OperationContext context = null)
+        {
+            _context = context ?? new OperationContext();
+        }
+
         private string VisitOperand(Operand parent, Operand child, bool checkAssociative = false)
         {
             var result = new StringBuilder();
@@ -157,9 +164,14 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return operand.Symbol;
         }
 
-        public string Visit(Constant operand)
+        public string Visit(ValueConstant operand)
         {
             return operand.Value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public string Visit(UnspecifiedConstant operand)
+        {
+            return _context.GetName(operand);
         }
 
         public string Visit(Fraction operand)

@@ -37,7 +37,7 @@ namespace Veggerby.Algorithm.Calculus
 
         public static bool IsConstant(this Operand operand)
         {
-            return operand.GetType() == typeof(Constant);
+            return operand.GetType() == typeof(ValueConstant);
         }
 
         public static bool IsVariable(this Operand operand)
@@ -50,14 +50,14 @@ namespace Veggerby.Algorithm.Calculus
             return operand is Negative;
         }
 
-         public static bool IsInteger(this Constant constant)
+         public static bool IsInteger(this ValueConstant constant)
         {
             return constant.Value.IsInteger();
         }
 
         public static bool IsInteger(this Operand operand)
         {
-            return operand.IsConstant() && ((Constant)operand).IsInteger();
+            return operand.IsConstant() && ((ValueConstant)operand).IsInteger();
         }
 
         public static bool IsInteger(this double constant)

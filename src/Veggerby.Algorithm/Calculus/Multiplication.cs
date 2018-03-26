@@ -48,12 +48,12 @@ namespace Veggerby.Algorithm.Calculus
                 throw new ArgumentNullException(nameof(right));
             }
 
-            if (left.Equals(Constant.MinusOne))
+            if (left.Equals(ValueConstant.MinusOne))
             {
                 return Negative.Create(right);
             }
 
-            if (right.Equals(Constant.MinusOne))
+            if (right.Equals(ValueConstant.MinusOne))
             {
                 return Negative.Create(left);
             }
@@ -79,24 +79,24 @@ namespace Veggerby.Algorithm.Calculus
             }
 
             // if any is zero, multiplication is zero
-            if (operands.Any(x => x.Equals(Constant.Zero)))
+            if (operands.Any(x => x.Equals(ValueConstant.Zero)))
             {
-                return Constant.Zero;
+                return ValueConstant.Zero;
             }
 
-            if (operands.All(x => x.Equals(Constant.One)))
+            if (operands.All(x => x.Equals(ValueConstant.One)))
             {
-                return Constant.One;
+                return ValueConstant.One;
             }
 
             // remove ones
-            operands = operands.Where(x => !x.Equals(Constant.One)).ToList();
+            operands = operands.Where(x => !x.Equals(ValueConstant.One)).ToList();
 
             // combine constants into one operand
             if (operands.Count(x => x.IsConstant()) > 1)
             {
-                var constants = operands.Where(x => x.IsConstant()).Cast<Constant>();
-                var constant = constants.Aggregate((seed, next) => (Constant)(seed * next));
+                var constants = operands.Where(x => x.IsConstant()).Cast<ValueConstant>();
+                var constant = constants.Aggregate((seed, next) => (ValueConstant)(seed * next));
                 operands = new Operand[] { constant }.Concat(operands.Where(x => !x.IsConstant())).ToList();
             }
 

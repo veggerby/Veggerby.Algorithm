@@ -3,25 +3,13 @@ using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class Constant : Operand, IEquatable<Constant>
+    public abstract class Constant : Operand
     {
-        public static readonly Constant Zero = Constant.Create(0);
-        public static readonly Constant One = Constant.Create(1);
-        public static readonly Constant MinusOne = Constant.Create(-1);
+        public static readonly ValueConstant Zero = ValueConstant.Create(0);
+        public static readonly ValueConstant One = ValueConstant.Create(1);
+        public static readonly ValueConstant MinusOne = ValueConstant.Create(-1);
         public static readonly NamedConstant Pi = NamedConstant.Create("π", Math.PI);
         public static readonly NamedConstant e = NamedConstant.Create("e", Math.E);
-
-        public double Value { get; }
-
-        protected Constant(double value)
-        {
-            Value = value;
-        }
-
-        public override T Accept<T>(IOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
 
         public static Operand operator +(Constant left, Constant right)
         {
@@ -35,7 +23,22 @@ namespace Veggerby.Algorithm.Calculus
                 throw new ArgumentNullException(nameof(right));
             }
 
-            return left.Value + right.Value;
+            if (left is UnspecifiedConstant || right is UnspecifiedConstant)
+            {
+                return UnspecifiedConstant.Create();
+            }
+
+            if (left is IConstantWithSymbol || right is IConstantWithSymbol)
+            {
+                return Addition.Create(left, right);
+            }
+
+            if (left is IConstantWithValue && right is IConstantWithValue)
+            {
+                return ((IConstantWithValue)left).Value + ((IConstantWithValue)right).Value;
+            }
+
+            return UnspecifiedConstant.Create();
         }
 
         public static Operand operator -(Constant left, Constant right)
@@ -50,7 +53,22 @@ namespace Veggerby.Algorithm.Calculus
                 throw new ArgumentNullException(nameof(right));
             }
 
-            return left.Value - right.Value;
+            if (left is UnspecifiedConstant || right is UnspecifiedConstant)
+            {
+                return UnspecifiedConstant.Create();
+            }
+
+            if (left is IConstantWithSymbol || right is IConstantWithSymbol)
+            {
+                return Subtraction.Create(left, right);
+            }
+
+            if (left is IConstantWithValue && right is IConstantWithValue)
+            {
+                return ((IConstantWithValue)left).Value - ((IConstantWithValue)right).Value;
+            }
+
+            return UnspecifiedConstant.Create();
         }
 
         public static Operand operator *(Constant left, Constant right)
@@ -65,7 +83,22 @@ namespace Veggerby.Algorithm.Calculus
                 throw new ArgumentNullException(nameof(right));
             }
 
-            return left.Value * right.Value;
+            if (left is UnspecifiedConstant || right is UnspecifiedConstant)
+            {
+                return UnspecifiedConstant.Create();
+            }
+
+            if (left is IConstantWithSymbol || right is IConstantWithSymbol)
+            {
+                return Multiplication.Create(left, right);
+            }
+
+            if (left is IConstantWithValue && right is IConstantWithValue)
+            {
+                return ((IConstantWithValue)left).Value * ((IConstantWithValue)right).Value;
+            }
+
+            return UnspecifiedConstant.Create();
         }
 
         public static Operand operator /(Constant left, Constant right)
@@ -80,12 +113,27 @@ namespace Veggerby.Algorithm.Calculus
                 throw new ArgumentNullException(nameof(right));
             }
 
-            if (left.IsInteger() && right.IsInteger())
+            if (left is UnspecifiedConstant || right is UnspecifiedConstant)
             {
-                return Fraction.Create((int)left.Value, (int)right.Value);
+                return UnspecifiedConstant.Create();
             }
 
-            return left.Value / right.Value;
+            if (left is IConstantWithSymbol || right is IConstantWithSymbol)
+            {
+                return Division.Create(left, right);
+            }
+
+            if (left is IConstantWithValue && right is IConstantWithValue)
+            {
+                if (left.IsInteger() && right.IsInteger())
+                {
+                    return Fraction.Create((int)left, (int)right);
+                }
+
+                return ((IConstantWithValue)left).Value / ((IConstantWithValue)right).Value;
+            }
+
+            return UnspecifiedConstant.Create();
         }
 
         public static Operand operator ^(Constant left, Constant right)
@@ -100,47 +148,42 @@ namespace Veggerby.Algorithm.Calculus
                 throw new ArgumentNullException(nameof(right));
             }
 
-            return Math.Pow(left.Value, right.Value);
+            if (left is UnspecifiedConstant || right is UnspecifiedConstant)
+            {
+                return UnspecifiedConstant.Create();
+            }
+
+            if (left is IConstantWithSymbol || right is IConstantWithSymbol)
+            {
+                return Power.Create(left, right);
+            }
+
+            if (left is IConstantWithValue && right is IConstantWithValue)
+            {
+                return Math.Pow(left, right);
+            }
+
+            return UnspecifiedConstant.Create();
         }
 
         public static implicit operator double(Constant value)
         {
-            return value.Value;
+            if (value is IConstantWithValue)
+            {
+                return ((IConstantWithValue)value).Value;
+            }
+
+            throw new NotSupportedException();
         }
 
         public static implicit operator int(Constant value)
         {
-            return (int)value.Value;
-        }
-
-        public static Constant Create(double value)
-        {
-            return new Constant(value);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as Constant);
-        }
-
-        public override bool Equals(Operand other)
-        {
-            return Equals(other as Constant);
-        }
-
-        public bool Equals(Constant other)
-        {
-            if (other == null)
+            if (value is IConstantWithValue)
             {
-                return false;
+                return (int)((IConstantWithValue)value).Value;
             }
 
-            return Value == other.Value;
-        }
-
-        public override int GetHashCode()
-        {
-            return Value.GetHashCode();
+            throw new NotSupportedException();       
         }
     }
 }

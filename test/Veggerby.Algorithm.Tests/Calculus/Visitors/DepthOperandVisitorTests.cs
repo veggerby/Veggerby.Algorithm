@@ -12,7 +12,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_constant()
         {
             // arrange
-            var operand = Constant.One;
+            var operand = ValueConstant.One;
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -26,7 +26,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_named_constant()
         {
             // arrange
-            var operand = Constant.Pi;
+            var operand = ValueConstant.Pi;
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -68,7 +68,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_addition()
         {
             // arrange
-            var operand = Addition.Create(Constant.One, Variable.x);
+            var operand = Addition.Create(ValueConstant.One, Variable.x);
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -82,7 +82,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_multiplication()
         {
             // arrange
-            var operand = Multiplication.Create(Constant.Create(2), Variable.x);
+            var operand = Multiplication.Create(ValueConstant.Create(2), Variable.x);
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -96,7 +96,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_subtraction()
         {
             // arrange
-            var operand = Subtraction.Create(Constant.Create(2), Variable.x);
+            var operand = Subtraction.Create(ValueConstant.Create(2), Variable.x);
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -124,7 +124,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_division()
         {
             // arrange
-            var operand = Division.Create(Constant.Create(2), Variable.x);
+            var operand = Division.Create(ValueConstant.Create(2), Variable.x);
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -138,7 +138,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_power()
         {
             // arrange
-            var operand = Power.Create(Constant.Create(2), Variable.x);
+            var operand = Power.Create(ValueConstant.Create(2), Variable.x);
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -152,7 +152,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_sine()
         {
             // arrange
-            var operand = Sine.Create(Constant.One);
+            var operand = Sine.Create(ValueConstant.One);
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -166,7 +166,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_cosine()
         {
             // arrange
-            var operand = Cosine.Create(Constant.One);
+            var operand = Cosine.Create(ValueConstant.One);
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -180,7 +180,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_exponential()
         {
             // arrange
-            var operand = Exponential.Create(Constant.One);
+            var operand = Exponential.Create(ValueConstant.One);
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -194,7 +194,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_logarithm()
         {
             // arrange
-            var operand = Logarithm.Create(Constant.One);
+            var operand = Logarithm.Create(ValueConstant.One);
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -208,7 +208,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_logarithm_base()
         {
             // arrange
-            var operand = LogarithmBase.Create(10, Constant.One);
+            var operand = LogarithmBase.Create(10, ValueConstant.One);
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -222,7 +222,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_tangent()
         {
             // arrange
-            var operand = Tangent.Create(Constant.One);
+            var operand = Tangent.Create(ValueConstant.One);
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -236,7 +236,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_root()
         {
             // arrange
-            var operand = Root.Create(3, Constant.Create(2));
+            var operand = Root.Create(3, ValueConstant.Create(2));
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -250,7 +250,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_factorial()
         {
             // arrange
-            var operand = Factorial.Create(Constant.Create(2));
+            var operand = Factorial.Create(ValueConstant.Create(2));
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -264,7 +264,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_minimum()
         {
             // arrange
-            var operand = Minimum.Create(Variable.x, Constant.Create(2));
+            var operand = Minimum.Create(Variable.x, ValueConstant.Create(2));
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -278,7 +278,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_maximum()
         {
             // arrange
-            var operand = Maximum.Create(Variable.x, Constant.Create(2));
+            var operand = Maximum.Create(Variable.x, ValueConstant.Create(2));
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -292,7 +292,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_function()
         {
             // arrange
-            var operand = Function.Create("f", Constant.Create(2));
+            var operand = Function.Create("f", ValueConstant.Create(2));
             var visitor = new DepthOperandVisitor();
 
             // act
@@ -306,7 +306,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_return_function_reference()
         {
             // arrange
-            var operand = FunctionReference.Create("f", Constant.Create(2));
+            var operand = FunctionReference.Create("f", ValueConstant.Create(2));
             var visitor = new DepthOperandVisitor();
 
             // act

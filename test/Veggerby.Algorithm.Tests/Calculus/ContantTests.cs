@@ -13,7 +13,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             // arrange
 
             // act
-            var actual = Constant.Create(123);
+            var actual = ValueConstant.Create(123);
 
             // assert
             actual.Value.ShouldBe(123);
@@ -25,7 +25,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             // arrange
             // act
             // assert
-            Constant.Zero.Value.ShouldBe(0);
+            ValueConstant.Zero.Value.ShouldBe(0);
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
             // arrange
             // act
             // assert
-            Constant.One.Value.ShouldBe(1);
+            ValueConstant.One.Value.ShouldBe(1);
         }
 
         [Fact]
@@ -43,8 +43,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
             // arrange
             // act
             // assert
-            Constant.Pi.Symbol.ShouldBe("π");
-            Constant.Pi.Value.ShouldBe(Math.PI);
+            ValueConstant.Pi.Symbol.ShouldBe("π");
+            ValueConstant.Pi.Value.ShouldBe(Math.PI);
         }
 
         [Fact]
@@ -53,15 +53,15 @@ namespace Veggerby.Algorithm.Tests.Calculus
             // arrange
             // act
             // assert
-            Constant.e.Symbol.ShouldBe("e");
-            Constant.e.Value.ShouldBe(Math.E);
+            ValueConstant.e.Symbol.ShouldBe("e");
+            ValueConstant.e.Value.ShouldBe(Math.E);
         }
 
         [Fact]
         public void Should_equal_self()
         {
             // arrange
-            var v = Constant.Create(4);
+            var v = ValueConstant.Create(4);
 
             // act
             var actual = v.Equals(v);
@@ -74,7 +74,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_not_equal_null()
         {
             // arrange
-            var v = Constant.Create(3);
+            var v = ValueConstant.Create(3);
 
             // act
             var actual = v.Equals(null);
@@ -87,8 +87,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_equal_same_operands()
         {
             // arrange
-            var v1 = Constant.Create(3);
-            var v2 = Constant.Create(3);
+            var v1 = ValueConstant.Create(3);
+            var v2 = ValueConstant.Create(3);
 
             // act
             var actual = v1.Equals(v2);
@@ -101,8 +101,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_not_equal_different_operands()
         {
             // arrange
-            var v1 = Constant.One;
-            var v2 = Constant.Create(3);
+            var v1 = ValueConstant.One;
+            var v2 = ValueConstant.Create(3);
 
             // act
             var actual = v1.Equals(v2);

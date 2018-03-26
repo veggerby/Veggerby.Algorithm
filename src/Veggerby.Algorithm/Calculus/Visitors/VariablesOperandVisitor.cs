@@ -110,7 +110,12 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return Enumerable.Empty<Variable>();
         }
 
-        public IEnumerable<Variable> Visit(Constant operand)
+        public IEnumerable<Variable> Visit(ValueConstant operand)
+        {
+            return Enumerable.Empty<Variable>();
+        }
+
+        public IEnumerable<Variable> Visit(UnspecifiedConstant operand)
         {
             return Enumerable.Empty<Variable>();
         }

@@ -84,7 +84,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         {
             // arrange
             var v1 = Function.Create("f", Variable.x);
-            var v2 = Function.Create("f", Constant.Pi);
+            var v2 = Function.Create("f", ValueConstant.Pi);
 
             // act
             var actual = v1.Equals(v2);

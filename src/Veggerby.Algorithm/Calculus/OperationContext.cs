@@ -8,6 +8,8 @@ namespace Veggerby.Algorithm.Calculus
         private readonly IDictionary<string, double> _variables;
         private readonly IDictionary<string, Function> _functions;
 
+        private readonly UnspecifiedConstantSymbolFactory _unspecifiedConstantSymbolFactory = new UnspecifiedConstantSymbolFactory();
+
         public IEnumerable<Function> Functions => _functions.Values;
 
         public OperationContext(IEnumerable<KeyValuePair<string, double>> variables = null, IEnumerable<Function> functions = null)
@@ -34,6 +36,11 @@ namespace Veggerby.Algorithm.Calculus
         public void Add(Function function)
         {
             _functions.Add(function.Identifier, function);
+        }
+
+        public string GetName(UnspecifiedConstant constant)
+        {
+            return _unspecifiedConstantSymbolFactory.Get(constant.InstanceId);
         }
     }
 }

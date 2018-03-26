@@ -192,7 +192,7 @@ namespace Veggerby.Algorithm.Calculus
         {
             if (denominator == 1)
             {
-                return Constant.Create(numerator);
+                return ValueConstant.Create(numerator);
             }
 
             return new Fraction(numerator, denominator);

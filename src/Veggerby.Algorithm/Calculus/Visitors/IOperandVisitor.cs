@@ -4,8 +4,9 @@ namespace Veggerby.Algorithm.Calculus.Visitors
     {
         T Visit(Function operand);
         T Visit(FunctionReference operand);
-        T Visit(Constant operand);
+        T Visit(ValueConstant operand);
         T Visit(NamedConstant operand);
+        T Visit(UnspecifiedConstant operand);
         T Visit(Variable operand);
         T Visit(Addition operand);
         T Visit(Subtraction operand);

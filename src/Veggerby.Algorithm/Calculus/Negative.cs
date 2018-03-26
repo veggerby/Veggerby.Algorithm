@@ -18,7 +18,7 @@ namespace Veggerby.Algorithm.Calculus
         {
             if (inner.IsConstant() && !(inner is NamedConstant))
             {
-                return Constant.Create(-((Constant)inner).Value);
+                return ValueConstant.Create(-((ValueConstant)inner).Value);
             }
 
             return new Negative(inner);

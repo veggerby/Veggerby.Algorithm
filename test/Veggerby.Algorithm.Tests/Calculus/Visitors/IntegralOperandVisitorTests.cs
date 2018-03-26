@@ -12,7 +12,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_integrate_function()
         {
             // arrange
-            var operand = Function.Create("f", Constant.Create(3));
+            var operand = Function.Create("f", ValueConstant.Create(3));
             var visitor = new IntegralOperandVisitor(Variable.x);
             var expected = "3*x+c";
 
@@ -45,7 +45,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_integrate_addition()
         {
             // arrange
-            var operand = Addition.Create(Variable.x, Constant.Create(3));
+            var operand = Addition.Create(Variable.x, ValueConstant.Create(3));
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = "x^2/2+c+3*x+c";
 
@@ -60,7 +60,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_integrate_constant()
         {
             // arrange
-            var operand = Constant.Create(3);
+            var operand = ValueConstant.Create(3);
             var visitor = new IntegralOperandVisitor(Variable.x);
             var expected = "3*x+c";
 
@@ -90,7 +90,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_integrate_division()
         {
             // arrange
-            var operand = Division.Create(Constant.One, Variable.x);
+            var operand = Division.Create(ValueConstant.One, Variable.x);
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = "ln(x)+c";
 
@@ -137,7 +137,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             // arrange
             var operand = LogarithmBase.Create(10, Variable.x);
             var visitor = new IntegralOperandVisitor(Variable.x);
-            var expected = Division.Create(Constant.One, Multiplication.Create(Variable.x, Logarithm.Create(10)));
+            var expected = Division.Create(ValueConstant.One, Multiplication.Create(Variable.x, Logarithm.Create(10)));
 
             // act
             Should.Throw<NotImplementedException>(() => operand.Accept(visitor));
@@ -179,7 +179,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_integrate_multiplication_complex()
         {
             // arrange
-            var operand = Multiplication.Create(new [] { Variable.x, Exponential.Create(Variable.x), Addition.Create(Constant.One, Variable.x) });
+            var operand = Multiplication.Create(new [] { Variable.x, Exponential.Create(Variable.x), Addition.Create(ValueConstant.One, Variable.x) });
             var visitor = new IntegralOperandVisitor(Variable.x);
 
             // act
@@ -210,7 +210,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_integrate_power()
         {
             // arrange
-            var operand = Power.Create(Variable.x, Constant.Create(2));
+            var operand = Power.Create(Variable.x, ValueConstant.Create(2));
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = "x^3/3+c";
 
@@ -255,7 +255,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         public void Should_integrate_subtraction()
         {
             // arrange
-            var operand = Subtraction.Create(Variable.x, Constant.One);
+            var operand = Subtraction.Create(Variable.x, ValueConstant.One);
             var visitor = new IntegralOperandVisitor(Variable.x);
             Operand expected = "(x^2/2+c)-(x+c)";
 

@@ -43,12 +43,12 @@ namespace Veggerby.Algorithm.Calculus
 
         public static implicit operator Operand(int value)
         {
-            return Constant.Create(value);
+            return ValueConstant.Create(value);
         }
 
         public static implicit operator Operand(double value)
         {
-            return Constant.Create(value);
+            return ValueConstant.Create(value);
         }
 
         public static implicit operator Operand(string value)

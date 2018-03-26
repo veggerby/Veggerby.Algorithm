@@ -7,6 +7,13 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 {
     public class LaTeXOperandVisitor : IOperandVisitor<string>
     {
+        private readonly OperationContext _context;
+
+        public LaTeXOperandVisitor(OperationContext context = null)
+        {
+            _context = context ?? new OperationContext();
+        }
+
         public string Visit(Function operand)
         {
             var variables = string.Join(", ", operand.Variables.Select(x => x.Identifier));
@@ -137,9 +144,14 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return operand.Symbol;
         }
 
-        public string Visit(Constant operand)
+        public string Visit(ValueConstant operand)
         {
             return operand.Value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public string Visit(UnspecifiedConstant operand)
+        {
+            return _context.GetName(operand);
         }
 
         public string Visit(Fraction operand)

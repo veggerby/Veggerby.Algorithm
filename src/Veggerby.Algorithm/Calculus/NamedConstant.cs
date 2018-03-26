@@ -3,7 +3,7 @@ using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
-    public class NamedConstant : Constant, IEquatable<NamedConstant>
+    public class NamedConstant : ValueConstant, IConstantWithSymbol, IEquatable<NamedConstant>
     {
         public string Symbol { get; }
 

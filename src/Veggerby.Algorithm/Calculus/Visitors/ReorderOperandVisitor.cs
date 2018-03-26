@@ -103,7 +103,12 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return operand;
         }
 
-        public Operand Visit(Constant operand)
+        public Operand Visit(ValueConstant operand)
+        {
+            return operand;
+        }
+
+        public Operand Visit(UnspecifiedConstant operand)
         {
             return operand;
         }

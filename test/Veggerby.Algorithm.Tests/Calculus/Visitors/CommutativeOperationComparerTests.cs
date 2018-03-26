@@ -16,7 +16,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var comparer = new CommutativeOperationComparer();
 
             // act
-            var actual = comparer.Compare(Constant.One, Constant.Zero);
+            var actual = comparer.Compare(ValueConstant.One, ValueConstant.Zero);
 
             // assert
             actual.ShouldBe(0);
@@ -29,7 +29,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var comparer = new CommutativeOperationComparer();
 
             // act
-            var actual = comparer.Compare(Constant.Zero, Variable.x);
+            var actual = comparer.Compare(ValueConstant.Zero, Variable.x);
 
             // assert
             actual.ShouldBe(-1);
@@ -42,7 +42,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var comparer = new CommutativeOperationComparer();
 
             // act
-            var actual = comparer.Compare(Variable.x, Constant.Zero);
+            var actual = comparer.Compare(Variable.x, ValueConstant.Zero);
 
             // assert
             actual.ShouldBe(1);
@@ -81,7 +81,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var comparer = new CommutativeOperationComparer();
 
             // act
-            var actual = comparer.Compare(Variable.x, Multiplication.Create(Variable.x, Constant.Pi));
+            var actual = comparer.Compare(Variable.x, Multiplication.Create(Variable.x, ValueConstant.Pi));
 
             // assert
             actual.ShouldBe(-1);
@@ -94,7 +94,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var comparer = new CommutativeOperationComparer();
 
             // act
-            var actual = comparer.Compare(Multiplication.Create(Variable.x, Constant.Pi), Variable.x);
+            var actual = comparer.Compare(Multiplication.Create(Variable.x, ValueConstant.Pi), Variable.x);
 
             // assert
             actual.ShouldBe(1);
@@ -108,11 +108,11 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var items = new []
             {
                 Factorial.Create(Variable.x),
-                Division.Create(Constant.One, Variable.x),
-                Subtraction.Create(Variable.x, Constant.One),
-                Multiplication.Create(Constant.Create(2), Variable.x),
-                Power.Create(Constant.Create(2), Variable.x),
-                Addition.Create(Constant.Create(10), Variable.x)
+                Division.Create(ValueConstant.One, Variable.x),
+                Subtraction.Create(Variable.x, ValueConstant.One),
+                Multiplication.Create(ValueConstant.Create(2), Variable.x),
+                Power.Create(ValueConstant.Create(2), Variable.x),
+                Addition.Create(ValueConstant.Create(10), Variable.x)
             };
 
             // act
@@ -136,22 +136,22 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var items = new []
             {
                 Sine.Create(Variable.x),
-                Constant.One,
+                ValueConstant.One,
                 Factorial.Create(Variable.x),
-                Division.Create(Constant.One, Variable.x),
-                Subtraction.Create(Variable.x, Constant.One),
+                Division.Create(ValueConstant.One, Variable.x),
+                Subtraction.Create(Variable.x, ValueConstant.One),
                 Variable.x,
-                Minimum.Create(Variable.x, Constant.Pi),
-                Multiplication.Create(Constant.Pi, Variable.x),
-                Power.Create(Constant.Create(2), Variable.x),
-                Addition.Create(Constant.Create(10), Variable.x)
+                Minimum.Create(Variable.x, ValueConstant.Pi),
+                Multiplication.Create(ValueConstant.Pi, Variable.x),
+                Power.Create(ValueConstant.Create(2), Variable.x),
+                Addition.Create(ValueConstant.Create(10), Variable.x)
             };
 
             // act
             var actual = items.OrderBy(x => x, comparer).ToArray();
 
             // assert
-            actual[0].ShouldBeOfType<Constant>();
+            actual[0].ShouldBeOfType<ValueConstant>();
             actual[1].ShouldBeOfType<Variable>();
             actual[2].ShouldBeOfType<Addition>();
             actual[3].ShouldBeOfType<Multiplication>();

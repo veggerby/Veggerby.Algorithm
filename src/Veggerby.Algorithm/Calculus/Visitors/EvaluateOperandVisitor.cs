@@ -156,9 +156,14 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return operand.Value;
         }
 
-        public double Visit(Constant operand)
+        public double Visit(ValueConstant operand)
         {
             return operand.Value;
+        }
+
+        public double Visit(UnspecifiedConstant operand)
+        {
+            throw new NotSupportedException();
         }
 
         public double Visit(Fraction operand)

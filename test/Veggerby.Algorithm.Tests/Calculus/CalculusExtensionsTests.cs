@@ -20,7 +20,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         [InlineData("exp(x)", typeof(Exponential), null)]
         [InlineData("ln(x)", typeof(Logarithm), null)]
         [InlineData("log(x)", typeof(LogarithmBase), null)]
-        [InlineData("2", typeof(Constant), null)]
+        [InlineData("2", typeof(ValueConstant), null)]
         [InlineData("x", typeof(Variable), null)]
         [InlineData("pi", typeof(NamedConstant), null)]
         [InlineData("-x", typeof(Negative), null)]
@@ -49,7 +49,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         [InlineData("exp(x)", typeof(Exponential), false)]
         [InlineData("ln(x)", typeof(Logarithm), false)]
         [InlineData("log(x)", typeof(LogarithmBase), false)]
-        [InlineData("2", typeof(Constant), false)]
+        [InlineData("2", typeof(ValueConstant), false)]
         [InlineData("x", typeof(Variable), false)]
         [InlineData("pi", typeof(NamedConstant), false)]
         [InlineData("-x", typeof(Negative), false)]
@@ -78,7 +78,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         [InlineData("exp(x)", typeof(Exponential), false)]
         [InlineData("ln(x)", typeof(Logarithm), false)]
         [InlineData("log(x)", typeof(LogarithmBase), false)]
-        [InlineData("2", typeof(Constant), true)]
+        [InlineData("2", typeof(ValueConstant), true)]
         [InlineData("x", typeof(Variable), false)]
         [InlineData("pi", typeof(NamedConstant), false)]
         [InlineData("-x", typeof(Negative), false)]
@@ -107,7 +107,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         [InlineData("exp(x)", typeof(Exponential), false)]
         [InlineData("ln(x)", typeof(Logarithm), false)]
         [InlineData("log(x)", typeof(LogarithmBase), false)]
-        [InlineData("2", typeof(Constant), false)]
+        [InlineData("2", typeof(ValueConstant), false)]
         [InlineData("x", typeof(Variable), true)]
         [InlineData("pi", typeof(NamedConstant), false)]
         [InlineData("-x", typeof(Negative), false)]
@@ -136,7 +136,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         [InlineData("exp(x)", typeof(Exponential), false)]
         [InlineData("ln(x)", typeof(Logarithm), false)]
         [InlineData("log(x)", typeof(LogarithmBase), false)]
-        [InlineData("2", typeof(Constant), false)]
+        [InlineData("2", typeof(ValueConstant), false)]
         [InlineData("x", typeof(Variable), false)]
         [InlineData("pi", typeof(NamedConstant), false)]
         [InlineData("-x", typeof(Negative), true)]
@@ -236,7 +236,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_return_expected(double value, bool expected)
         {
             // arrange
-            var constant = Constant.Create(value);
+            var constant = ValueConstant.Create(value);
 
             // act
             var actual = constant.IsInteger();

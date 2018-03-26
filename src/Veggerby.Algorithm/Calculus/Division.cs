@@ -33,8 +33,8 @@ namespace Veggerby.Algorithm.Calculus
 
             if (left.IsConstant() && right.IsConstant())
             {
-                var l = (Constant)left;
-                var r = (Constant)right;
+                var l = (ValueConstant)left;
+                var r = (ValueConstant)right;
 
                 if (l.IsInteger() && r.IsInteger())
                 {
@@ -46,15 +46,15 @@ namespace Veggerby.Algorithm.Calculus
 
             if (left.IsConstant() && right is Fraction)
             {
-                return ((Constant)left).Value / (Fraction)right;
+                return ((ValueConstant)left).Value / (Fraction)right;
             }
 
             if (left is Fraction && right.IsConstant())
             {
-                return ((Fraction)left) / ((Constant)right).Value;
+                return ((Fraction)left) / ((ValueConstant)right).Value;
             }
 
-            if (right.Equals(Constant.One))
+            if (right.Equals(ValueConstant.One))
             {
                 return left;
             }

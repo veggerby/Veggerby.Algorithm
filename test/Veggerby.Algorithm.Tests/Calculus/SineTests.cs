@@ -22,7 +22,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_equal_self()
         {
             // arrange
-            var v = Sine.Create(Constant.Pi);
+            var v = Sine.Create(ValueConstant.Pi);
 
             // act
             var actual = v.Equals(v);
@@ -35,7 +35,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_not_equal_null()
         {
             // arrange
-            var v = Sine.Create(Constant.Pi);
+            var v = Sine.Create(ValueConstant.Pi);
 
             // act
             var actual = v.Equals(null);
@@ -48,8 +48,8 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_equal_same_operands()
         {
             // arrange
-            var v1 = Sine.Create(Constant.Pi);
-            var v2 = Sine.Create(Constant.Pi);
+            var v1 = Sine.Create(ValueConstant.Pi);
+            var v2 = Sine.Create(ValueConstant.Pi);
 
             // act
             var actual = v1.Equals(v2);
@@ -62,7 +62,7 @@ namespace Veggerby.Algorithm.Tests.Calculus
         public void Should_not_equal_different_operands()
         {
             // arrange
-            var v1 = Sine.Create(Constant.Pi);
+            var v1 = Sine.Create(ValueConstant.Pi);
             var v2 = Sine.Create(Variable.x);
 
             // act

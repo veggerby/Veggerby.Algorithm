@@ -28,12 +28,17 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return FunctionReference.Create(operand.Identifier, operand.Parameters.Select(x => Reduce(x)));
         }
 
-        public Operand Visit(Constant operand)
+        public Operand Visit(ValueConstant operand)
         {
             return operand;
         }
 
         public Operand Visit(NamedConstant operand)
+        {
+            return operand;
+        }
+
+        public Operand Visit(UnspecifiedConstant operand)
         {
             return operand;
         }
@@ -48,7 +53,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             var operands = operand
                 .Operands
                 .Select(x => Reduce(x))
-                .Where(x => !x.Equals(Constant.Zero))
+                .Where(x => !x.Equals(ValueConstant.Zero))
                 .GroupBy(x => x)
                 .Select(x => x.Count() > 1 ? Multiplication.Create(x.Count(), x.Key) : x.Key)
                 .OrderBy(x => x, new CommutativeOperationComparer())
@@ -57,8 +62,8 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             // combine constants into one operand
             if (operands.Count(x => x.IsConstant()) > 1)
             {
-                var constants = operands.Where(x => x.IsConstant()).Cast<Constant>();
-                var constant = constants.Aggregate((seed, next) => (Constant)(seed + next));
+                var constants = operands.Where(x => x.IsConstant()).Cast<ValueConstant>();
+                var constant = constants.Aggregate((seed, next) => (ValueConstant)(seed + next));
                 operands = new Operand[] { constant }.Concat(operands.Where(x => !x.IsConstant())).ToList();
             }
 
@@ -88,15 +93,15 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
             if (left.Equals(right))
             {
-                return Constant.Zero;
+                return ValueConstant.Zero;
             }
 
             if (left.IsConstant() && right.IsConstant())
             {
-                return Reduce((Constant)left - (Constant)right);
+                return Reduce((ValueConstant)left - (ValueConstant)right);
             }
 
-            if (left.Equals(Constant.Zero))
+            if (left.Equals(ValueConstant.Zero))
             {
                 return Reduce(Negative.Create(right));
             }
@@ -114,9 +119,9 @@ namespace Veggerby.Algorithm.Calculus.Visitors
                 return Reduce(Addition.Create(left, ((Negative)right).Inner));
             }
 
-            if (right.IsConstant() && ((Constant)right).Value < 0)
+            if (right.IsConstant() && ((ValueConstant)right).Value < 0)
             {
-                return Reduce(Addition.Create(left, -((Constant)right).Value));
+                return Reduce(Addition.Create(left, -((ValueConstant)right).Value));
             }
 
             return Subtraction.Create(left, right);
@@ -127,22 +132,22 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             var operands = operand
                 .Operands
                 .Select(x => Reduce(x))
-                .Where(x => !x.Equals(Constant.One))
+                .Where(x => !x.Equals(ValueConstant.One))
                 .GroupBy(x => x)
                 .Select(x => x.Count() > 1 ? Power.Create(x.Key, x.Count()) : x.Key)
                 .OrderBy(x => x, new CommutativeOperationComparer())
                 .ToList();
 
-            if (operands.Any(x => x.Equals(Constant.Zero)))
+            if (operands.Any(x => x.Equals(ValueConstant.Zero)))
             {
-                return Constant.Zero;
+                return ValueConstant.Zero;
             }
 
             // combine constants into one operand
             if (operands.Count(x => x.IsConstant()) > 1)
             {
-                var constants = operands.Where(x => x.IsConstant()).Cast<Constant>();
-                var constant = constants.Aggregate((seed, next) => (Constant)(seed * next));
+                var constants = operands.Where(x => x.IsConstant()).Cast<ValueConstant>();
+                var constant = constants.Aggregate((seed, next) => (ValueConstant)(seed * next));
                 operands = new Operand[] { constant }.Concat(operands.Where(x => !x.IsConstant())).ToList();
             }
 
@@ -175,7 +180,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
             if (left.Equals(right))
             {
-                return Constant.One;
+                return ValueConstant.One;
             }
 
             if (left is Fraction && right is Fraction)
@@ -185,8 +190,8 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
             if (left.IsConstant() && right.IsConstant())
             {
-                var l = (Constant)left;
-                var r = (Constant)right;
+                var l = (ValueConstant)left;
+                var r = (ValueConstant)right;
 
                 if (l.IsInteger() && r.IsInteger())
                 {
@@ -198,15 +203,15 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
             if (left.IsConstant() && right is Fraction)
             {
-                return Reduce(((Constant)left).Value / (Fraction)right);
+                return Reduce(((ValueConstant)left).Value / (Fraction)right);
             }
 
             if (left is Fraction && right.IsConstant())
             {
-                return Reduce(((Fraction)left) / ((Constant)right).Value);
+                return Reduce(((Fraction)left) / ((ValueConstant)right).Value);
             }
 
-            if (right.Equals(Constant.One))
+            if (right.Equals(ValueConstant.One))
             {
                 return left;
             }
@@ -255,19 +260,19 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             var left = Reduce(operand.Left);
             var right = Reduce(operand.Right);
 
-            if (left.Equals(Constant.One) || right.Equals(Constant.Zero))
+            if (left.Equals(ValueConstant.One) || right.Equals(ValueConstant.Zero))
             {
-                return Constant.One;
+                return ValueConstant.One;
             }
 
-            if (right.Equals(Constant.One))
+            if (right.Equals(ValueConstant.One))
             {
                 return left;
             }
 
             if (left.IsConstant() && right.IsConstant())
             {
-                return Reduce((Constant)left ^ (Constant)right);
+                return Reduce((ValueConstant)left ^ (ValueConstant)right);
             }
 
             return Power.Create(left, right);
@@ -326,7 +331,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
             if (inner.IsConstant())
             {
-                return Constant.Create(-((Constant)inner).Value);
+                return ValueConstant.Create(-((ValueConstant)inner).Value);
             }
 
             return Negative.Create(inner);
@@ -373,7 +378,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
             if (reduced.All(x => x.IsConstant()))
             {
-                return reduced.Aggregate(double.MaxValue, (seed, next) => Math.Min(seed, (Constant)next));
+                return reduced.Aggregate(double.MaxValue, (seed, next) => Math.Min(seed, (ValueConstant)next));
             }
 
             return Minimum.Create(reduced);
@@ -395,7 +400,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
 
             if (reduced.All(x => x.IsConstant()))
             {
-                return reduced.Aggregate(double.MinValue, (seed, next) => Math.Max(seed, (Constant)next));
+                return reduced.Aggregate(double.MinValue, (seed, next) => Math.Max(seed, (ValueConstant)next));
             }
 
             return Maximum.Create(reduced);
