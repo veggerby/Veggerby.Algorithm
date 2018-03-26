@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Veggerby.Algorithm.Calculus.Parser
 {
     public class Compiler
     {
+        private IDictionary<string, UnspecifiedConstant> _constants = new Dictionary<string, UnspecifiedConstant>();
+
         private Operand CompileFunction(Token token, Operand inner)
         {
             if (token.Type != TokenType.Function)
@@ -87,6 +90,18 @@ namespace Veggerby.Algorithm.Calculus.Parser
             if (token.Value == "e")
             {
                 return ValueConstant.e;
+            }
+
+            if (Regex.IsMatch(token.Value, "[A-Z][1-9]?"))
+            {
+                if (_constants.ContainsKey(token.Value))
+                {
+                    return _constants[token.Value];
+                }
+
+                var constant = UnspecifiedConstant.Create();
+                _constants.Add(token.Value, constant);
+                return constant;
             }
 
             return Variable.Create(token.Value);

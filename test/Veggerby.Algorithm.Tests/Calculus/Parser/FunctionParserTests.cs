@@ -387,5 +387,42 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             // assert
             actual.Message.ShouldBe("Parenthesis not properly closed");
         }
+
+
+        [Fact]
+        public void Should_parse_unspecified_constant()
+        {
+            // arrange
+
+            // act
+            var actual = FunctionParser.Parse("(A-x)*(B-x*A)");
+
+            // assert
+            actual.ShouldBeOfType<Multiplication>();
+            ((Multiplication)actual).Operands.Count().ShouldBe(2);
+
+            var left = ((Multiplication)actual).Operands.First();
+            var right = ((Multiplication)actual).Operands.Last();
+
+            left.ShouldBeOfType<Subtraction>();
+            ((Subtraction)left).Left.ShouldBeOfType<UnspecifiedConstant>();
+            var unspec1 = ((Subtraction)left).Left as UnspecifiedConstant;
+            ((Subtraction)left).Right.ShouldBe(Variable.x);
+
+            right.ShouldBeOfType<Subtraction>();
+            ((Subtraction)right).Left.ShouldBeOfType<UnspecifiedConstant>();
+            ((Subtraction)right).Right.ShouldBeOfType<Multiplication>();
+            var unspec2 = ((Subtraction)right).Left as UnspecifiedConstant;
+
+            var mult = ((Subtraction)right).Right as Multiplication;
+            mult.Operands.Count().ShouldBe(2);
+            mult.Operands.First().ShouldBe(Variable.x);
+            mult.Operands.Last().ShouldBeOfType<UnspecifiedConstant>();
+            var unspec3 = mult.Operands.Last() as UnspecifiedConstant;
+
+            unspec1.ShouldNotBe(unspec2);
+            unspec1.ShouldBe(unspec3);
+            unspec2.ShouldNotBe(unspec3);
+        }
     }
 }

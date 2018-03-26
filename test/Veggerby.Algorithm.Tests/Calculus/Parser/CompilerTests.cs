@@ -64,6 +64,27 @@ namespace Veggerby.Algorithm.Tests.Calculus.Parser
             ((NamedConstant)actual).Value.ShouldBe(expectedValue);
         }
 
+
+        [Theory]
+        [InlineData("A")]
+        [InlineData("C")]
+        [InlineData("C2")]
+        [InlineData("Z")]
+        [InlineData("W1")]
+        public void Should_compile_token_unspecified_constant(string value)
+        {
+            // arrange
+            var compiler = new Compiler();
+
+            var node = new Node(new Token(TokenType.Identifier, value, null));
+
+            // act
+            var actual = compiler.Compile(node);
+
+            // assert
+            actual.ShouldBeOfType<UnspecifiedConstant>();
+        }
+
         [Theory]
         [InlineData("sin", typeof(Sine))]
         [InlineData("cos", typeof(Cosine))]

@@ -39,12 +39,12 @@ namespace Veggerby.Algorithm.Calculus
                 return false;
             }
 
-            return ReferenceEquals(this, other);
+            return InstanceId.Equals(other.InstanceId);
         }
 
         public override int GetHashCode()
         {
-            return GetType().GetHashCode();
+            return InstanceId.GetHashCode();
         }
     }
 }
