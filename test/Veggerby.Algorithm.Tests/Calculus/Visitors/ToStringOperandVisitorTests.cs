@@ -261,6 +261,20 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
         }
 
         [Fact]
+        public void Should_return_tostring_operand_with_undefined_constants()
+        {
+            // arrange
+            var operand =Addition.Create(Multiplication.Create(Variable.x, UnspecifiedConstant.Create()), UnspecifiedConstant.Create());
+            var visitor = new ToStringOperandVisitor();
+
+            // act
+            var actual = operand.Accept(visitor);
+
+            // assert
+            actual.ShouldBe("x*C+A");
+        }
+
+        [Fact]
         public void Should_return_tostring_power()
         {
             // arrange

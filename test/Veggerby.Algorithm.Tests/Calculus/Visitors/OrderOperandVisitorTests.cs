@@ -36,6 +36,21 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             actual.ShouldBe(3);
         }
 
+
+        [Fact]
+        public void Should_return_unspecified_constant()
+        {
+            // arrange
+            var operand = UnspecifiedConstant.Create();
+            var visitor = new OrderOperandVisitor();
+
+            // act
+            var actual = operand.Accept(visitor);
+
+            // assert
+            actual.ShouldBe(4);
+        }
+
         [Fact]
         public void Should_return_variable()
         {
@@ -47,7 +62,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(4);
+            actual.ShouldBe(5);
         }
 
         [Fact]
@@ -75,7 +90,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(6);
+            actual.ShouldBe(7);
         }
 
         [Fact]
@@ -89,7 +104,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(8);
+            actual.ShouldBe(9);
         }
 
         [Fact]
@@ -103,7 +118,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(7);
+            actual.ShouldBe(8);
         }
 
         [Fact]
@@ -117,7 +132,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(5);
+            actual.ShouldBe(6);
         }
 
         [Fact]
@@ -131,7 +146,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(9);
+            actual.ShouldBe(10);
         }
 
         [Fact]
@@ -145,7 +160,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(10);
+            actual.ShouldBe(11);
         }
 
         [Fact]
@@ -159,7 +174,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(16);
+            actual.ShouldBe(17);
         }
 
         [Fact]
@@ -173,7 +188,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(17);
+            actual.ShouldBe(18);
         }
 
         [Fact]
@@ -187,7 +202,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(14);
+            actual.ShouldBe(15);
         }
 
         [Fact]
@@ -201,7 +216,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(15);
+            actual.ShouldBe(16);
         }
 
         [Fact]
@@ -215,7 +230,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(20);
+            actual.ShouldBe(21);
         }
 
         [Fact]
@@ -229,7 +244,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(18);
+            actual.ShouldBe(19);
         }
 
         [Fact]
@@ -243,7 +258,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(19);
+            actual.ShouldBe(20);
         }
 
         [Fact]
@@ -257,7 +272,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(13);
+            actual.ShouldBe(14);
         }
 
         [Fact]
@@ -271,7 +286,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(21);
+            actual.ShouldBe(22);
         }
 
         [Fact]
@@ -285,7 +300,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(22);
+            actual.ShouldBe(23);
         }
 
         [Fact]
@@ -299,7 +314,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(11);
+            actual.ShouldBe(12);
         }
 
         [Fact]
@@ -313,7 +328,7 @@ namespace Veggerby.Algorithm.Tests.Calculus.Visitors
             var actual = operand.Accept(visitor);
 
             // assert
-            actual.ShouldBe(12);
+            actual.ShouldBe(13);
         }
     }
 }
