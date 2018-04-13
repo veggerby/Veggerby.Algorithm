@@ -225,6 +225,24 @@ namespace Veggerby.Algorithm.LinearAlgebra
             return new Matrix(result);
         }
 
+        public static Vector operator *(Matrix m, Vector v)
+        {
+            if (m.ColCount != v.Size)
+            {
+                throw new ArgumentException(nameof(v), "m must have same number of columns as v has rows");
+            }
+
+            int r = 0;
+            var result = new double[m.RowCount];
+            foreach (var r1 in m.Rows)
+            {
+                result[r] = r1.ToArray().Zip(v.ToArray(), (rv, cv) => rv * cv).Sum();
+                r++;
+            }
+
+            return new Vector(result);
+        }
+
         public static bool operator ==(Matrix m1, Matrix m2)
         {
             return Equals(m1, m2);

@@ -539,6 +539,42 @@ namespace Veggerby.Algorithm.Tests.LinearAlgebra
             // assert
             actual.ParamName.Equals("m2");
         }
+        
+        [Fact]
+        public void Should_return_vector_multiplication()
+        {
+            // arrange
+            var m = new Matrix(new double[,] {
+                { 1, 0, 2 },
+                { -1, 3, 1 } });
+
+            var v = new Vector(1, 2, 3);
+
+            var expected = new Vector(7, 8);
+
+            // act
+            var actual = m * v;
+
+            // assert
+            actual.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void Should_throw_when_multiplying_incorrect_dimensons_vector_and_matrix()
+        {
+            // arrange
+            var m = new Matrix(new double[,] {
+                { 1, 0 },
+                { -3, 1 } });
+
+            var v = new Vector(1, 2, 3);
+
+            // act + assert
+            var actual = Should.Throw<ArgumentException>(() => { var x = m * v; });
+
+            // assert
+            actual.ParamName.Equals("v");
+        }
 
         [Fact]
         public void Should_return_true_equal_self()
