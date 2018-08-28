@@ -28,6 +28,11 @@ namespace Veggerby.Algorithm.Trees.MerkleTree
             _isValid = false;
         }
 
+        public bool Equals(MerkleHash<T> other)
+        {
+            return _isValid && other._isValid && Hash != null && other.Hash != null && Hash.SequenceEqual(other.Hash);
+        }
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;

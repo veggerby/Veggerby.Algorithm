@@ -25,13 +25,14 @@ namespace Veggerby.Algorithm.Graphs
              * - If dist[v] > dist[u] + weight of edge uv, then update dist[v] to dist[v] = dist[u] + weight of edge uv
              */
 
-            for (int node = 0; node < numberOfVertices - 1; node++)
+            var count = numberOfVertices - 1;
+            while (count-- > 0)
             {
                 foreach (var edge in graph.Edges)
                 {
-                    if (distances[edge.To] > distances[edge.From] + edge.Weight)
+                    if (distances[edge.To] > distances[edge.From].InfinityAdd(edge.Weight))
                     {
-                        distances[edge.To] = distances[edge.From] + edge.Weight;
+                        distances[edge.To] = distances[edge.From].InfinityAdd(edge.Weight);
                     }
                 }
             }
@@ -42,7 +43,7 @@ namespace Veggerby.Algorithm.Graphs
 
             foreach (var edge in graph.Edges)
             {
-                if (distances[edge.To] > distances[edge.From] + edge.Weight)
+                if (distances[edge.To] > distances[edge.From].InfinityAdd(edge.Weight))
                 {
                     throw new GraphException("Graph contains negative egde cycle");
                 }

@@ -27,7 +27,11 @@ namespace Veggerby.Algorithm.Graphs
             {
                 if (!from.Equals(to))
                 {
-                    result.Add(GetShortestPath(from, to, parent, graph));
+                    var path = GetShortestPath(from, to, parent, graph);
+                    if (path != null)
+                    {
+                        result.Add(path);
+                    }
                 }
             }
 
@@ -41,6 +45,12 @@ namespace Veggerby.Algorithm.Graphs
 
             while(!from.Equals(current))
             {
+                // if there are incoming edges to current node
+                if (!parent.ContainsKey(current))
+                {
+                    return null;
+                }
+
                 shortestPath.Add(graph.GetEdge(parent[current], current));
                 current = parent[current];
             }
@@ -65,7 +75,7 @@ namespace Veggerby.Algorithm.Graphs
                     var edge = graph.GetEdge(evaluationNode, destinationNode);
                     if (edge != null)
                     {
-                        var newDistance = distances[evaluationNode] + edge.Weight;
+                        var newDistance = distances[evaluationNode].InfinityAdd(edge.Weight);
                         if (newDistance < distances[destinationNode])
                         {
                             distances[destinationNode] = newDistance;

@@ -24,16 +24,11 @@ namespace Veggerby.Algorithm.Graphs
             var reweightedGraph = ReweightGraph(graph, potential);
 
             // step 4: Finally, q is removed, and Dijkstra's algorithm is used to find the shortest paths from each node s to every other vertex in the reweighted graph.
-            var allPairShortestPath = new int[graph.Vertices.Count(), graph.Vertices.Count()];
-
             var result = new List<Path<T>>();
             foreach (var from in graph.Vertices)
             {
                 var paths = dijsktraShortestPath.CalculateShortestPaths(from, reweightedGraph);
-
                 result.AddRange(paths.Select(x => GetOriginalPath(x, graph)));
-                //result.AddRange(
-                //    paths.Select(x => new Edge<T>(x.From, x.To, x.Distance + potential[x.To] - potential[x.From])));
             }
 
             return result;
