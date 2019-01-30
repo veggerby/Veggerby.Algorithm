@@ -8,7 +8,7 @@ namespace Veggerby.Algorithm.Graphs
         public T To { get; }
         public int Weight { get; }
 
-        public Edge(T from, T to, int weight)
+        public Edge(T from, T to, int weight = 1)
         {
             if (from == null)
             {
