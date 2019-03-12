@@ -18,27 +18,27 @@ namespace Veggerby.Algorithm.LinearAlgebra
 
         public Matrix(int rows, int cols)
         {
-            if (rows <= 0) 
+            if (rows <= 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(rows));    
+                throw new ArgumentOutOfRangeException(nameof(rows));
             }
-            
-            if (cols <= 0) 
+
+            if (cols <= 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(cols));
             }
-            
+
             _values = new double[rows, cols];
         }
 
         public Matrix(double[,] values)
         {
-            if (values == null) 
+            if (values == null)
             {
                 throw new ArgumentNullException(nameof(values));
             }
 
-            if (values.GetLength(0) == 0 || values.GetLength(1) == 0) 
+            if (values.GetLength(0) == 0 || values.GetLength(1) == 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(values));
             }
@@ -60,9 +60,9 @@ namespace Veggerby.Algorithm.LinearAlgebra
 
             var size = rows.First().Size;
 
-            if (rows.Any(x => x.Size != size)) 
+            if (rows.Any(x => x.Size != size))
             {
-                throw new ArgumentException("All row vectors must habe same dimension", nameof(rows));
+                throw new ArgumentException("All row vectors must have same dimension", nameof(rows));
             }
 
             _values = rows.ToArray();
@@ -77,19 +77,19 @@ namespace Veggerby.Algorithm.LinearAlgebra
 
         public double this[int r, int c]
         {
-            get 
-            { 
-                if (r < 0 || r >= RowCount) 
+            get
+            {
+                if (r < 0 || r >= RowCount)
                 {
                     throw new ArgumentOutOfRangeException(nameof(r));
                 }
 
-                if (c < 0 || c >= ColCount) 
+                if (c < 0 || c >= ColCount)
                 {
                     throw new ArgumentOutOfRangeException(nameof(c));
                 }
 
-                return _values[r, c]; 
+                return _values[r, c];
             }
         }
 
@@ -109,7 +109,7 @@ namespace Veggerby.Algorithm.LinearAlgebra
             {
                 throw new ArgumentOutOfRangeException(nameof(c));
             }
-            
+
             return new Vector(Enumerable.Range(0, RowCount).Select(r => this[r, c]));
         }
 
@@ -146,7 +146,7 @@ namespace Veggerby.Algorithm.LinearAlgebra
                         {
                             return 0;
                         }
-                        
+
                         for (var i = k; i <= n; i++)
                         {
                             var save = v[i, j];
@@ -252,11 +252,11 @@ namespace Veggerby.Algorithm.LinearAlgebra
         {
             return !Equals(m1, m2);
         }
-        
+
         public override string ToString()
         {
             return "(" + string.Join(Environment.NewLine, Rows.Select(x => x.ToString())) + ")";
-        }               
+        }
 
         protected bool Equals(Matrix other)
         {
