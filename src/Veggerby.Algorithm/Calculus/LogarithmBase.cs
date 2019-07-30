@@ -12,35 +12,13 @@ namespace Veggerby.Algorithm.Calculus
             Base = @base;
         }
 
-        public override T Accept<T>(IOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.Visit(this);
 
-        public static Operand Create(int @base, Operand inner)
-        {
-            return new LogarithmBase(@base, inner);
-        }
+        public static Operand Create(int @base, Operand inner) => new LogarithmBase(@base, inner);
 
-        public override bool Equals(object obj) 
-        {
-            return Equals(obj as LogarithmBase);
-        }
-
-        public override bool Equals(Operand other)
-        {
-            return Equals(other as LogarithmBase);
-        }
-
-        public bool Equals(LogarithmBase other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-
-            return Base == other.Base && Inner.Equals(other.Inner);
-        }
+        public override bool Equals(object obj) => Equals(obj as LogarithmBase);
+        public override bool Equals(Operand other) => Equals(other as LogarithmBase);
+        public bool Equals(LogarithmBase other) => other != null && Base == other.Base && Inner.Equals(other.Inner);
 
         public override int GetHashCode()
         {

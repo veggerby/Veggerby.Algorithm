@@ -13,19 +13,8 @@ namespace Veggerby.Algorithm.Calculus.Parser
         public int Line { get; }
         public int Column { get; }
 
-
-        protected bool Equals(TokenPosition other)
-        {
-            return Index == other.Index && Line == other.Line && Column == other.Column;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((TokenPosition)obj);
-        }
+        protected bool Equals(TokenPosition other) => other != null && Index == other.Index && Line == other.Line && Column == other.Column;
+        public override bool Equals(object obj) => Equals(obj as TokenPosition);
 
         public override int GetHashCode()
         {

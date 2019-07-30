@@ -18,12 +18,9 @@ namespace Veggerby.Algorithm.Calculus
             typeof(Addition),
         };
 
-        public static int? GetPriority(this Operand operand)
-        {
-            return _priorities.Contains(operand.GetType())
+        public static int? GetPriority(this Operand operand) => _priorities.Contains(operand.GetType())
                 ? Array.IndexOf(_priorities, operand.GetType())
                 : (int?)null;
-        }
 
         public static bool CouldUseParenthesis(this Operand operand)
         {
@@ -35,35 +32,17 @@ namespace Veggerby.Algorithm.Calculus
             return false;
         }
 
-        public static bool IsConstant(this Operand operand)
-        {
-            return operand.GetType() == typeof(ValueConstant);
-        }
+        public static bool IsConstant(this Operand operand) => operand.GetType() == typeof(ValueConstant);
 
-        public static bool IsVariable(this Operand operand)
-        {
-            return operand is Variable;
-        }
+        public static bool IsVariable(this Operand operand) => operand is Variable;
 
-        public static bool IsNegative(this Operand operand)
-        {
-            return operand is Negative;
-        }
+        public static bool IsNegative(this Operand operand) => operand is Negative;
 
-         public static bool IsInteger(this ValueConstant constant)
-        {
-            return constant.Value.IsInteger();
-        }
+        public static bool IsInteger(this ValueConstant constant) => constant.Value.IsInteger();
 
-        public static bool IsInteger(this Operand operand)
-        {
-            return operand.IsConstant() && ((ValueConstant)operand).IsInteger();
-        }
+        public static bool IsInteger(this Operand operand) => operand.IsConstant() && ((ValueConstant)operand).IsInteger();
 
-        public static bool IsInteger(this double constant)
-        {
-            return (constant % 1 == 0);
-        }
+        public static bool IsInteger(this double constant) => (constant % 1 == 0);
 
         public static bool EqualsCommutative<T>(this T t1, T t2) where T : ICommutativeOperation
         {

@@ -9,39 +9,13 @@ namespace Veggerby.Algorithm.Calculus
         {
         }
 
-        public override T Accept<T>(IOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.Visit(this);
 
-        public static Operand Create(Operand inner)
-        {
-            return new Cosine(inner);
-        }
+        public static Operand Create(Operand inner) => new Cosine(inner);
 
-        public override bool Equals(object obj) 
-        {
-            return Equals(obj as Cosine);
-        }
-
-        public override bool Equals(Operand other)
-        {
-            return Equals(other as Cosine);
-        }
-
-        public bool Equals(Cosine other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-
-            return Inner.Equals(other.Inner);
-        }
-        
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override bool Equals(object obj) => Equals(obj as Cosine);
+        public override bool Equals(Operand other) => Equals(other as Cosine);
+        public bool Equals(Cosine other) => other != null && Inner.Equals(other.Inner);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

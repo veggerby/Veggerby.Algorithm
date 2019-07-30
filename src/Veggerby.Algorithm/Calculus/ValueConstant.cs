@@ -12,10 +12,7 @@ namespace Veggerby.Algorithm.Calculus
             Value = value;
         }
 
-        public override T Accept<T>(IOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.Visit(this);
 
         public static Operand operator +(ValueConstant left, ValueConstant right)
         {
@@ -97,44 +94,15 @@ namespace Veggerby.Algorithm.Calculus
             return Math.Pow(left.Value, right.Value);
         }
 
-        public static implicit operator double(ValueConstant value)
-        {
-            return value.Value;
-        }
+        public static implicit operator double(ValueConstant value) => value.Value;
 
-        public static implicit operator int(ValueConstant value)
-        {
-            return (int)value.Value;
-        }
+        public static implicit operator int(ValueConstant value) => (int)value.Value;
 
-        public static ValueConstant Create(double value)
-        {
-            return new ValueConstant(value);
-        }
+        public static ValueConstant Create(double value) => new ValueConstant(value);
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as ValueConstant);
-        }
-
-        public override bool Equals(Operand other)
-        {
-            return Equals(other as ValueConstant);
-        }
-
-        public bool Equals(ValueConstant other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-
-            return Value == other.Value;
-        }
-
-        public override int GetHashCode()
-        {
-            return Value.GetHashCode();
-        }
+        public override bool Equals(object obj) => Equals(obj as ValueConstant);
+        public override bool Equals(Operand other) => Equals(other as ValueConstant);
+        public bool Equals(ValueConstant other) => other != null && Value == other.Value;
+        public override int GetHashCode() => Value.GetHashCode();
     }
 }

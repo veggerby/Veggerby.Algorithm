@@ -18,114 +18,48 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return Function.Create(operand.Identifier, innerOperand);
         }
 
-        public Operand Visit(FunctionReference operand)
-        {
-            return operand;
-        }
+        public Operand Visit(FunctionReference operand) => operand;
 
-        public Operand Visit(Variable operand)
-        {
-            return operand;
-        }
+        public Operand Visit(Variable operand) => operand;
 
-        public Operand Visit(Subtraction operand)
-        {
-            return Subtraction.Create(operand.Left.Accept(this), operand.Right.Accept(this));
-        }
+        public Operand Visit(Subtraction operand) => Subtraction.Create(operand.Left.Accept(this), operand.Right.Accept(this));
 
-        public Operand Visit(Division operand)
-        {
-            return Division.Create(operand.Left.Accept(this), operand.Right.Accept(this));
-        }
+        public Operand Visit(Division operand) => Division.Create(operand.Left.Accept(this), operand.Right.Accept(this));
 
-        public Operand Visit(Factorial operand)
-        {
-            return Factorial.Create(operand.Inner.Accept(this));
-        }
+        public Operand Visit(Factorial operand) => Factorial.Create(operand.Inner.Accept(this));
 
-        public Operand Visit(Cosine operand)
-        {
-            return Sine.Create(operand.Inner.Accept(this));
-        }
+        public Operand Visit(Cosine operand) => Sine.Create(operand.Inner.Accept(this));
 
-        public Operand Visit(Exponential operand)
-        {
-            return Exponential.Create(operand.Inner.Accept(this));
-        }
+        public Operand Visit(Exponential operand) => Exponential.Create(operand.Inner.Accept(this));
 
-        public Operand Visit(LogarithmBase operand)
-        {
-            return LogarithmBase.Create(operand.Base, operand.Inner.Accept(this));
-        }
+        public Operand Visit(LogarithmBase operand) => LogarithmBase.Create(operand.Base, operand.Inner.Accept(this));
 
-        public Operand Visit(Negative operand)
-        {
-            return Negative.Create(operand.Inner.Accept(this));
-        }
+        public Operand Visit(Negative operand) => Negative.Create(operand.Inner.Accept(this));
 
-        public Operand Visit(Logarithm operand)
-        {
-            return Logarithm.Create(operand.Inner.Accept(this));
-        }
+        public Operand Visit(Logarithm operand) => Logarithm.Create(operand.Inner.Accept(this));
 
-        public Operand Visit(Tangent operand)
-        {
-            return Tangent.Create(operand.Inner.Accept(this));
-        }
+        public Operand Visit(Tangent operand) => Tangent.Create(operand.Inner.Accept(this));
 
-        public Operand Visit(Sine operand)
-        {
-            return Sine.Create(operand.Inner.Accept(this));
-        }
+        public Operand Visit(Sine operand) => Sine.Create(operand.Inner.Accept(this));
 
-        public Operand Visit(Power operand)
-        {
-            return Power.Create(operand.Left.Accept(this), operand.Right.Accept(this));
-        }
+        public Operand Visit(Power operand) => Power.Create(operand.Left.Accept(this), operand.Right.Accept(this));
 
-        public Operand Visit(Root operand)
-        {
-            return Root.Create(operand.Exponent, operand.Inner.Accept(this));
-        }
+        public Operand Visit(Root operand) => Root.Create(operand.Exponent, operand.Inner.Accept(this));
 
-        public Operand Visit(Multiplication operand)
-        {
-            return ReorderCommutativeBinaryOperation(operand, Multiplication.Create);
-        }
+        public Operand Visit(Multiplication operand) => ReorderCommutativeBinaryOperation(operand, Multiplication.Create);
 
-        public Operand Visit(Addition operand)
-        {
-            return ReorderCommutativeBinaryOperation(operand, Addition.Create);
-        }
+        public Operand Visit(Addition operand) => ReorderCommutativeBinaryOperation(operand, Addition.Create);
 
-        public Operand Visit(NamedConstant operand)
-        {
-            return operand;
-        }
+        public Operand Visit(NamedConstant operand) => operand;
 
-        public Operand Visit(ValueConstant operand)
-        {
-            return operand;
-        }
+        public Operand Visit(ValueConstant operand) => operand;
 
-        public Operand Visit(UnspecifiedConstant operand)
-        {
-            return operand;
-        }
+        public Operand Visit(UnspecifiedConstant operand) => operand;
 
-        public Operand Visit(Fraction operand)
-        {
-            return operand;
-        }
+        public Operand Visit(Fraction operand) => operand;
 
-        public Operand Visit(Minimum operand)
-        {
-            return ReorderCommutativeBinaryOperation(operand, Minimum.Create);
-        }
+        public Operand Visit(Minimum operand) => ReorderCommutativeBinaryOperation(operand, Minimum.Create);
 
-        public Operand Visit(Maximum operand)
-        {
-            return ReorderCommutativeBinaryOperation(operand, Maximum.Create);
-        }
+        public Operand Visit(Maximum operand) => ReorderCommutativeBinaryOperation(operand, Maximum.Create);
     }
 }

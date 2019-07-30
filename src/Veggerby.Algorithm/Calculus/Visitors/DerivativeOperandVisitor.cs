@@ -12,10 +12,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             _variable = variable;
         }
 
-        private Operand GetDerivative(Operand operand)
-        {
-            return operand.Accept(this);
-        }
+        private Operand GetDerivative(Operand operand) => operand.Accept(this);
 
         public Operand Visit(Function operand)
         {
@@ -23,15 +20,9 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return Function.Create($"{operand.Identifier}'", innerOperand);
         }
 
-        public Operand Visit(FunctionReference operand)
-        {
-            return null;
-        }
+        public Operand Visit(FunctionReference operand) => null;
 
-        public Operand Visit(Variable operand)
-        {
-            return operand.Equals(_variable) ? 1 : 0;
-        }
+        public Operand Visit(Variable operand) => operand.Equals(_variable) ? 1 : 0;
 
         public Operand Visit(Subtraction operand)
         {
@@ -57,10 +48,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
                 : null;
         }
 
-        public Operand Visit(Factorial operand)
-        {
-            return null;
-        }
+        public Operand Visit(Factorial operand) => null;
 
         public Operand Visit(Cosine operand)
         {
@@ -205,34 +193,16 @@ namespace Veggerby.Algorithm.Calculus.Visitors
                 : null;
         }
 
-        public Operand Visit(NamedConstant operand)
-        {
-            return Constant.Zero;
-        }
+        public Operand Visit(NamedConstant operand) => Constant.Zero;
 
-        public Operand Visit(ValueConstant operand)
-        {
-            return Constant.Zero;
-        }
+        public Operand Visit(ValueConstant operand) => Constant.Zero;
 
-        public Operand Visit(UnspecifiedConstant operand)
-        {
-            return Constant.Zero;
-        }
+        public Operand Visit(UnspecifiedConstant operand) => Constant.Zero;
 
-        public Operand Visit(Fraction operand)
-        {
-            return Constant.Zero;
-        }
+        public Operand Visit(Fraction operand) => Constant.Zero;
 
-        public Operand Visit(Minimum operand)
-        {
-            return null;
-        }
+        public Operand Visit(Minimum operand) => null;
 
-        public Operand Visit(Maximum operand)
-        {
-            return null;
-        }
+        public Operand Visit(Maximum operand) => null;
     }
 }

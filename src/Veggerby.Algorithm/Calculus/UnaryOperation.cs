@@ -9,9 +9,6 @@ namespace Veggerby.Algorithm.Calculus
             Inner = inner;
         }
 
-        public override int GetHashCode()
-        {
-            return GetType().GetHashCode() ^ Inner.GetHashCode();
-        }
+        public override int GetHashCode() => GetType().GetHashCode() ^ Inner.GetHashCode();
     }
 }

@@ -28,23 +28,9 @@ namespace Veggerby.Algorithm.Trees.MerkleTree
             _isValid = false;
         }
 
-        public bool Equals(MerkleHash<T> other)
-        {
-            return _isValid && other._isValid && Hash != null && other.Hash != null && Hash.SequenceEqual(other.Hash);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((MerkleHash<T>)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return _isValid.GetHashCode() ^ Hash?.GetHashCode() ?? 0;
-        }
+        public bool Equals(MerkleHash<T> other) => _isValid && other._isValid && Hash != null && other.Hash != null && Hash.SequenceEqual(other.Hash);
+        public override bool Equals(object obj) => Equals(obj as MerkleHash<T>);
+        public override int GetHashCode() => _isValid.GetHashCode() ^ Hash?.GetHashCode() ?? 0;
 
         public MerkleHash(byte[] hash)
         {

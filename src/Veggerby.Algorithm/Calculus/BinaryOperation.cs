@@ -24,9 +24,6 @@ namespace Veggerby.Algorithm.Calculus
             Right = right;
         }
 
-        public override int GetHashCode()
-        {
-            return GetType().GetHashCode() ^ Left.GetHashCode() ^ Right.GetHashCode();
-        }
+        public override int GetHashCode() => GetType().GetHashCode() ^ Left.GetHashCode() ^ Right.GetHashCode();
     }
 }

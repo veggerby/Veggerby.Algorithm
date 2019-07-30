@@ -57,18 +57,9 @@ namespace Veggerby.Algorithm.Trees
             _right?.SetParent(this);
         }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((AbstractBinaryNode<T, TNode>)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode() ^ (Left?.GetHashCode() ?? 0) ^ (Right?.GetHashCode() ?? 0);
-        }
+        public bool Equals(AbstractBinaryNode<T, TNode> other) => other != null && Left.Equals(other.Left) && Right.Equals(other.Right);
+        public override bool Equals(object obj) => Equals(obj as AbstractBinaryNode<T, TNode>);
+        public override int GetHashCode() => base.GetHashCode() ^ (Left?.GetHashCode() ?? 0) ^ (Right?.GetHashCode() ?? 0);
 
         public AbstractBinaryNode(T payload = default(T), TNode left = default(TNode), TNode right = default(TNode)) : base(payload)
         {

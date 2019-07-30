@@ -15,39 +15,13 @@ namespace Veggerby.Algorithm.Calculus
             Identifier = identifier;
         }
 
-        public override T Accept<T>(IOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.Visit(this);
 
-        public static Variable Create(string identifier)
-        {
-            return new Variable(identifier);
-        }
+        public static Variable Create(string identifier) => new Variable(identifier);
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as Variable);
-        }
-
-        public override bool Equals(Operand other)
-        {
-            return Equals(other as Variable);
-        }
-
-        public bool Equals(Variable other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-
-            return string.Equals(Identifier, other.Identifier);
-        }
-
-        public override int GetHashCode()
-        {
-            return Identifier.GetHashCode();
-        }
+        public override bool Equals(object obj) => Equals(obj as Variable);
+        public override bool Equals(Operand other) => Equals(other as Variable);
+        public bool Equals(Variable other) => other != null && string.Equals(Identifier, other.Identifier);
+        public override int GetHashCode() => Identifier.GetHashCode();
     }
 }

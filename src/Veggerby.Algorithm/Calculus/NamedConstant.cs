@@ -12,35 +12,13 @@ namespace Veggerby.Algorithm.Calculus
             Symbol = symbol;
         }
 
-        public override T Accept<T>(IOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.Visit(this);
 
-        public static NamedConstant Create(string symbol, double value)
-        {
-            return new NamedConstant(symbol, value);
-        }
-                
-        public override bool Equals(object obj) 
-        {
-            return Equals(obj as NamedConstant);
-        }
+        public static NamedConstant Create(string symbol, double value) => new NamedConstant(symbol, value);
 
-        public override bool Equals(Operand other)
-        {
-            return Equals(other as NamedConstant);
-        }
-
-        public bool Equals(NamedConstant other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-
-            return Symbol.Equals(other.Symbol) && Value.Equals(other.Value);
-        }
+        public override bool Equals(object obj) => Equals(obj as NamedConstant);
+        public override bool Equals(Operand other) => Equals(other as NamedConstant);
+        public bool Equals(NamedConstant other) => other != null && Symbol.Equals(other.Symbol) && Value.Equals(other.Value);
 
         public override int GetHashCode()
         {

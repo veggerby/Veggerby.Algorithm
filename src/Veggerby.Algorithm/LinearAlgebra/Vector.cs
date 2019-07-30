@@ -53,10 +53,7 @@ namespace Veggerby.Algorithm.LinearAlgebra
             }
         }
 
-        public double[] ToArray()
-        {
-            return _values.ToArray();
-        }
+        public double[] ToArray() => _values.ToArray();
 
         public static Vector operator +(Vector v1, Vector v2)
         {
@@ -78,33 +75,13 @@ namespace Veggerby.Algorithm.LinearAlgebra
             return new Vector(v1.ToArray().Zip(v2.ToArray(), (x, y) => x - y));
         }
 
-        public static bool operator ==(Vector v1, Vector v2)
-        {
-            return Equals(v1, v2);
-        }
+        public static bool operator ==(Vector v1, Vector v2) => Equals(v1, v2);
 
-        public static bool operator !=(Vector v1, Vector v2)
-        {
-            return !Equals(v1, v2);
-        }
+        public static bool operator !=(Vector v1, Vector v2) => !Equals(v1, v2);
 
-        public override string ToString()
-        {
-            return "(" + string.Join(", ", _values.Select(x => x.ToString(CultureInfo.InvariantCulture))) + ")";
-        }
-
-        protected bool Equals(Vector other)
-        {
-            return ToArray().SequenceEqual(other.ToArray());
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Vector)obj);
-        }
+        public override string ToString() => "(" + string.Join(", ", _values.Select(x => x.ToString(CultureInfo.InvariantCulture))) + ")";
+        protected bool Equals(Vector other) => ToArray().SequenceEqual(other.ToArray());
+        public override bool Equals(object obj) => Equals(obj as Vector);
 
         public override int GetHashCode()
         {

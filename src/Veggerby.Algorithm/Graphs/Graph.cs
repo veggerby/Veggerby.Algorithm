@@ -15,28 +15,16 @@ namespace Veggerby.Algorithm.Graphs
             Edges = (edges ?? Enumerable.Empty<Edge<T>>()).ToList();
         }
 
-        private Graph<T> Remove(T vertice)
-        {
-            return new Graph<T>(
+        private Graph<T> Remove(T vertice) => new Graph<T>(
                 Vertices.Where(x => !x.Equals(vertice)),
                 Edges.Where(x => !x.From.Equals(vertice) && !x.To.Equals(vertice))
             );
-        }
 
-        public Edge<T> GetEdge(T from, T to)
-        {
-            return Edges.SingleOrDefault(x => x.From.Equals(from) && x.To.Equals(to));
-        }
+        public Edge<T> GetEdge(T from, T to) => Edges.SingleOrDefault(x => x.From.Equals(from) && x.To.Equals(to));
 
-        public IEnumerable<Edge<T>> GetEdgesFrom(T from)
-        {
-            return Edges.Where(x => x.From.Equals(from)).ToList().AsEnumerable();
-        }
+        public IEnumerable<Edge<T>> GetEdgesFrom(T from) => Edges.Where(x => x.From.Equals(from)).ToList().AsEnumerable();
 
-        public int GetDegree(T vertice)
-        {
-            return GetEdgesFrom(vertice).Count();
-        }
+        public int GetDegree(T vertice) => GetEdgesFrom(vertice).Count();
 
         public Graph<T> GetKCore(int degree)
         {

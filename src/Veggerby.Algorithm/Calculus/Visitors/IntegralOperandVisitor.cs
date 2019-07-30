@@ -107,17 +107,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return Function.Create(operand.Identifier.ToUpperInvariant(), innerOperand);
         }
 
-        public Operand Visit(FunctionReference operand)
-        {
-            return null;
-        }
+        public Operand Visit(FunctionReference operand) => null;
 
-        public Operand Visit(Variable operand)
-        {
-            return operand.Equals(_variable)
+        public Operand Visit(Variable operand) => operand.Equals(_variable)
                 ? PowerRule(1)
                 : ConstantRule(operand);
-        }
 
         public Operand Visit(Subtraction operand)
         {
@@ -147,10 +141,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             }
         }
 
-        public Operand Visit(Factorial operand)
-        {
-            return null;
-        }
+        public Operand Visit(Factorial operand) => null;
 
         public Operand Visit(Cosine operand)
         {
@@ -182,10 +173,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             }
         }
 
-        public Operand Visit(LogarithmBase operand)
-        {
-            throw new NotImplementedException();
-        }
+        public Operand Visit(LogarithmBase operand) => throw new NotImplementedException();
 
         public Operand Visit(Negative operand)
         {
@@ -215,10 +203,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             }
         }
 
-        public Operand Visit(Tangent operand)
-        {
-            throw new NotImplementedException();
-        }
+        public Operand Visit(Tangent operand) => throw new NotImplementedException();
 
         public Operand Visit(Sine operand)
         {
@@ -305,34 +290,16 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return Addition.Create(operands);
         }
 
-        public Operand Visit(NamedConstant operand)
-        {
-            return ConstantRule(operand);
-        }
+        public Operand Visit(NamedConstant operand) => ConstantRule(operand);
 
-        public Operand Visit(ValueConstant operand)
-        {
-            return ConstantRule(operand);
-        }
+        public Operand Visit(ValueConstant operand) => ConstantRule(operand);
 
-        public Operand Visit(UnspecifiedConstant operand)
-        {
-            return ConstantRule(operand);
-        }
+        public Operand Visit(UnspecifiedConstant operand) => ConstantRule(operand);
 
-        public Operand Visit(Fraction operand)
-        {
-            return ConstantRule(operand);
-        }
+        public Operand Visit(Fraction operand) => ConstantRule(operand);
 
-        public Operand Visit(Minimum operand)
-        {
-            return null;
-        }
+        public Operand Visit(Minimum operand) => null;
 
-        public Operand Visit(Maximum operand)
-        {
-            return null;
-        }
+        public Operand Visit(Maximum operand) => null;
     }
 }

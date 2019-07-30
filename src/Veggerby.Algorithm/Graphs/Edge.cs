@@ -25,18 +25,8 @@ namespace Veggerby.Algorithm.Graphs
             Weight = weight;
         }
 
-        protected bool Equals(Edge<T> other)
-        {
-            return Equals(From, other.From) && Equals(To, other.To) && Equals(Weight, other.Weight);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Edge<T>)obj);
-        }
+        protected bool Equals(Edge<T> other) => Equals(From, other.From) && Equals(To, other.To) && Equals(Weight, other.Weight);
+        public override bool Equals(object obj) => Equals(obj as Edge<T>);
 
         public override int GetHashCode()
         {

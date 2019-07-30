@@ -38,14 +38,8 @@ namespace Veggerby.Algorithm.Calculus.Parser
                 .Skip(1); // skip item
         }
 
-        public static T Previous<T>(this IEnumerable<T> source, T item)
-        {
-            return source.Before(item).LastOrDefault();
-        }
+        public static T Previous<T>(this IEnumerable<T> source, T item) => source.Before(item).LastOrDefault();
 
-        public static T Next<T>(this IEnumerable<T> source, T item)
-        {
-            return source.After(item).FirstOrDefault();
-        }
+        public static T Next<T>(this IEnumerable<T> source, T item) => source.After(item).FirstOrDefault();
     }
 }

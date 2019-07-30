@@ -21,10 +21,7 @@ namespace Veggerby.Algorithm.Calculus
             Variables = operand.Accept(visitor).OrderBy(x => x.Identifier).ToList();
         }
 
-        public override T Accept<T>(IOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.Visit(this);
 
         public static Function Create(string identifier, Operand operand)
         {
@@ -41,37 +38,11 @@ namespace Veggerby.Algorithm.Calculus
             return new Function(identifier, operand);
         }
 
-        public static implicit operator Function(string value)
-        {
-            return Function.Create(
-                "f",
-                FunctionParser.Parse(value));
-        }
+        public static implicit operator Function(string value) => Function.Create("f", FunctionParser.Parse(value));
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as Function);
-        }
-
-        public override bool Equals(Operand other)
-        {
-            return Equals(other as Function);
-        }
-
-        public bool Equals(Function other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-
-            return Operand.Equals(other.Operand);
-        }
-
-        public override int GetHashCode()
-        {
-            return Operand.GetHashCode();
-        }
-
+        public override bool Equals(object obj) => Equals(obj as Function);
+        public override bool Equals(Operand other) => Equals(other as Function);
+        public bool Equals(Function other) => other != null && Operand.Equals(other.Operand);
+        public override int GetHashCode() => Operand.GetHashCode();
     }
 }

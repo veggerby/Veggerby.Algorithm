@@ -55,10 +55,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return $"{operand.Identifier}({parameters})";
         }
 
-        public string Visit(Variable operand)
-        {
-            return operand.Identifier;
-        }
+        public string Visit(Variable operand) => operand.Identifier;
 
         public string Visit(Subtraction operand)
         {
@@ -159,25 +156,13 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return string.Join("+", values);
         }
 
-        public string Visit(NamedConstant operand)
-        {
-            return operand.Symbol;
-        }
+        public string Visit(NamedConstant operand) => operand.Symbol;
 
-        public string Visit(ValueConstant operand)
-        {
-            return operand.Value.ToString(CultureInfo.InvariantCulture);
-        }
+        public string Visit(ValueConstant operand) => operand.Value.ToString(CultureInfo.InvariantCulture);
 
-        public string Visit(UnspecifiedConstant operand)
-        {
-            return _context.GetName(operand);
-        }
+        public string Visit(UnspecifiedConstant operand) => _context.GetName(operand);
 
-        public string Visit(Fraction operand)
-        {
-            return $"{operand.Numerator}/{operand.Denominator}";
-        }
+        public string Visit(Fraction operand) => $"{operand.Numerator}/{operand.Denominator}";
 
         public string Visit(Minimum operand)
         {

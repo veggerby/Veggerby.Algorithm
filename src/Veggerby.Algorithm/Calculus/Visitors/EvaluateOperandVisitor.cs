@@ -24,10 +24,7 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return operand.Accept(this);
         }
 
-        public double Visit(Function operand)
-        {
-            return Evaluate(operand.Operand);
-        }
+        public double Visit(Function operand) => Evaluate(operand.Operand);
 
         public double Visit(FunctionReference operand)
         {
@@ -54,20 +51,11 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return Evaluate(f, context);
         }
 
-        public double Visit(Variable operand)
-        {
-            return _context.GetVariable(operand.Identifier);
-        }
+        public double Visit(Variable operand) => _context.GetVariable(operand.Identifier);
 
-        public double Visit(Subtraction operand)
-        {
-            return Evaluate(operand.Left) - Evaluate(operand.Right);
-        }
+        public double Visit(Subtraction operand) => Evaluate(operand.Left) - Evaluate(operand.Right);
 
-        public double Visit(Division operand)
-        {
-            return Evaluate(operand.Left) / Evaluate(operand.Right);
-        }
+        public double Visit(Division operand) => Evaluate(operand.Left) / Evaluate(operand.Right);
 
         public double Visit(Factorial operand)
         {
@@ -129,15 +117,9 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return Math.Sin(inner);
         }
 
-        public double Visit(Power operand)
-        {
-            return Math.Pow(Evaluate(operand.Left), Evaluate(operand.Right));
-        }
+        public double Visit(Power operand) => Math.Pow(Evaluate(operand.Left), Evaluate(operand.Right));
 
-        public double Visit(Root operand)
-        {
-            return Math.Pow(Evaluate(operand.Inner), 1d / operand.Exponent);
-        }
+        public double Visit(Root operand) => Math.Pow(Evaluate(operand.Inner), 1d / operand.Exponent);
 
         public double Visit(Multiplication operand)
         {
@@ -151,25 +133,13 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return operand.Operands.Skip(1).Aggregate(first, (seed, next) => seed + Evaluate(next));
         }
 
-        public double Visit(NamedConstant operand)
-        {
-            return operand.Value;
-        }
+        public double Visit(NamedConstant operand) => operand.Value;
 
-        public double Visit(ValueConstant operand)
-        {
-            return operand.Value;
-        }
+        public double Visit(ValueConstant operand) => operand.Value;
 
-        public double Visit(UnspecifiedConstant operand)
-        {
-            throw new NotSupportedException();
-        }
+        public double Visit(UnspecifiedConstant operand) => throw new NotSupportedException();
 
-        public double Visit(Fraction operand)
-        {
-            return 1d * operand.Numerator / operand.Denominator;
-        }
+        public double Visit(Fraction operand) => 1d * operand.Numerator / operand.Denominator;
 
         public double Visit(Minimum operand)
         {

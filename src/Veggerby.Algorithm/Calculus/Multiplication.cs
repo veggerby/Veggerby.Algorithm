@@ -11,10 +11,7 @@ namespace Veggerby.Algorithm.Calculus
         {
         }
 
-        public override T Accept<T>(IOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.Visit(this);
 
         public static Operand Create(IEnumerable<Operand> operands)
         {
@@ -108,29 +105,9 @@ namespace Veggerby.Algorithm.Calculus
             return new Multiplication(operands.ToArray());
         }
 
-        public override bool Equals(object obj) 
-        {
-            return Equals(obj as Multiplication);
-        }
-
-        public override bool Equals(Operand other)
-        {
-            return Equals(other as Multiplication);
-        }
-
-        public bool Equals(Multiplication other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-
-            return this.EqualsCommutative(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override bool Equals(object obj) => Equals(obj as Multiplication);
+        public override bool Equals(Operand other) => Equals(other as Multiplication);
+        public bool Equals(Multiplication other) => other != null && this.EqualsCommutative(other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

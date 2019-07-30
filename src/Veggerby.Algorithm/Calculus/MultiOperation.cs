@@ -13,9 +13,6 @@ namespace Veggerby.Algorithm.Calculus
             Operands = operands;
         }
 
-        public override int GetHashCode()
-        {
-            return Operands.Aggregate(GetType().GetHashCode(), (seed, x) => seed ^ x.GetHashCode());
-        }
+        public override int GetHashCode() => Operands.Aggregate(GetType().GetHashCode(), (seed, x) => seed ^ x.GetHashCode());
     }
 }

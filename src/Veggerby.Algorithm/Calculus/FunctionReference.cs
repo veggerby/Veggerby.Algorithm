@@ -16,15 +16,9 @@ namespace Veggerby.Algorithm.Calculus
             Parameters = parameters;
         }
 
-        public override T Accept<T>(IOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.Visit(this);
 
-        public static Operand Create(string identifier, params Operand[] parameters)
-        {
-            return Create(identifier, parameters.AsEnumerable());
-        }
+        public static Operand Create(string identifier, params Operand[] parameters) => Create(identifier, parameters.AsEnumerable());
 
         public static Operand Create(string identifier, IEnumerable<Operand> parameters)
         {
@@ -41,30 +35,9 @@ namespace Veggerby.Algorithm.Calculus
             return new FunctionReference(identifier, parameters);
         }
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as FunctionReference);
-        }
-
-        public override bool Equals(Operand other)
-        {
-            return Equals(other as FunctionReference);
-        }
-
-        public bool Equals(FunctionReference other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-
-            return string.Equals(Identifier, other.Identifier) && Parameters.SequenceEqual(other.Parameters);
-        }
-
-        public override int GetHashCode()
-        {
-            return Parameters.Aggregate(Identifier.GetHashCode(), (seed, operand) => seed ^ operand.GetHashCode());
-        }
-
+        public override bool Equals(object obj) => Equals(obj as FunctionReference);
+        public override bool Equals(Operand other) => Equals(other as FunctionReference);
+        public bool Equals(FunctionReference other) => other != null && string.Equals(Identifier, other.Identifier) && Parameters.SequenceEqual(other.Parameters);
+        public override int GetHashCode() => Parameters.Aggregate(Identifier.GetHashCode(), (seed, operand) => seed ^ operand.GetHashCode());
     }
 }

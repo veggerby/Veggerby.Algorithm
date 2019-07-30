@@ -16,35 +16,13 @@ namespace Veggerby.Algorithm.Calculus
             Exponent = exponent;
         }
 
-        public override T Accept<T>(IOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.Visit(this);
 
-        public static Operand Create(int exponent, Operand inner)
-        {
-            return new Root(exponent, inner);
-        }
+        public static Operand Create(int exponent, Operand inner) => new Root(exponent, inner);
 
-        public override bool Equals(object obj) 
-        {
-            return Equals(obj as Root);
-        }
-
-        public override bool Equals(Operand other)
-        {
-            return Equals(other as Root);
-        }
-
-        public bool Equals(Root other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-
-            return Exponent.Equals(other.Exponent) && Inner.Equals(other.Inner);
-        }
+        public override bool Equals(object obj) => Equals(obj as Root);
+        public override bool Equals(Operand other) => Equals(other as Root);
+        public bool Equals(Root other) => other != null && Exponent.Equals(other.Exponent) && Inner.Equals(other.Inner);
 
         public override int GetHashCode()
         {

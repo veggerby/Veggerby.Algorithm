@@ -113,10 +113,7 @@ namespace Veggerby.Algorithm.LinearAlgebra
             return new Vector(Enumerable.Range(0, RowCount).Select(r => this[r, c]));
         }
 
-        public double[,] ToArray()
-        {
-            return Rows.ToArray();
-        }
+        public double[,] ToArray() => Rows.ToArray();
 
         public double Determinant
         {
@@ -243,33 +240,13 @@ namespace Veggerby.Algorithm.LinearAlgebra
             return new Vector(result);
         }
 
-        public static bool operator ==(Matrix m1, Matrix m2)
-        {
-            return Equals(m1, m2);
-        }
+        public static bool operator ==(Matrix m1, Matrix m2) => Equals(m1, m2);
 
-        public static bool operator !=(Matrix m1, Matrix m2)
-        {
-            return !Equals(m1, m2);
-        }
+        public static bool operator !=(Matrix m1, Matrix m2) => !Equals(m1, m2);
 
-        public override string ToString()
-        {
-            return "(" + string.Join(Environment.NewLine, Rows.Select(x => x.ToString())) + ")";
-        }
-
-        protected bool Equals(Matrix other)
-        {
-            return Rows.SequenceEqual(other.Rows);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Matrix)obj);
-        }
+        public override string ToString() => "(" + string.Join(Environment.NewLine, Rows.Select(x => x.ToString())) + ")";
+        protected bool Equals(Matrix other) => Rows.SequenceEqual(other.Rows);
+        public override bool Equals(object obj) => Equals(obj as Matrix);
 
         public override int GetHashCode()
         {

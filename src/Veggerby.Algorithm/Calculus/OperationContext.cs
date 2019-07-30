@@ -18,29 +18,14 @@ namespace Veggerby.Algorithm.Calculus
             _functions = (functions ?? Enumerable.Empty<Function>()).ToDictionary(x => x.Identifier, x => x);
         }
 
-        public double GetVariable(string identifier)
-        {
-            return _variables[identifier];
-        }
+        public double GetVariable(string identifier) => _variables[identifier];
 
-        public void Add(string identifier, double value)
-        {
-            _variables.Add(identifier, value);
-        }
+        public void Add(string identifier, double value) => _variables.Add(identifier, value);
 
-        public Function GetFunction(string identifier)
-        {
-            return _functions[identifier];
-        }
+        public Function GetFunction(string identifier) => _functions[identifier];
 
-        public void Add(Function function)
-        {
-            _functions.Add(function.Identifier, function);
-        }
+        public void Add(Function function) => _functions.Add(function.Identifier, function);
 
-        public string GetName(UnspecifiedConstant constant)
-        {
-            return _unspecifiedConstantSymbolFactory.Get(constant.InstanceId);
-        }
+        public string GetName(UnspecifiedConstant constant) => _unspecifiedConstantSymbolFactory.Get(constant.InstanceId);
     }
 }

@@ -14,10 +14,7 @@ namespace Veggerby.Algorithm.Calculus
             Denominator = denominator;
         }
 
-        public override T Accept<T>(IOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.Visit(this);
 
         public static Operand operator +(Fraction left, Fraction right)
         {
@@ -198,25 +195,9 @@ namespace Veggerby.Algorithm.Calculus
             return new Fraction(numerator, denominator);
         }
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as Fraction);
-        }
-
-        public override bool Equals(Operand other)
-        {
-            return Equals(other as Fraction);
-        }
-
-        public bool Equals(Fraction other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-
-            return Numerator == other.Numerator && Denominator == other.Denominator;
-        }
+        public override bool Equals(object obj) => Equals(obj as Fraction);
+        public override bool Equals(Operand other) => Equals(other as Fraction);
+        public bool Equals(Fraction other) => other != null && Numerator == other.Numerator && Denominator == other.Denominator;
 
         public override int GetHashCode()
         {

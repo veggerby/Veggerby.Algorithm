@@ -18,35 +18,17 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return operand;
         }
 
-        public Operand Visit(Function operand)
-        {
-            return Function.Create(operand.Identifier, Reduce(operand.Operand));
-        }
+        public Operand Visit(Function operand) => Function.Create(operand.Identifier, Reduce(operand.Operand));
 
-        public Operand Visit(FunctionReference operand)
-        {
-            return FunctionReference.Create(operand.Identifier, operand.Parameters.Select(x => Reduce(x)));
-        }
+        public Operand Visit(FunctionReference operand) => FunctionReference.Create(operand.Identifier, operand.Parameters.Select(x => Reduce(x)));
 
-        public Operand Visit(ValueConstant operand)
-        {
-            return operand;
-        }
+        public Operand Visit(ValueConstant operand) => operand;
 
-        public Operand Visit(NamedConstant operand)
-        {
-            return operand;
-        }
+        public Operand Visit(NamedConstant operand) => operand;
 
-        public Operand Visit(UnspecifiedConstant operand)
-        {
-            return operand;
-        }
+        public Operand Visit(UnspecifiedConstant operand) => operand;
 
-        public Operand Visit(Variable operand)
-        {
-            return operand;
-        }
+        public Operand Visit(Variable operand) => operand;
 
         public Operand Visit(Addition operand)
         {
@@ -290,40 +272,19 @@ namespace Veggerby.Algorithm.Calculus.Visitors
             return Root.Create(operand.Exponent, inner);
         }
 
-        public Operand Visit(Factorial operand)
-        {
-            return Factorial.Create(Reduce(operand.Inner));
-        }
+        public Operand Visit(Factorial operand) => Factorial.Create(Reduce(operand.Inner));
 
-        public Operand Visit(Sine operand)
-        {
-            return Sine.Create(Reduce(operand.Inner));
-        }
+        public Operand Visit(Sine operand) => Sine.Create(Reduce(operand.Inner));
 
-        public Operand Visit(Cosine operand)
-        {
-            return Cosine.Create(Reduce(operand.Inner));
-        }
+        public Operand Visit(Cosine operand) => Cosine.Create(Reduce(operand.Inner));
 
-        public Operand Visit(Tangent operand)
-        {
-            return Tangent.Create(Reduce(operand.Inner));
-        }
+        public Operand Visit(Tangent operand) => Tangent.Create(Reduce(operand.Inner));
 
-        public Operand Visit(Exponential operand)
-        {
-            return Exponential.Create(Reduce(operand.Inner));
-        }
+        public Operand Visit(Exponential operand) => Exponential.Create(Reduce(operand.Inner));
 
-        public Operand Visit(Logarithm operand)
-        {
-            return Logarithm.Create(Reduce(operand.Inner));
-        }
+        public Operand Visit(Logarithm operand) => Logarithm.Create(Reduce(operand.Inner));
 
-        public Operand Visit(LogarithmBase operand)
-        {
-            return LogarithmBase.Create(operand.Base, Reduce(operand.Inner));
-        }
+        public Operand Visit(LogarithmBase operand) => LogarithmBase.Create(operand.Base, Reduce(operand.Inner));
 
         public Operand Visit(Negative operand)
         {

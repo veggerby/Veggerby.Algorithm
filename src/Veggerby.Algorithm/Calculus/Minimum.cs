@@ -11,10 +11,7 @@ namespace Veggerby.Algorithm.Calculus
         {
         }
 
-        public override T Accept<T>(IOperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.Visit(this);
 
         public static Operand Create(IEnumerable<Operand> operands)
         {
@@ -52,29 +49,9 @@ namespace Veggerby.Algorithm.Calculus
             return new Minimum(left, right);
         }
 
-        public override bool Equals(object obj) 
-        {
-            return Equals(obj as Minimum);
-        }
-
-        public override bool Equals(Operand other)
-        {
-            return Equals(other as Minimum);
-        }
-
-        public bool Equals(Minimum other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-
-            return this.EqualsCommutative(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override bool Equals(object obj) => Equals(obj as Minimum);
+        public override bool Equals(Operand other) => Equals(other as Minimum);
+        public bool Equals(Minimum other) => other != null && this.EqualsCommutative(other);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

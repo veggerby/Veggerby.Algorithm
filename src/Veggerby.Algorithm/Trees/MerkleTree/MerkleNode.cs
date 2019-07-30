@@ -48,10 +48,7 @@ namespace Veggerby.Algorithm.Trees.MerkleTree
             return new MerkleNode<T>(merkleChunk, null, null);
         }
 
-        public static IMerkleNode<string> Create(string chunk, Encoding encoding = null, HashAlgorithm hashAlgorithm = null)
-        {
-            return MerkleNode<string>.Create(chunk, (encoding ?? Encoding.UTF8).GetBytes, hashAlgorithm);
-        }
+        public static IMerkleNode<string> Create(string chunk, Encoding encoding = null, HashAlgorithm hashAlgorithm = null) => MerkleNode<string>.Create(chunk, (encoding ?? Encoding.UTF8).GetBytes, hashAlgorithm);
 
         public static IMerkleNode<T> Create(IEnumerable<T> chunks, Func<T, byte[]> bufferFunc, HashAlgorithm hashAlgorithm = null)
         {
