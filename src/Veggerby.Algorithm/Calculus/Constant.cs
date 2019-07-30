@@ -1,5 +1,4 @@
 using System;
-using Veggerby.Algorithm.Calculus.Visitors;
 
 namespace Veggerby.Algorithm.Calculus
 {
@@ -183,7 +182,7 @@ namespace Veggerby.Algorithm.Calculus
                 return (int)((IConstantWithValue)value).Value;
             }
 
-            throw new NotSupportedException();       
+            throw new NotSupportedException();
         }
     }
 }

@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Veggerby.Algorithm.Calculus.Visitors
 {
     public class OrderOperandVisitor : IOperandVisitor<int>

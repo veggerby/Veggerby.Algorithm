@@ -1,7 +1,4 @@
-using System;
-using System.Linq;
 using Shouldly;
-using Veggerby.Algorithm.Calculus;
 using Veggerby.Algorithm.Calculus.Parser;
 using Xunit;
 

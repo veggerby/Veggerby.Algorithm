@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Shouldly;
 using Veggerby.Algorithm.Calculus;
 using Xunit;

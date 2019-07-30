@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Veggerby.Algorithm.Trees
 {
     public class BinaryNode<T> : AbstractBinaryNode<T, BinaryNode<T>>

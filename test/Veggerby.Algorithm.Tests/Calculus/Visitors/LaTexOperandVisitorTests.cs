@@ -1,5 +1,4 @@
 using Shouldly;
-using Veggerby.Algorithm.Calculus;
 using Veggerby.Algorithm.Calculus.Parser;
 using Veggerby.Algorithm.Calculus.Visitors;
 using Xunit;

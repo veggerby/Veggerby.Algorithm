@@ -1,9 +1,7 @@
 using System;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using Shouldly;
-using Veggerby.Algorithm.Trees;
 using Veggerby.Algorithm.Trees.MerkleTree;
 using Xunit;
 
