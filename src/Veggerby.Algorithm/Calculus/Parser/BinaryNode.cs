@@ -1,16 +1,9 @@
-namespace Veggerby.Algorithm.Calculus.Parser
+namespace Veggerby.Algorithm.Calculus.Parser;
+
+public class BinaryNode(Node left, Token token, Node right) : Node(token)
 {
-    public class BinaryNode : Node
-    {
-        public Node Left { get; }
-        public Node Right { get; }
+    public Node Left { get; } = left;
+    public Node Right { get; } = right;
 
-        public BinaryNode(Node left, Token token, Node right) : base(token)
-        {
-            Left = left;
-            Right = right;
-        }
-
-        public override string ToString() => $"({Left}){base.ToString()}({Right})";
-    }
+    public override string ToString() => $"({Left}){base.ToString()}({Right})";
 }

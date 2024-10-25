@@ -1,97 +1,92 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Veggerby.Algorithm.Graphs
+namespace Veggerby.Algorithm.Graphs;
+
+public class Graph<T>(IEnumerable<T> vertices, IEnumerable<Edge<T>> edges) where T : notnull, IEquatable<T>
 {
-    public class Graph<T>
+    [NotNull]
+    public IEnumerable<T> Vertices { get; } = vertices?.ToList() ?? [];
+
+    [NotNull]
+    public IEnumerable<Edge<T>> Edges { get; } = edges?.ToList() ?? [];
+
+    private Graph<T> Remove(T vertex) => new Graph<T>(
+        Vertices.Where(x => !x.Equals(vertex)),
+        Edges.Where(x => !x.From.Equals(vertex) && !x.To.Equals(vertex))
+    );
+
+    public Edge<T>? GetEdge(T from, T to) => Edges.Cast<Edge<T>?>().SingleOrDefault(x => x?.From.Equals(from) == true && x?.To.Equals(to) == true);
+
+    public IEnumerable<Edge<T>> GetEdgesFrom(T from) => Edges.Where(x => x.From.Equals(from)).ToList().AsEnumerable();
+    public IEnumerable<Edge<T>> GetEdgesTo(T to) => Edges.Where(x => x.To.Equals(to)).ToList().AsEnumerable();
+
+    public int GetDegree(T vertex) => GetEdgesFrom(vertex).Count();
+
+    public Graph<T> GetKCore(int degree)
     {
-        public IEnumerable<T> Vertices { get; }
-        public IEnumerable<Edge<T>> Edges { get; }
-
-        public Graph(IEnumerable<T> vertices, IEnumerable<Edge<T>> edges)
+        var graph = this;
+        while (graph.Vertices.Any() && graph.Vertices.Any(x => graph.GetDegree(x) < degree))
         {
-            Vertices = (vertices ?? Enumerable.Empty<T>()).ToList();
-            Edges = (edges ?? Enumerable.Empty<Edge<T>>()).ToList();
+            var lowDegree = graph.Vertices.First(x => graph.GetDegree(x) < degree);
+            graph = graph.Remove(lowDegree);
         }
 
-        private Graph<T> Remove(T vertice) => new Graph<T>(
-                Vertices.Where(x => !x.Equals(vertice)),
-                Edges.Where(x => !x.From.Equals(vertice) && !x.To.Equals(vertice))
-            );
+        return graph.Vertices.Any() ? graph : null;
+    }
 
-        public Edge<T> GetEdge(T from, T to) => Edges.SingleOrDefault(x => x.From.Equals(from) && x.To.Equals(to));
+    private void TraverseVertexBreadthFirst(T vertex, IDictionary<T, bool> visited, Action<T> visitor)
+    {
+        var queue = new Queue<T>();
 
-        public IEnumerable<Edge<T>> GetEdgesFrom(T from) => Edges.Where(x => x.From.Equals(from)).ToList().AsEnumerable();
+        visited[vertex] = true;
+        queue.Enqueue(vertex);
 
-        public int GetDegree(T vertice) => GetEdgesFrom(vertice).Count();
-
-        public Graph<T> GetKCore(int degree)
+        while (queue.Any())
         {
-            var graph = this;
-            while (graph.Vertices.Any() && graph.Vertices.Any(x => graph.GetDegree(x) < degree))
-            {
-                var lowDegree = graph.Vertices.First(x => graph.GetDegree(x) < degree);
-                graph = graph.Remove(lowDegree);
-            }
+            var entry = queue.Dequeue();
+            visitor(entry);
 
-            return graph.Vertices.Any() ? graph : null;
-        }
-
-        private void TraverseVerticeBreadthFirst(T vertice, IDictionary<T, bool> visited, Action<T> visitor)
-        {
-            var queue = new Queue<T>();
-
-            visited[vertice] = true;
-            queue.Enqueue(vertice);
-
-            while (queue.Any())
-            {
-                var entry = queue.Dequeue();
-                visitor(entry);
-
-                var neighbors = GetEdgesFrom(entry);
-                foreach (var neighbor in neighbors)
-                {
-                    if (!visited[neighbor.To])
-                    {
-                        visited[neighbor.To] = true;
-                        queue.Enqueue(neighbor.To);
-                    }
-                }
-            }
-        }
-
-        public void TraverseBreadthFirst(Action<T> visitor)
-        {
-            var visited = Vertices.ToDictionary(x => x, x => false);
-            do
-            {
-                var vertice = visited.First(x => !x.Value);
-                TraverseVerticeBreadthFirst(vertice.Key, visited, visitor);
-            } while (visited.Any(x => !x.Value));
-        }
-
-        private void TraverseVerticeDepthFirst(T vertice, IDictionary<T, bool> visited, Action<T> visitor)
-        {
-            visited[vertice] = true;
-            visitor(vertice);
-
-            var neighbors = GetEdgesFrom(vertice);
+            var neighbors = GetEdgesFrom(entry);
             foreach (var neighbor in neighbors)
             {
                 if (!visited[neighbor.To])
                 {
-                    TraverseVerticeDepthFirst(neighbor.To, visited, visitor);
+                    visited[neighbor.To] = true;
+                    queue.Enqueue(neighbor.To);
                 }
             }
         }
+    }
 
-        public void TraverseDepthFirst(Action<T> visitor)
+    public void TraverseBreadthFirst(Action<T> visitor)
+    {
+        var visited = Vertices.ToDictionary(x => x, x => false);
+        do
         {
-            var visited = Vertices.ToDictionary(x => x, x => false);
-            var first = Vertices.First();
-            TraverseVerticeDepthFirst(first, visited, visitor);
+            var vertex = visited.First(x => !x.Value);
+            TraverseVertexBreadthFirst(vertex.Key, visited, visitor);
+        } while (visited.Any(x => !x.Value));
+    }
+
+    private void TraverseVertexDepthFirst(T vertex, IDictionary<T, bool> visited, Action<T> visitor)
+    {
+        visited[vertex] = true;
+        visitor(vertex);
+
+        var neighbors = GetEdgesFrom(vertex);
+        foreach (var neighbor in neighbors)
+        {
+            if (!visited[neighbor.To])
+            {
+                TraverseVertexDepthFirst(neighbor.To, visited, visitor);
+            }
         }
+    }
+
+    public void TraverseDepthFirst(Action<T> visitor)
+    {
+        var visited = Vertices.ToDictionary(x => x, x => false);
+        var first = Vertices.First();
+        TraverseVertexDepthFirst(first, visited, visitor);
     }
 }

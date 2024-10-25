@@ -1,229 +1,230 @@
-using Shouldly;
+using FluentAssertions;
+
 using Veggerby.Algorithm.Calculus.Parser;
+
 using Xunit;
 
-namespace Veggerby.Algorithm.Tests.Calculus.Parser
+namespace Veggerby.Algorithm.Tests.Calculus.Parser;
+
+public class SyntaxtParserTests
 {
-    public class SyntaxtParserTests
+    [Fact]
+    public void Should_get_simple_parse_tree()
     {
-        [Fact]
-        public void Should_get_simple_parse_tree()
+        // arrange
+        var parser = new SyntaxParser();
+
+        var xtoken = new Token(TokenType.Identifier, "x", new TokenPosition(0, 1, 0));
+
+        var tokens = new[]
         {
-            // arrange
-            var parser = new SyntaxParser();
+            new Token(TokenType.Start, null, new TokenPosition(0, 1, 0)),
+            xtoken,
+            new Token(TokenType.End, null, new TokenPosition(1, 1, 1))
+        };
 
-            var xtoken = new Token(TokenType.Identifier, "x", new TokenPosition(0, 1, 0));
+        // act
+        var actual = parser.ParseTree(tokens);
 
-            var tokens = new []
-            {
-                new Token(TokenType.Start, null, new TokenPosition(0, 1, 0)),
-                xtoken,
-                new Token(TokenType.End, null, new TokenPosition(1, 1, 1))
-            };
+        // assert
+        actual.Token.Should().Be(xtoken);
+    }
 
-            // act
-            var actual = parser.ParseTree(tokens);
+    [Fact]
+    public void Should_get_parse_tree_binary()
+    {
+        // arrange
+        var parser = new SyntaxParser();
 
-            // assert
-            actual.Token.ShouldBe(xtoken);
-        }
+        var xToken = new Token(TokenType.Identifier, "x", new TokenPosition(0, 1, 0));
+        var signToken = new Token(TokenType.Sign, "+", new TokenPosition(1, 1, 1));
+        var numberToken = new Token(TokenType.Number, "1.2", new TokenPosition(2, 1, 2));
 
-        [Fact]
-        public void Should_get_parse_tree_binary()
+        var tokens = new[]
         {
-            // arrange
-            var parser = new SyntaxParser();
+            new Token(TokenType.Start, null, new TokenPosition(0, 1, 0)),
+            xToken,
+            signToken,
+            numberToken,
+            new Token(TokenType.End, null, new TokenPosition(5, 1, 5))
+        };
 
-            var xToken = new Token(TokenType.Identifier, "x", new TokenPosition(0, 1, 0));
-            var signToken = new Token(TokenType.Sign, "+", new TokenPosition(1, 1, 1));
-            var numberToken = new Token(TokenType.Number, "1.2", new TokenPosition(2, 1, 2));
+        // act
+        var actual = parser.ParseTree(tokens);
 
-            var tokens = new []
-            {
-                new Token(TokenType.Start, null, new TokenPosition(0, 1, 0)),
-                xToken,
-                signToken,
-                numberToken,
-                new Token(TokenType.End, null, new TokenPosition(5, 1, 5))
-            };
+        // assert
+        actual.Should().BeOfType<BinaryNode>();
+        actual.Token.Should().Be(signToken);
+        ((BinaryNode)actual).Left.Token.Should().Be(xToken);
+        ((BinaryNode)actual).Right.Token.Should().Be(numberToken);
+    }
 
-            // act
-            var actual = parser.ParseTree(tokens);
+    [Fact]
+    public void Should_get_parse_tree_unary_function()
+    {
+        // arrange
+        var parser = new SyntaxParser();
 
-            // assert
-            actual.ShouldBeOfType<BinaryNode>();
-            actual.Token.ShouldBe(signToken);
-            ((BinaryNode)actual).Left.Token.ShouldBe(xToken);
-            ((BinaryNode)actual).Right.Token.ShouldBe(numberToken);
-        }
+        var sinToken = new Token(TokenType.Function, "sin", new TokenPosition(0, 1, 0));
+        var startParenthesisToken = new Token(TokenType.StartParenthesis, "(", new TokenPosition(4, 1, 4));
+        var xToken = new Token(TokenType.Identifier, "x", new TokenPosition(5, 1, 5));
+        var endParenthesisToken = new Token(TokenType.EndParenthesis, ")", new TokenPosition(6, 1, 6));
 
-        [Fact]
-        public void Should_get_parse_tree_unary_function()
+        var tokens = new[]
         {
-            // arrange
-            var parser = new SyntaxParser();
+            new Token(TokenType.Start, null, new TokenPosition(0, 1, 0)),
+            sinToken,
+            startParenthesisToken,
+            xToken,
+            endParenthesisToken,
+            new Token(TokenType.End, null, new TokenPosition(7, 1, 7))
+        };
 
-            var sinToken = new Token(TokenType.Function, "sin", new TokenPosition(0, 1, 0));
-            var startParenthesisToken = new Token(TokenType.StartParenthesis, "(", new TokenPosition(4, 1, 4));
-            var xToken = new Token(TokenType.Identifier, "x", new TokenPosition(5, 1, 5));
-            var endParenthesisToken = new Token(TokenType.EndParenthesis, ")", new TokenPosition(6, 1, 6));
+        // act
+        var actual = parser.ParseTree(tokens);
 
-            var tokens = new []
-            {
-                new Token(TokenType.Start, null, new TokenPosition(0, 1, 0)),
-                sinToken,
-                startParenthesisToken,
-                xToken,
-                endParenthesisToken,
-                new Token(TokenType.End, null, new TokenPosition(7, 1, 7))
-            };
+        // assert
+        actual.Should().BeOfType<UnaryNode>();
+        actual.Token.Should().Be(sinToken);
+        ((UnaryNode)actual).Inner.Token.Should().Be(xToken);
+    }
 
-            // act
-            var actual = parser.ParseTree(tokens);
+    [Fact]
+    public void Should_get_parse_tree_unary_factorial()
+    {
+        // arrange
+        var parser = new SyntaxParser();
 
-            // assert
-            actual.ShouldBeOfType<UnaryNode>();
-            actual.Token.ShouldBe(sinToken);
-            ((UnaryNode)actual).Inner.Token.ShouldBe(xToken);
-        }
+        var xToken = new Token(TokenType.Identifier, "x", new TokenPosition(0, 1, 0));
+        var factorialToken = new Token(TokenType.Factorial, "!", new TokenPosition(1, 1, 1));
 
-        [Fact]
-        public void Should_get_parse_tree_unary_factorial()
+        var tokens = new[]
         {
-            // arrange
-            var parser = new SyntaxParser();
+            new Token(TokenType.Start, null, new TokenPosition(0, 1, 0)),
+            xToken,
+            factorialToken,
+            new Token(TokenType.End, null, new TokenPosition(2, 1, 2))
+        };
 
-            var xToken = new Token(TokenType.Identifier, "x", new TokenPosition(0, 1, 0));
-            var factorialToken = new Token(TokenType.Factorial, "!", new TokenPosition(1, 1, 1));
+        // act
+        var actual = parser.ParseTree(tokens);
 
-            var tokens = new []
-            {
-                new Token(TokenType.Start, null, new TokenPosition(0, 1, 0)),
-                xToken,
-                factorialToken,
-                new Token(TokenType.End, null, new TokenPosition(2, 1, 2))
-            };
+        // assert
+        actual.Should().BeOfType<UnaryNode>();
+        actual.Token.Should().Be(factorialToken);
+        ((UnaryNode)actual).Inner.Token.Should().Be(xToken);
+    }
 
-            // act
-            var actual = parser.ParseTree(tokens);
+    [Fact]
+    public void Should_get_parse_tree_binary_function()
+    {
+        // arrange
+        var parser = new SyntaxParser();
 
-            // assert
-            actual.ShouldBeOfType<UnaryNode>();
-            actual.Token.ShouldBe(factorialToken);
-            ((UnaryNode)actual).Inner.Token.ShouldBe(xToken);
-        }
+        var maxToken = new Token(TokenType.Function, "max", new TokenPosition(0, 1, 0));
+        var startParenthesisToken = new Token(TokenType.StartParenthesis, "(", new TokenPosition(4, 1, 4));
+        var xToken = new Token(TokenType.Identifier, "x", new TokenPosition(5, 1, 5));
+        var separatorToken = new Token(TokenType.Separator, "m", new TokenPosition(6, 1, 6));
+        var yToken = new Token(TokenType.Identifier, "y", new TokenPosition(7, 1, 7));
+        var endParenthesisToken = new Token(TokenType.EndParenthesis, ")", new TokenPosition(8, 1, 8));
 
-        [Fact]
-        public void Should_get_parse_tree_binary_function()
+        var tokens = new[]
         {
-            // arrange
-            var parser = new SyntaxParser();
+            new Token(TokenType.Start, null, new TokenPosition(0, 1, 0)),
+            maxToken,
+            startParenthesisToken,
+            xToken,
+            separatorToken,
+            yToken,
+            endParenthesisToken,
+            new Token(TokenType.End, null, new TokenPosition(7, 1, 7))
+        };
 
-            var maxToken = new Token(TokenType.Function, "max", new TokenPosition(0, 1, 0));
-            var startParenthesisToken = new Token(TokenType.StartParenthesis, "(", new TokenPosition(4, 1, 4));
-            var xToken = new Token(TokenType.Identifier, "x", new TokenPosition(5, 1, 5));
-            var separatorToken = new Token(TokenType.Separator, "m", new TokenPosition(6, 1, 6));
-            var yToken = new Token(TokenType.Identifier, "y", new TokenPosition(7, 1, 7));
-            var endParenthesisToken = new Token(TokenType.EndParenthesis, ")", new TokenPosition(8, 1, 8));
+        // act
+        var actual = parser.ParseTree(tokens);
 
-            var tokens = new []
-            {
-                new Token(TokenType.Start, null, new TokenPosition(0, 1, 0)),
-                maxToken,
-                startParenthesisToken,
-                xToken,
-                separatorToken,
-                yToken,
-                endParenthesisToken,
-                new Token(TokenType.End, null, new TokenPosition(7, 1, 7))
-            };
+        // assert
+        actual.Should().BeOfType<BinaryNode>();
+        actual.Token.Should().Be(maxToken);
+        ((BinaryNode)actual).Left.Token.Should().Be(xToken);
+        ((BinaryNode)actual).Right.Token.Should().Be(yToken);
+    }
 
-            // act
-            var actual = parser.ParseTree(tokens);
+    [Fact]
+    public void Should_get_parse_tree_complex_function()
+    {
+        // arrange
+        var parser = new SyntaxParser();
 
-            // assert
-            actual.ShouldBeOfType<BinaryNode>();
-            actual.Token.ShouldBe(maxToken);
-            ((BinaryNode)actual).Left.Token.ShouldBe(xToken);
-            ((BinaryNode)actual).Right.Token.ShouldBe(yToken);
-        }
+        // x^2+sin(x*cos(3*pi-x))
+        var xToken1 = new Token(TokenType.Identifier, "x", new TokenPosition(0, 1, 0));
+        var powerToken = new Token(TokenType.OperatorPriority1, "^", new TokenPosition(1, 1, 1));
+        var constant2Token = new Token(TokenType.Number, "2", new TokenPosition(2, 1, 2));
+        var signPlusToken = new Token(TokenType.Sign, "+", new TokenPosition(3, 1, 3));
+        var sinToken = new Token(TokenType.Function, "sin", new TokenPosition(4, 1, 4));
+        var parenthesisToken1 = new Token(TokenType.StartParenthesis, "(", new TokenPosition(7, 1, 7));
+        var xToken2 = new Token(TokenType.Identifier, "x", new TokenPosition(8, 1, 8));
+        var multiplicationToken1 = new Token(TokenType.OperatorPriority1, "*", new TokenPosition(9, 1, 9));
+        var cosToken = new Token(TokenType.Function, "cos", new TokenPosition(10, 1, 10));
+        var parenthesisToken2 = new Token(TokenType.StartParenthesis, "(", new TokenPosition(11, 1, 11));
+        var constant3Token = new Token(TokenType.Number, "3", new TokenPosition(12, 1, 12));
+        var multiplicationToken2 = new Token(TokenType.OperatorPriority1, "*", new TokenPosition(13, 1, 13));
+        var piToken = new Token(TokenType.Identifier, "pi", new TokenPosition(15, 1, 15));
+        var signMinusToken = new Token(TokenType.Sign, "-", new TokenPosition(17, 1, 17));
+        var xToken3 = new Token(TokenType.Identifier, "x", new TokenPosition(18, 1, 18));
+        var parenthesisToken3 = new Token(TokenType.EndParenthesis, ")", new TokenPosition(19, 1, 19));
+        var parenthesisToken4 = new Token(TokenType.EndParenthesis, ")", new TokenPosition(20, 1, 20));
 
-        [Fact]
-        public void Should_get_parse_tree_complex_function()
+        var tokens = new[]
         {
-            // arrange
-            var parser = new SyntaxParser();
+            new Token(TokenType.Start, null, new TokenPosition(0, 1, 0)),
+            xToken1,
+            powerToken,
+            constant2Token,
+            signPlusToken,
+            sinToken,
+            parenthesisToken1,
+            xToken2,
+            multiplicationToken1,
+            cosToken,
+            parenthesisToken2,
+            constant3Token,
+            multiplicationToken2,
+            piToken,
+            signMinusToken,
+            xToken3,
+            parenthesisToken3,
+            parenthesisToken4,
+            new Token(TokenType.End, null, new TokenPosition(21, 1, 21))
+        };
 
-            // x^2+sin(x*cos(3*pi-x))
-            var xToken1 = new Token(TokenType.Identifier, "x", new TokenPosition(0, 1, 0));
-            var powerToken = new Token(TokenType.OperatorPriority1, "^", new TokenPosition(1, 1, 1));
-            var constant2Token = new Token(TokenType.Number, "2", new TokenPosition(2, 1, 2));
-            var signPlusToken = new Token(TokenType.Sign, "+", new TokenPosition(3, 1, 3));
-            var sinToken = new Token(TokenType.Function, "sin", new TokenPosition(4, 1, 4));
-            var parenthesisToken1 = new Token(TokenType.StartParenthesis, "(", new TokenPosition(7, 1, 7));
-            var xToken2 = new Token(TokenType.Identifier, "x", new TokenPosition(8, 1, 8));
-            var multiplicationToken1 = new Token(TokenType.OperatorPriority1, "*", new TokenPosition(9, 1, 9));
-            var cosToken = new Token(TokenType.Function, "cos", new TokenPosition(10, 1, 10));
-            var parenthesisToken2 = new Token(TokenType.StartParenthesis, "(", new TokenPosition(11, 1, 11));
-            var constant3Token = new Token(TokenType.Number, "3", new TokenPosition(12, 1, 12));
-            var multiplicationToken2 = new Token(TokenType.OperatorPriority1, "*", new TokenPosition(13, 1, 13));
-            var piToken = new Token(TokenType.Identifier, "pi", new TokenPosition(15, 1, 15));
-            var signMinusToken = new Token(TokenType.Sign, "-", new TokenPosition(17, 1, 17));
-            var xToken3 = new Token(TokenType.Identifier, "x", new TokenPosition(18, 1, 18));
-            var parenthesisToken3 = new Token(TokenType.EndParenthesis, ")", new TokenPosition(19, 1, 19));
-            var parenthesisToken4 = new Token(TokenType.EndParenthesis, ")", new TokenPosition(20, 1, 20));
+        // act
+        var actual = parser.ParseTree(tokens);
 
-            var tokens = new []
-            {
-                new Token(TokenType.Start, null, new TokenPosition(0, 1, 0)),
-                xToken1,
-                powerToken,
-                constant2Token,
-                signPlusToken,
-                sinToken,
-                parenthesisToken1,
-                xToken2,
-                multiplicationToken1,
-                cosToken,
-                parenthesisToken2,
-                constant3Token,
-                multiplicationToken2,
-                piToken,
-                signMinusToken,
-                xToken3,
-                parenthesisToken3,
-                parenthesisToken4,
-                new Token(TokenType.End, null, new TokenPosition(21, 1, 21))
-            };
+        // assert
+        actual.Should().BeOfType<BinaryNode>();
+        actual.Token.Should().Be(signPlusToken);
+        var left = ((BinaryNode)actual).Left as BinaryNode;
+        var right = ((BinaryNode)actual).Right as UnaryNode;
+        left.Token.Should().Be(powerToken);
+        right.Token.Should().Be(sinToken);
 
-            // act
-            var actual = parser.ParseTree(tokens);
+        left.Left.Token.Should().Be(xToken1);
+        left.Right.Token.Should().Be(constant2Token);
 
-            // assert
-            actual.ShouldBeOfType<BinaryNode>();
-            actual.Token.ShouldBe(signPlusToken);
-            var left = ((BinaryNode)actual).Left as BinaryNode;
-            var right = ((BinaryNode)actual).Right as UnaryNode;
-            left.Token.ShouldBe(powerToken);
-            right.Token.ShouldBe(sinToken);
+        right.Inner.Token.Should().Be(multiplicationToken1);
 
-            left.Left.Token.ShouldBe(xToken1);
-            left.Right.Token.ShouldBe(constant2Token);
+        var rightInner = (BinaryNode)right.Inner;
+        rightInner.Left.Token.Should().Be(xToken2);
+        rightInner.Right.Token.Should().Be(cosToken);
 
-            right.Inner.Token.ShouldBe(multiplicationToken1);
+        var cosInner = ((UnaryNode)rightInner.Right).Inner as BinaryNode;
+        cosInner.Token.Should().Be(signMinusToken);
+        cosInner.Left.Token.Should().Be(multiplicationToken2);
+        cosInner.Right.Token.Should().Be(xToken3);
 
-            var rightInner = (BinaryNode)right.Inner;
-            rightInner.Left.Token.ShouldBe(xToken2);
-            rightInner.Right.Token.ShouldBe(cosToken);
-
-            var cosInner = ((UnaryNode)rightInner.Right).Inner as BinaryNode;
-            cosInner.Token.ShouldBe(signMinusToken);
-            cosInner.Left.Token.ShouldBe(multiplicationToken2);
-            cosInner.Right.Token.ShouldBe(xToken3);
-
-            var cosInnerLeft = (BinaryNode)cosInner.Left;
-            cosInnerLeft.Left.Token.ShouldBe(constant3Token);
-            cosInnerLeft.Right.Token.ShouldBe(piToken);
-        }
+        var cosInnerLeft = (BinaryNode)cosInner.Left;
+        cosInnerLeft.Left.Token.Should().Be(constant3Token);
+        cosInnerLeft.Right.Token.Should().Be(piToken);
     }
 }

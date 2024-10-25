@@ -1,50 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿namespace Veggerby.Algorithm.LinearAlgebra;
 
-namespace Veggerby.Algorithm.LinearAlgebra
+public static class Extensions
 {
-    public static class Extensions
+    public static double[,] ToArray(this IEnumerable<Vector> rows)
     {
-        public static double[,] ToArray(this IEnumerable<Vector> rows)
+        if (rows is not null)
         {
-            if (rows != null)
+            var rowList = rows.ToList();
+            var maxSize = rowList.Max(x => x.Size);
+            var result = new double[rowList.Count(), maxSize];
+            var r = 0;
+
+            foreach (var row in rowList)
             {
-                var rowList = rows.ToList();
-                var maxSize = rowList.Max(x => x.Size);
-                var result = new double[rowList.Count(), maxSize];
-                var r = 0;
-
-                foreach (var row in rowList)
+                for (int c = 0; c < row.Size; c++)
                 {
-                    for (int c = 0; c < row.Size; c++)
-                    {
-                        result[r, c] = row[c];
-                    }
-
-                    r++;
+                    result[r, c] = row[c];
                 }
 
-                return result;
+                r++;
             }
 
-            return null;
+            return result;
         }
 
-        public static bool IsAll(this Matrix m, Func<int, int, double, bool> predicate)
+        return null;
+    }
+
+    public static bool IsAll(this Matrix m, Func<int, int, double, bool> predicate)
+    {
+        for (int r = 0; r < m.RowCount; r++)
         {
-            for (int r = 0; r < m.RowCount; r++)
+            for (var c = 0; c < m.ColCount; c++)
             {
-                for (var c = 0; c < m.ColCount; c++)
+                if (!predicate(r, c, m[r, c]))
                 {
-                    if (!predicate(r, c, m[r, c]))
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
-
-            return true;
         }
+
+        return true;
     }
 }

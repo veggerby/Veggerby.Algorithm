@@ -1,104 +1,105 @@
-using Shouldly;
+using FluentAssertions;
+
 using Veggerby.Algorithm.Calculus;
+
 using Xunit;
 
-namespace Veggerby.Algorithm.Tests.Calculus
+namespace Veggerby.Algorithm.Tests.Calculus;
+
+public class LogarithmBaseTests
 {
-    public class LogarithmBaseTests
+    [Fact]
+    public void Should_initialize_from_constructor()
     {
-        [Fact]
-        public void Should_initialize_from_constructor()
-        {
-            // arrange
+        // arrange
 
-            // act
-            var actual = (LogarithmBase)LogarithmBase.Create(10, Variable.x);
+        // act
+        var actual = (LogarithmBase)LogarithmBase.Create(10, Variable.x);
 
-            // assert
-            actual.Base.ShouldBe(10);
-            actual.Inner.ShouldBe(Variable.x);
-        }
+        // assert
+        actual.Base.Should().Be(10);
+        actual.Inner.Should().Be(Variable.x);
+    }
 
-        [Fact]
-        public void Should_equal_self()
-        {
-            // arrange
-            var v = LogarithmBase.Create(10, Variable.x);
+    [Fact]
+    public void Should_equal_self()
+    {
+        // arrange
+        var v = LogarithmBase.Create(10, Variable.x);
 
-            // act
-            var actual = v.Equals(v);
+        // act
+        var actual = v.Equals(v);
 
-            // assert
-            actual.ShouldBeTrue();
-        }
+        // assert
+        actual.Should().BeTrue();
+    }
 
-        [Fact]
-        public void Should_not_equal_null()
-        {
-            // arrange
-            var v = LogarithmBase.Create(10, Variable.x);
+    [Fact]
+    public void Should_not_equal_null()
+    {
+        // arrange
+        var v = LogarithmBase.Create(10, Variable.x);
 
-            // act
-            var actual = v.Equals(null);
+        // act
+        var actual = v.Equals(null);
 
-            // assert
-            actual.ShouldBeFalse();
-        }
+        // assert
+        actual.Should().BeFalse();
+    }
 
-        [Fact]
-        public void Should_equal_same_operands()
-        {
-            // arrange
-            var v1 = LogarithmBase.Create(10, Variable.x);
-            var v2 = LogarithmBase.Create(10, Variable.x);
+    [Fact]
+    public void Should_equal_same_operands()
+    {
+        // arrange
+        var v1 = LogarithmBase.Create(10, Variable.x);
+        var v2 = LogarithmBase.Create(10, Variable.x);
 
-            // act
-            var actual = v1.Equals(v2);
+        // act
+        var actual = v1.Equals(v2);
 
-            // assert
-            actual.ShouldBeTrue();
-        }
+        // assert
+        actual.Should().BeTrue();
+    }
 
-        [Fact]
-        public void Should_not_equal_different_operands()
-        {
-            // arrange
-            var v1 = LogarithmBase.Create(10, Variable.x);
-            var v2 = LogarithmBase.Create(10, 2);
+    [Fact]
+    public void Should_not_equal_different_operands()
+    {
+        // arrange
+        var v1 = LogarithmBase.Create(10, Variable.x);
+        var v2 = LogarithmBase.Create(10, 2);
 
-            // act
-            var actual = v1.Equals(v2);
+        // act
+        var actual = v1.Equals(v2);
 
-            // assert
-            actual.ShouldBeFalse();
-        }
+        // assert
+        actual.Should().BeFalse();
+    }
 
-        [Fact]
-        public void Should_not_equal_different_base()
-        {
-            // arrange
-            var v1 = LogarithmBase.Create(10, Variable.x);
-            var v2 = LogarithmBase.Create(2, Variable.x);
+    [Fact]
+    public void Should_not_equal_different_base()
+    {
+        // arrange
+        var v1 = LogarithmBase.Create(10, Variable.x);
+        var v2 = LogarithmBase.Create(2, Variable.x);
 
-            // act
-            var actual = v1.Equals(v2);
+        // act
+        var actual = v1.Equals(v2);
 
-            // assert
-            actual.ShouldBeFalse();
-        }
+        // assert
+        actual.Should().BeFalse();
+    }
 
-        [Fact]
-        public void Should_not_equal_different_operation_identical_operands()
-        {
-            // arrange
-            var v1 = LogarithmBase.Create(10, Variable.x);
-            var v2 = Sine.Create(Variable.x);
+    [Fact]
+    public void Should_not_equal_different_operation_identical_operands()
+    {
+        // arrange
+        var v1 = LogarithmBase.Create(10, Variable.x);
+        var v2 = Sine.Create(Variable.x);
 
-            // act
-            var actual = v1.Equals(v2);
+        // act
+        var actual = v1.Equals(v2);
 
-            // assert
-            actual.ShouldBeFalse();
-        }
+        // assert
+        actual.Should().BeFalse();
     }
 }

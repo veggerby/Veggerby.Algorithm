@@ -1,7 +1,6 @@
-namespace Veggerby.Algorithm.Calculus
+namespace Veggerby.Algorithm.Calculus;
+
+public interface IConstantWithValue
 {
-    public interface IConstantWithValue
-    {
-        double Value { get; }
-    }
+    double Value { get; }
 }

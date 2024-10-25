@@ -1,17 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
+namespace Veggerby.Algorithm.Calculus;
 
-namespace Veggerby.Algorithm.Calculus
+public abstract class MultiOperation(params Operand[] operands) : Operand
 {
-    public abstract class MultiOperation : Operand
-    {
-        public IEnumerable<Operand> Operands { get; }
+    public IEnumerable<Operand> Operands { get; } = operands;
 
-        protected MultiOperation(params Operand[] operands)
-        {
-            Operands = operands;
-        }
-
-        public override int GetHashCode() => Operands.Aggregate(GetType().GetHashCode(), (seed, x) => seed ^ x.GetHashCode());
-    }
+    public override int GetHashCode() => Operands.Aggregate(GetType().GetHashCode(), (seed, x) => seed ^ x.GetHashCode());
 }

@@ -1,62 +1,64 @@
 using System;
-using Shouldly;
+
+using FluentAssertions;
+
 using Veggerby.Algorithm.Calculus;
+
 using Xunit;
 
-namespace Veggerby.Algorithm.Tests.Calculus
+namespace Veggerby.Algorithm.Tests.Calculus;
+
+public class UnspecifiedConstantTests
 {
-    public class UnspecifiedConstantTests
+    [Fact]
+    public void Should_initialize_from_constructor()
     {
-        [Fact]
-        public void Should_initialize_from_constructor()
-        {
-            // arrange
+        // arrange
 
-            // act
-            var actual = UnspecifiedConstant.Create();
+        // act
+        var actual = UnspecifiedConstant.Create();
 
-            // assert
-            actual.InstanceId.ShouldNotBe(Guid.Empty);
-        }
+        // assert
+        actual.InstanceId.Should().NotBe(Guid.Empty);
+    }
 
-        [Fact]
-        public void Should_equal_self()
-        {
-            // arrange
-            var v = UnspecifiedConstant.Create();
+    [Fact]
+    public void Should_equal_self()
+    {
+        // arrange
+        var v = UnspecifiedConstant.Create();
 
-            // act
-            var actual = v.Equals(v);
+        // act
+        var actual = v.Equals(v);
 
-            // assert
-            actual.ShouldBeTrue();
-        }
+        // assert
+        actual.Should().BeTrue();
+    }
 
-        [Fact]
-        public void Should_not_equal_null()
-        {
-            // arrange
-            var v = UnspecifiedConstant.Create();
+    [Fact]
+    public void Should_not_equal_null()
+    {
+        // arrange
+        var v = UnspecifiedConstant.Create();
 
-            // act
-            var actual = v.Equals(null);
+        // act
+        var actual = v.Equals(null);
 
-            // assert
-            actual.ShouldBeFalse();
-        }
+        // assert
+        actual.Should().BeFalse();
+    }
 
-        [Fact]
-        public void Should_not_equal_other()
-        {
-            // arrange
-            var v1 = UnspecifiedConstant.Create();
-            var v2 = UnspecifiedConstant.Create();
+    [Fact]
+    public void Should_not_equal_other()
+    {
+        // arrange
+        var v1 = UnspecifiedConstant.Create();
+        var v2 = UnspecifiedConstant.Create();
 
-            // act
-            var actual = v1.Equals(v2);
+        // act
+        var actual = v1.Equals(v2);
 
-            // assert
-            actual.ShouldBeFalse();
-        }
+        // assert
+        actual.Should().BeFalse();
     }
 }

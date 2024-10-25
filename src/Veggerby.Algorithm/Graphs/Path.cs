@@ -1,30 +1,52 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+namespace Veggerby.Algorithm.Graphs;
 
-namespace Veggerby.Algorithm.Graphs
+public readonly record struct Path<T>(Edge<T>[] Edges) where T : notnull, IEquatable<T>
 {
-    public class Path<T>
+    public static Path<T> Create(IEnumerable<Edge<T>> edges)
     {
-        public IEnumerable<Edge<T>> Edges { get; }
-        public int Distance => Edges.Sum(x => x.Weight);
-        public T From => Edges.First().From;
-        public T To => Edges.Last().To;
+        AssertValidEdgeOrder(edges);
+        return new Path<T>(edges.ToArray());
+    }
 
-        public Path(IEnumerable<Edge<T>> edges)
+    public static Path<T> Create(params Edge<T>[] edges) => Create(edges.AsEnumerable());
+
+    public static Path<T> Create(params IEnumerable<Edge<T>>[] edges) => Create(edges.SelectMany(x => x));
+
+    private static void AssertValidEdgeOrder(IEnumerable<Edge<T>> edges)
+    {
+        if (edges?.Any() != true)
         {
-            if (edges == null || !edges.Any())
+            throw new GraphException("No edges.");
+        }
+
+        if (edges.Count() == 1)
+        {
+            return;
+        }
+
+        Edge<T>? previous = null;
+        var remainingEdges = edges.ToList();
+
+        while (remainingEdges.Any())
+        {
+            var edge = remainingEdges.First();
+
+            if (previous?.To.Equals(edge.From) == false)
             {
-                throw new ArgumentException(nameof(edges));
+                throw new GraphException("Invalid edge order.");
             }
 
-            Edges = edges.ToList();
+            remainingEdges.Remove(edge);
         }
+    }
 
-        public override string ToString()
-        {
-            var path = string.Join(" ", Edges.Select(x => $"[{x.Weight}] {x.To}"));
-            return $"Path: {From} {path}";
-        }
+    public int Distance => Edges.Sum(x => x.Weight);
+    public T From => Edges.First().From;
+    public T To => Edges.Last().To;
+
+    public override string ToString()
+    {
+        var path = string.Join(" ", Edges.Select(x => $"[{x.Weight}] {x.To}"));
+        return $"Path: {From} {path}";
     }
 }

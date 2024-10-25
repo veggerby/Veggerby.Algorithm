@@ -1,59 +1,55 @@
-using System;
-using System.Collections.Generic;
+namespace Veggerby.Algorithm.Calculus;
 
-namespace Veggerby.Algorithm.Calculus
+public class UnspecifiedConstantSymbolFactory
 {
-    public class UnspecifiedConstantSymbolFactory
+    private const string _unspecifiedConstantNames = "CABDEFGHIJKLMNOPQRSTUVW";
+
+    private readonly IDictionary<Guid, string> _allocatedNamed = new Dictionary<Guid, string>();
+
+    internal string Next()
     {
-        private const string _unspecifiedConstantNames = "CABDEFGHIJKLMNOPQRSTUVW";
+        var name = _unspecifiedConstantNames[_allocatedNamed.Count % _unspecifiedConstantNames.Length];
 
-        private IDictionary<Guid, string> _allocatedNamed = new Dictionary<Guid, string>();
+        var ixc = _allocatedNamed.Count / _unspecifiedConstantNames.Length;
 
-        internal string Next()
+        if (ixc > 0)
         {
-            var name = _unspecifiedConstantNames[_allocatedNamed.Count % _unspecifiedConstantNames.Length];
-
-            var ixc = _allocatedNamed.Count / _unspecifiedConstantNames.Length;
-
-            if (ixc > 0)
-            {
-                return $"{name}{ixc}";
-            }
-
-            return name.ToString();
+            return $"{name}{ixc}";
         }
 
-        public string Get(Guid instanceId)
-        {
-            if (!_allocatedNamed.ContainsKey(instanceId))
-            {
-                _allocatedNamed.Add(instanceId, Next());
-            }
+        return name.ToString();
+    }
 
-            return _allocatedNamed[instanceId];
+    public string Get(Guid instanceId)
+    {
+        if (!_allocatedNamed.ContainsKey(instanceId))
+        {
+            _allocatedNamed.Add(instanceId, Next());
         }
 
-        internal static int Compare(string a, string b)
+        return _allocatedNamed[instanceId];
+    }
+
+    internal static int Compare(string a, string b)
+    {
+        try
         {
-            try
+            var aIxc = _unspecifiedConstantNames.IndexOf(a[0]);
+            var bIxc = _unspecifiedConstantNames.IndexOf(b[0]);
+
+            if (aIxc == bIxc)
             {
-                var aIxc = _unspecifiedConstantNames.IndexOf(a[0]);
-                var bIxc = _unspecifiedConstantNames.IndexOf(b[0]);
+                var aNumber = int.Parse(a.Substring(1));
+                var bNumber = int.Parse(b.Substring(1));
 
-                if (aIxc == bIxc)
-                {
-                    var aNumber = int.Parse(a.Substring(1));
-                    var bNumber = int.Parse(b.Substring(1));
-
-                    return aNumber.CompareTo(bNumber);
-                }
-
-                return aIxc.CompareTo(bIxc);
+                return aNumber.CompareTo(bNumber);
             }
-            catch (Exception)
-            {
-                throw new Exception("Undefined Constant name format invalid");
-            }
+
+            return aIxc.CompareTo(bIxc);
+        }
+        catch (Exception)
+        {
+            throw new Exception("Undefined Constant name format invalid");
         }
     }
 }

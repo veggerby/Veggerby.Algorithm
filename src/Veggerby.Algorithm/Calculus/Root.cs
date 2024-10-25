@@ -1,37 +1,35 @@
-using System;
 using Veggerby.Algorithm.Calculus.Visitors;
 
-namespace Veggerby.Algorithm.Calculus
-{
-    public class Root : UnaryOperation, IEquatable<Root>
-    {
-        public int Exponent { get; }
-        private Root(int exponent, Operand inner) : base(inner)
-        {
-            if (exponent < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(exponent));
-            }
+namespace Veggerby.Algorithm.Calculus;
 
-            Exponent = exponent;
+public class Root : UnaryOperation, IEquatable<Root>
+{
+    public int Exponent { get; }
+    private Root(int exponent, Operand inner) : base(inner)
+    {
+        if (exponent < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(exponent));
         }
 
-        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.Visit(this);
+        Exponent = exponent;
+    }
 
-        public static Operand Create(int exponent, Operand inner) => new Root(exponent, inner);
+    public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.Visit(this);
 
-        public override bool Equals(object obj) => Equals(obj as Root);
-        public override bool Equals(Operand other) => Equals(other as Root);
-        public bool Equals(Root other) => other != null && Exponent.Equals(other.Exponent) && Inner.Equals(other.Inner);
+    public static Operand Create(int exponent, Operand inner) => new Root(exponent, inner);
 
-        public override int GetHashCode()
+    public override bool Equals(object obj) => Equals(obj as Root);
+    public override bool Equals(Operand other) => Equals(other as Root);
+    public bool Equals(Root other) => other is not null && Exponent.Equals(other.Exponent) && Inner.Equals(other.Inner);
+
+    public override int GetHashCode()
+    {
+        unchecked
         {
-            unchecked
-            {
-                var hashCode = Exponent.GetHashCode();
-                hashCode = (hashCode*397) ^ Inner.GetHashCode();
-                return hashCode;
-            }
+            var hashCode = Exponent.GetHashCode();
+            hashCode = (hashCode * 397) ^ Inner.GetHashCode();
+            return hashCode;
         }
     }
 }

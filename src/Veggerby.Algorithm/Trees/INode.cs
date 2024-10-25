@@ -1,7 +1,6 @@
-namespace Veggerby.Algorithm.Trees
+namespace Veggerby.Algorithm.Trees;
+
+public interface INode<T> : IEquatable<INode<T>>, IEquatable<T>
 {
-    public interface INode<T>
-    {
-        T Payload { get; set; }
-    }
+    T Payload { get; set; }
 }

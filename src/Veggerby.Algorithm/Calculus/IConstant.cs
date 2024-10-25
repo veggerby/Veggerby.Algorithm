@@ -1,6 +1,5 @@
-namespace Veggerby.Algorithm.Calculus
+namespace Veggerby.Algorithm.Calculus;
+
+public interface IConstant
 {
-    public interface IConstant
-    {
-    }
 }

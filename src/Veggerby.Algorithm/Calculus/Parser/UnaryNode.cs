@@ -1,14 +1,8 @@
-namespace Veggerby.Algorithm.Calculus.Parser
+namespace Veggerby.Algorithm.Calculus.Parser;
+
+public class UnaryNode(Token token, Node inner) : Node(token)
 {
-    public class UnaryNode : Node
-    {
-        public Node Inner { get; }
+    public Node Inner { get; } = inner;
 
-        public UnaryNode(Token token, Node inner) : base(token)
-        {
-            Inner = inner;
-        }
-
-        public override string ToString() => $"{base.ToString()}({Inner})";
-    }
+    public override string ToString() => $"{base.ToString()}({Inner})";
 }

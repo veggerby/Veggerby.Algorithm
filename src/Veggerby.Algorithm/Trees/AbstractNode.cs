@@ -1,58 +1,36 @@
-using System;
-using System.Linq;
+namespace Veggerby.Algorithm.Trees;
 
-namespace Veggerby.Algorithm.Trees
+public abstract class AbstractNode<T, TParent> : INode<T>, IChildNode<TParent> where TParent : IParentNode
 {
-    public abstract class AbstractNode<T, TParent> : INode<T>, IChildNode<TParent> where TParent : IParentNode
+    private T _payload;
+
+    public T Payload
     {
-        private T _payload;
-        private TParent _parent;
+        get { return _payload; }
+        set { SetPayload(value); }
+    }
 
-        public T Payload
-        {
-            get { return _payload; }
-            set { SetPayload(value); }
-        }
+    public virtual bool IsLeaf => true;
 
-        public TParent Parent
-        {
-            get { return _parent; }
-            set { SetParent(value); }
-        }
+    protected virtual void SetPayload(T payload)
+    {
+        _payload = payload;
+    }
 
-        public virtual bool IsLeaf => true;
 
-        protected virtual void SetPayload(T payload)
-        {
-            _payload = payload;
-        }
+    public bool Equals(AbstractNode<T, TParent> other) =>
+        other is not null &&
+        Equals(other.Payload);
 
-        public virtual void SetParent(IParentNode parent)
-        {
-            if (parent != null && !(parent is TParent))
-            {
-                throw new ArgumentException(nameof(parent));
-            }
+    public override bool Equals(object obj) => Equals(obj as AbstractNode<T, TParent>);
+    public override int GetHashCode() => Payload?.GetHashCode() ?? 0;
 
-            if (parent != null && !parent.Children.Contains(this as IChildNode<IParentNode>))
-            {
-                throw new IndexOutOfRangeException(nameof(parent));
-            }
+    public bool Equals(INode<T> other) => Equals(other as AbstractNode<T, TParent>);
 
-            _parent = (TParent)parent;
-        }
+    public bool Equals(T other) => (Payload is null && other is null) || (Payload?.Equals(other) ?? false);
 
-        public bool Equals(AbstractNode<T, TParent> other) =>
-            other != null &&
-            ((Payload == null && other.Payload == null) || (Payload?.Equals(other.Payload) ?? false)) &&
-            ((Parent == null && other.Parent == null) || (Parent?.Equals(other.Parent) ?? false));
-        public override bool Equals(object obj) => Equals(obj as AbstractNode<T, TParent>);
-        public override int GetHashCode() => Parent?.GetHashCode() ?? 0 ^ Payload?.GetHashCode() ?? 0;
-
-        public AbstractNode(T payload = default(T))
-        {
-            SetPayload(payload);
-            SetParent(default(TParent));
-        }
+    public AbstractNode(T payload = default)
+    {
+        SetPayload(payload);
     }
 }

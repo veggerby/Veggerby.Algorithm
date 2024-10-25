@@ -1,28 +1,25 @@
-using System;
+namespace Veggerby.Algorithm.Calculus;
 
-namespace Veggerby.Algorithm.Calculus
+public abstract class BinaryOperation : Operand, IBinaryOperation
 {
-    public abstract class BinaryOperation : Operand, IBinaryOperation
+    public Operand Left { get; }
+    public Operand Right { get; }
+
+    protected BinaryOperation(Operand left, Operand right)
     {
-        public Operand Left { get; }
-        public Operand Right { get; }
-
-        protected BinaryOperation(Operand left, Operand right)
+        if (left is null)
         {
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-
-            Left = left;
-            Right = right;
+            throw new ArgumentNullException(nameof(left));
         }
 
-        public override int GetHashCode() => GetType().GetHashCode() ^ Left.GetHashCode() ^ Right.GetHashCode();
+        if (right is null)
+        {
+            throw new ArgumentNullException(nameof(right));
+        }
+
+        Left = left;
+        Right = right;
     }
+
+    public override int GetHashCode() => GetType().GetHashCode() ^ Left.GetHashCode() ^ Right.GetHashCode();
 }

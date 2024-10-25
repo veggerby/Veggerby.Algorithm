@@ -1,7 +1,6 @@
-namespace Veggerby.Algorithm.Calculus
+namespace Veggerby.Algorithm.Calculus;
+
+public interface IUnaryOperation
 {
-    public interface IUnaryOperation
-    {
-        Operand Inner { get; }
-    }
+    Operand Inner { get; }
 }

@@ -1,9 +1,5 @@
-namespace Veggerby.Algorithm.Trees
+namespace Veggerby.Algorithm.Trees;
+
+public class BinaryNode<T>(T payload = default, BinaryNode<T> left = null, BinaryNode<T> right = null) : AbstractBinaryNode<T, BinaryNode<T>>(payload, left, right)
 {
-    public class BinaryNode<T> : AbstractBinaryNode<T, BinaryNode<T>>
-    {
-        public BinaryNode(T payload = default(T), BinaryNode<T> left = null, BinaryNode<T> right = null) : base(payload, left, right)
-        {
-        }
-    }
 }

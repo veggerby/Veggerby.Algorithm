@@ -1,9 +1,6 @@
-using System.Collections.Generic;
+namespace Veggerby.Algorithm.Trees;
 
-namespace Veggerby.Algorithm.Trees
+public interface IParentNode
 {
-    public interface IParentNode
-    {
-        IEnumerable<IChildNode<IParentNode>> Children { get; }
-    }
+    IEnumerable<IChildNode<IParentNode>> Children { get; }
 }

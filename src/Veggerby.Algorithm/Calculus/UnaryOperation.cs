@@ -1,14 +1,8 @@
-namespace Veggerby.Algorithm.Calculus
+namespace Veggerby.Algorithm.Calculus;
+
+public abstract class UnaryOperation(Operand inner) : Operand, IUnaryOperation
 {
-    public abstract class UnaryOperation : Operand, IUnaryOperation
-    {
-        public Operand Inner { get; }
+    public Operand Inner { get; } = inner;
 
-        protected UnaryOperation(Operand inner)
-        {
-            Inner = inner;
-        }
-
-        public override int GetHashCode() => GetType().GetHashCode() ^ Inner.GetHashCode();
-    }
+    public override int GetHashCode() => GetType().GetHashCode() ^ Inner.GetHashCode();
 }

@@ -1,14 +1,8 @@
-namespace Veggerby.Algorithm.Calculus.Parser
+namespace Veggerby.Algorithm.Calculus.Parser;
+
+public class Node(Token token)
 {
-    public class Node
-    {
-        public Token Token { get; }
+    public Token Token { get; } = token;
 
-        public Node(Token token)
-        {
-            Token = token;
-        }
-
-        public override string ToString() => Token.ToString();
-    }
+    public override string ToString() => Token.ToString();
 }

@@ -1,9 +1,0 @@
-language: ruby
-sudo: required
-services:
-    - docker
-#before_install:
-#    - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-script:
-    - docker build -t veggerby/algorithm-test .
-    - docker run veggerby/algorithm-test dotnet test

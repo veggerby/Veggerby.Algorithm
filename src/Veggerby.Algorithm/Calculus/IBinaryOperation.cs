@@ -1,8 +1,7 @@
-namespace Veggerby.Algorithm.Calculus
+namespace Veggerby.Algorithm.Calculus;
+
+public interface IBinaryOperation
 {
-    public interface IBinaryOperation
-    {
-        Operand Left { get; }
-        Operand Right { get; }
-    }
+    Operand Left { get; }
+    Operand Right { get; }
 }

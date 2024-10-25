@@ -1,29 +1,22 @@
 using System.Text.RegularExpressions;
 
-namespace Veggerby.Algorithm.Calculus.Parser
+namespace Veggerby.Algorithm.Calculus.Parser;
+
+public class TokenDefinition(TokenType returnsToken, string regexPattern)
 {
-    public class TokenDefinition
+    private readonly Regex _regex = new Regex(regexPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    private readonly TokenType _returnsToken = returnsToken;
+
+    public Token FindMatch(string inputString, TokenPosition currentPosition)
     {
-        private readonly Regex _regex;
-        private readonly TokenType _returnsToken;
+        var match = _regex.Match(inputString, currentPosition.Index);
 
-        public TokenDefinition(TokenType returnsToken, string regexPattern)
+        if (match.Success && (match.Index - currentPosition.Index) == 0)
         {
-            _regex = new Regex(regexPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
-            _returnsToken = returnsToken;
+            var value = inputString.Substring(currentPosition.Index, match.Length);
+            return new Token(_returnsToken, value, currentPosition);
         }
 
-        public Token FindMatch(string inputString, TokenPosition currentPosition)
-        {
-            var match = _regex.Match(inputString, currentPosition.Index);
-
-            if (match.Success && (match.Index - currentPosition.Index) == 0)
-            {
-                var value = inputString.Substring(currentPosition.Index, match.Length);
-                return new Token(_returnsToken, value, currentPosition);
-            }
-
-            return null;
-        }
+        return null;
     }
 }

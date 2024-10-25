@@ -1,212 +1,210 @@
-using System;
 using Veggerby.Algorithm.Calculus.Visitors;
 
-namespace Veggerby.Algorithm.Calculus
+namespace Veggerby.Algorithm.Calculus;
+
+public class Fraction : Operand, IEquatable<Fraction>
 {
-    public class Fraction : Operand, IEquatable<Fraction>
+    public int Numerator { get; }
+    public int Denominator { get; }
+
+    protected Fraction(int numerator, int denominator)
     {
-        public int Numerator { get; }
-        public int Denominator { get; }
+        Numerator = numerator;
+        Denominator = denominator;
+    }
 
-        protected Fraction(int numerator, int denominator)
+    public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.Visit(this);
+
+    public static Operand operator +(Fraction left, Fraction right)
+    {
+        if (left is null)
         {
-            Numerator = numerator;
-            Denominator = denominator;
+            throw new ArgumentNullException(nameof(left));
         }
 
-        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.Visit(this);
-
-        public static Operand operator +(Fraction left, Fraction right)
+        if (right is null)
         {
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-
-            var num1 = left.Numerator * right.Denominator;
-            var num2 = right.Numerator * left.Denominator;
-            var dem = left.Denominator * right.Denominator;
-
-            return Fraction.Create(num1 + num2, dem);
+            throw new ArgumentNullException(nameof(right));
         }
 
-        public static Operand operator -(Fraction left, Fraction right)
+        var num1 = left.Numerator * right.Denominator;
+        var num2 = right.Numerator * left.Denominator;
+        var dem = left.Denominator * right.Denominator;
+
+        return Create(num1 + num2, dem);
+    }
+
+    public static Operand operator -(Fraction left, Fraction right)
+    {
+        if (left is null)
         {
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-
-            var num1 = left.Numerator * right.Denominator;
-            var num2 = right.Numerator * left.Denominator;
-            var dem = left.Denominator * right.Denominator;
-
-            return Fraction.Create(num1 - num2, dem);
+            throw new ArgumentNullException(nameof(left));
         }
 
-        public static Operand operator *(Fraction left, Fraction right)
+        if (right is null)
         {
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-
-            return Fraction.Create(left.Numerator * right.Numerator, left.Denominator * right.Denominator);
+            throw new ArgumentNullException(nameof(right));
         }
 
-        public static Operand operator *(int left, Fraction right)
-        {
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
+        var num1 = left.Numerator * right.Denominator;
+        var num2 = right.Numerator * left.Denominator;
+        var dem = left.Denominator * right.Denominator;
 
-            return Fraction.Create(left * right.Numerator, right.Denominator);
+        return Create(num1 - num2, dem);
+    }
+
+    public static Operand operator *(Fraction left, Fraction right)
+    {
+        if (left is null)
+        {
+            throw new ArgumentNullException(nameof(left));
         }
 
-        public static Operand operator *(double left, Fraction right)
+        if (right is null)
         {
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-
-            if (left.IsInteger())
-            {
-                return ((int)left) * right;
-            }
-
-            return left * right.Numerator / right.Denominator;
+            throw new ArgumentNullException(nameof(right));
         }
 
-        public static Operand operator *(Fraction left, int right)
-        {
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
+        return Create(left.Numerator * right.Numerator, left.Denominator * right.Denominator);
+    }
 
-            return Fraction.Create(right * left.Numerator, left.Denominator);
+    public static Operand operator *(int left, Fraction right)
+    {
+        if (right is null)
+        {
+            throw new ArgumentNullException(nameof(right));
         }
 
-        public static Operand operator *(Fraction left, double right)
+        return Create(left * right.Numerator, right.Denominator);
+    }
+
+    public static Operand operator *(double left, Fraction right)
+    {
+        if (right is null)
         {
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-
-            if (right.IsInteger())
-            {
-                return left * ((int)right);
-            }
-
-            return right * left.Numerator / left.Denominator;
+            throw new ArgumentNullException(nameof(right));
         }
 
-        public static Operand operator /(Fraction left, Fraction right)
+        if (left.IsInteger())
         {
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-
-            return Fraction.Create(left.Numerator * right.Denominator, left.Denominator * right.Numerator);
+            return ((int)left) * right;
         }
 
-        public static Operand operator /(int left, Fraction right)
-        {
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
+        return left * right.Numerator / right.Denominator;
+    }
 
-            return Fraction.Create(left * right.Denominator, right.Numerator);
+    public static Operand operator *(Fraction left, int right)
+    {
+        if (left is null)
+        {
+            throw new ArgumentNullException(nameof(left));
         }
 
-        public static Operand operator /(Fraction left, int right)
-        {
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
+        return Create(right * left.Numerator, left.Denominator);
+    }
 
-            return Fraction.Create(left.Numerator, left.Denominator * right);
+    public static Operand operator *(Fraction left, double right)
+    {
+        if (left is null)
+        {
+            throw new ArgumentNullException(nameof(left));
         }
 
-
-        public static Operand operator /(double left, Fraction right)
+        if (right.IsInteger())
         {
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-
-            if (left.IsInteger())
-            {
-                return ((int)left) / right;
-            }
-
-            return left * right.Denominator / right.Numerator;
+            return left * ((int)right);
         }
 
-        public static Operand operator /(Fraction left, double right)
+        return right * left.Numerator / left.Denominator;
+    }
+
+    public static Operand operator /(Fraction left, Fraction right)
+    {
+        if (left is null)
         {
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-
-            if (right.IsInteger())
-            {
-                return left / ((int)right);
-            }
-
-            return left.Numerator / (left.Denominator * right);
+            throw new ArgumentNullException(nameof(left));
         }
 
-        public static Operand Create(int numerator, int denominator)
+        if (right is null)
         {
-            if (denominator == 1)
-            {
-                return ValueConstant.Create(numerator);
-            }
-
-            return new Fraction(numerator, denominator);
+            throw new ArgumentNullException(nameof(right));
         }
 
-        public override bool Equals(object obj) => Equals(obj as Fraction);
-        public override bool Equals(Operand other) => Equals(other as Fraction);
-        public bool Equals(Fraction other) => other != null && Numerator == other.Numerator && Denominator == other.Denominator;
+        return Create(left.Numerator * right.Denominator, left.Denominator * right.Numerator);
+    }
 
-        public override int GetHashCode()
+    public static Operand operator /(int left, Fraction right)
+    {
+        if (right is null)
         {
-            unchecked
-            {
-                var hashCode = Numerator.GetHashCode();
-                hashCode = (hashCode*397) ^ Denominator.GetHashCode();
-                return hashCode;
-            }
+            throw new ArgumentNullException(nameof(right));
+        }
+
+        return Create(left * right.Denominator, right.Numerator);
+    }
+
+    public static Operand operator /(Fraction left, int right)
+    {
+        if (left is null)
+        {
+            throw new ArgumentNullException(nameof(left));
+        }
+
+        return Create(left.Numerator, left.Denominator * right);
+    }
+
+
+    public static Operand operator /(double left, Fraction right)
+    {
+        if (right is null)
+        {
+            throw new ArgumentNullException(nameof(right));
+        }
+
+        if (left.IsInteger())
+        {
+            return ((int)left) / right;
+        }
+
+        return left * right.Denominator / right.Numerator;
+    }
+
+    public static Operand operator /(Fraction left, double right)
+    {
+        if (left is null)
+        {
+            throw new ArgumentNullException(nameof(left));
+        }
+
+        if (right.IsInteger())
+        {
+            return left / ((int)right);
+        }
+
+        return left.Numerator / (left.Denominator * right);
+    }
+
+    public static Operand Create(int numerator, int denominator)
+    {
+        if (denominator == 1)
+        {
+            return ValueConstant.Create(numerator);
+        }
+
+        return new Fraction(numerator, denominator);
+    }
+
+    public override bool Equals(object obj) => Equals(obj as Fraction);
+    public override bool Equals(Operand other) => Equals(other as Fraction);
+    public bool Equals(Fraction other) => other is not null && Numerator == other.Numerator && Denominator == other.Denominator;
+
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            var hashCode = Numerator.GetHashCode();
+            hashCode = (hashCode * 397) ^ Denominator.GetHashCode();
+            return hashCode;
         }
     }
 }

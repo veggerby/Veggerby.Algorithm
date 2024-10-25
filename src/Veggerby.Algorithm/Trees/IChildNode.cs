@@ -1,9 +1,6 @@
-namespace Veggerby.Algorithm.Trees
+namespace Veggerby.Algorithm.Trees;
+
+public interface IChildNode<TParent> where TParent : IParentNode
 {
-    public interface IChildNode<TParent> where TParent : IParentNode
-    {
-        TParent Parent { get; }
-        void SetParent(IParentNode parent);
-        bool IsLeaf { get; }
-    }
+    bool IsLeaf { get; }
 }
