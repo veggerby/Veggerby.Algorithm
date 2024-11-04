@@ -1,6 +1,10 @@
 {
-    "projects": [
-        "src",
-        "test"
-    ]
+  "projects": [
+    "src",
+    "test"
+  ],
+  "sdk": {
+    "rollForward": "feature",
+    "version": "8.0.403"
+  }
 }
